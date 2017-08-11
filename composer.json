@@ -1,0 +1,46 @@
+{
+  "name": "borisguery/event-store-ng",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Boris Guéry",
+      "email": "guery.b@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Bgy\\": [
+        "src/Bgy"
+      ]
+    },
+    "files": [
+      "src/Bgy/Istorija/EventStore/Storage/DoctrineDbal/Mysql/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Bgy\\": [
+        "tests/Bgy"
+      ]
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "roave/security-advisories": "dev-master",
+    "beberlei/assert": "^2.7",
+    "mathiasverraes/classfunctions": "^1.1",
+    "ramsey/uuid": "^3.5",
+    "doctrine/dbal": "^2.5",
+    "symfony/validator": "^3.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0",
+    "symfony/stopwatch": "^3.2"
+  },
+  "suggest": {
+    "doctrine/dbal": "Allows to use Doctrine DBAL Persistence"
+  },
+  "config": {
+    "bin-dir": "bin"
+  }
+}
