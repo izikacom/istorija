@@ -5,17 +5,17 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Bgy\Istorija\Utils\Contract;
-use Bgy\Istorija\EventStore\EventData;
-use Bgy\Istorija\EventStore\EventRecord;
-use Bgy\Istorija\EventStore\EventMetadata;
-use Bgy\Istorija\EventStore\EventStore;
-use Bgy\Istorija\EventStore\EventEnvelope;
-use Bgy\Istorija\EventStore\ExpectedVersion;
-use Bgy\Istorija\EventStore\StreamName;
-use Bgy\Istorija\Identifiers\GenericUuidIdentifier;
+use DayUse\Istorija\Utils\Contract;
+use DayUse\Istorija\EventStore\EventData;
+use DayUse\Istorija\EventStore\EventRecord;
+use DayUse\Istorija\EventStore\EventMetadata;
+use DayUse\Istorija\EventStore\EventStore;
+use DayUse\Istorija\EventStore\EventEnvelope;
+use DayUse\Istorija\EventStore\ExpectedVersion;
+use DayUse\Istorija\EventStore\StreamName;
+use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
 
-$configuration = \Bgy\Istorija\EventStore\ConfigurationBuilder::create()
+$configuration = \DayUse\Istorija\EventStore\ConfigurationBuilder::create()
     ->usingMysqlDbalStorage('mysql://root@192.168.33.10/event_store')
     ->initializeStorageIfRequired()
     ->build()
