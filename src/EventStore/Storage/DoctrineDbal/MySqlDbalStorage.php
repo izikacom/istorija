@@ -12,14 +12,14 @@ use DayUse\Istorija\EventStore\ExpectedVersion;
 use DayUse\Istorija\EventStore\SlicedReadResult;
 use DayUse\Istorija\EventStore\SlicedReadResultUsingGenerator;
 use DayUse\Istorija\EventStore\Storage;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\CheckExpectedVersion;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\DeleteStream;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\InitStorage;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\PersistUncommitedEvent;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\ReadAllEvents;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\ReadEvent;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\ReadStreamEvents;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries\SelectAndSetCurrentStreamVersion;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\CheckExpectedVersion;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\DeleteStream;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\InitStorage;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\PersistUncommitedEvent;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadAllEvents;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadEvent;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadStreamEvents;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\SelectAndSetCurrentStreamVersion;
 use DayUse\Istorija\EventStore\CommitId;
 use DayUse\Istorija\EventStore\StreamName;
 use DayUse\Istorija\Utils\NotImplemented;
@@ -27,12 +27,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DriverException;
 use DayUse\Istorija\EventStore\Storage\OptimisticConcurrencyFailed;
 use DayUse\Istorija\EventStore\Storage\RequiresInitialization;
-use function DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\hydrateFromRow;
+use function DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\hydrateFromRow;
 
 /**
  * @author Boris Guéry <guery.b@gmail.com>
  */
-class MysqlDbalStorage implements Storage, AdvancedStorage, RequiresInitialization
+class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitialization
 {
     private $dbal;
 

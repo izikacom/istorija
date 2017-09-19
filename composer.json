@@ -12,7 +12,7 @@
       "DayUse\\Istorija\\": "src"
     },
     "files": [
-      "src/EventStore/Storage/DoctrineDbal/Mysql/functions.php"
+      "src/EventStore/Storage/DoctrineDbal/MySql/functions.php"
     ]
   },
   "autoload-dev": {

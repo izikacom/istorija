@@ -5,7 +5,7 @@
 
 namespace DayUse\Istorija\EventStore;
 
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MysqlDbalStorage;
+use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySqlDbalStorage;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
 
@@ -26,14 +26,14 @@ class ConfigurationBuilder
         return $this;
     }
 
-    public function usingMysqlDbalStorage(string $dsn): self
+    public function usingMySqlDbalStorage(string $dsn): self
     {
         $dbal = DriverManager::getConnection(
             ['url' => $dsn],
             new DbalConfiguration()
         );
 
-        $this->storage = new MysqlDbalStorage($dbal);
+        $this->storage = new MySqlDbalStorage($dbal);
 
         return $this;
     }

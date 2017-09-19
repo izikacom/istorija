@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql\Queries;
+namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
 
 /**
  * @author Boris Guéry <guery.b@gmail.com>

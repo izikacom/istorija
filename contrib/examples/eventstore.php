@@ -16,7 +16,7 @@ use DayUse\Istorija\EventStore\StreamName;
 use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
 
 $configuration = \DayUse\Istorija\EventStore\ConfigurationBuilder::create()
-    ->usingMysqlDbalStorage('mysql://root@192.168.33.10/event_store')
+    ->usingMySqlDbalStorage('mysql://root@192.168.33.10/event_store')
     ->initializeStorageIfRequired()
     ->build()
 ;

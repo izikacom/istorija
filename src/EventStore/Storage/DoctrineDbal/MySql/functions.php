@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\Mysql;
+namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql;
 
 use DayUse\Istorija\EventStore\CommitId;
 use DayUse\Istorija\EventStore\EventData;

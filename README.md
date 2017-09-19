@@ -13,7 +13,7 @@ CREATE DATABASE `istorija_event_store` DEFAULT CHARACTER SET = `utf8mb4`;
 
 ```php
 $configuration = \DayUse\Istorija\EventStore\ConfigurationBuilder::create()
-    ->usingMysqlDbalStorage('mysql://root@192.168.33.10/istorija_event_store')
+    ->usingMySqlDbalStorage('mysql://root@192.168.33.10/istorija_event_store')
     ->initializeStorageIfRequired() // Will create the required table or any required initialization for your storage
     ->build()
 ;
