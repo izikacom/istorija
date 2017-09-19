@@ -1,5 +1,5 @@
 {
-  "name": "borisguery/event-store-ng",
+  "name": "dayuse/istorija",
   "license": "proprietary",
   "authors": [
     {
@@ -9,18 +9,16 @@
   ],
   "autoload": {
     "psr-4": {
-      "Bgy\\": [
-        "src/Bgy"
-      ]
+      "DayUse\\Istorija\\": "src"
     },
     "files": [
-      "src/Bgy/Istorija/EventStore/Storage/DoctrineDbal/Mysql/functions.php"
+      "src/EventStore/Storage/DoctrineDbal/Mysql/functions.php"
     ]
   },
   "autoload-dev": {
     "psr-4": {
-      "Bgy\\": [
-        "tests/Bgy"
+      "DayUse\\": [
+        "tests/DayUse"
       ]
     }
   },
