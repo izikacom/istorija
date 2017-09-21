@@ -6,13 +6,17 @@
 namespace DayUse\Istorija\EventStore;
 
 use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySqlDbalStorage;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
+use Doctrine\DBAL\DriverManager;
 
 class ConfigurationBuilder
 {
     private $storage;
     private $shouldInitializeStorage = false;
+
+    private function __construct()
+    {
+    }
 
     public static function create(): self
     {
@@ -26,12 +30,23 @@ class ConfigurationBuilder
         return $this;
     }
 
-    public function usingMySqlDbalStorage(string $dsn): self
+    public function usingMySqlDbalStorage($data): self
     {
-        $dbal = DriverManager::getConnection(
-            ['url' => $dsn],
-            new DbalConfiguration()
-        );
+        if (is_string($data)) {
+            $dsn  = $data;
+            $dbal = DriverManager::getConnection(
+                ['url' => $dsn],
+                new DbalConfiguration()
+            );
+        } else if (is_array($data)) {
+            $params = $data;
+            $dbal   = DriverManager::getConnection($params, new DbalConfiguration());
+        }
+        else {
+            // @see http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
+            throw new \InvalidArgumentException('First parameter should be either a string to represent a DSN or an array to describe connection parameters');
+        }
+
 
         $this->storage = new MySqlDbalStorage($dbal);
 
@@ -49,6 +64,4 @@ class ConfigurationBuilder
     {
         return new Configuration($this->storage, $this->shouldInitializeStorage);
     }
-
-    private function __construct() {}
 }
