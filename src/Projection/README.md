@@ -3,7 +3,7 @@
 ```php
 <?php
 
-use DayUse\Istorija\EventStore\EventMetadata;
+use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use \DayUse\Istorija\Projection\Query;
@@ -35,7 +35,7 @@ $numUserCreation = $query->getState();
 ```php
 <?php
 
-use DayUse\Istorija\EventStore\EventMetadata;
+use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use \DayUse\Istorija\Projection\Projector;
@@ -68,7 +68,7 @@ $numUserCreation = $projector->getState();
 <?php
 
 use \DayUse\Istorija\Utils\Ensure;
-use DayUse\Istorija\EventStore\EventMetadata;
+use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use \DayUse\Istorija\Projection\ReadModelProjector;
