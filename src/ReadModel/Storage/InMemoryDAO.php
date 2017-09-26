@@ -46,6 +46,22 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
+    public function findAll(int $page = 0, int $maxPerPage = 50)
+    {
+        return array_slice($this->data, $page, $maxPerPage, false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function countAll()
+    {
+        return count($this->data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function transferTo(DAOInterface $otherDAO)
     {
         if (0 === count($this->data)) {
