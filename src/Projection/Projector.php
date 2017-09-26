@@ -21,7 +21,7 @@ abstract class Projector implements EventHandler
      */
     private $state;
 
-    abstract public function initialization();
+    abstract public function initialState();
 
     /**
      * This method is trying to apply received events on when{EventName} methods.
@@ -48,15 +48,31 @@ abstract class Projector implements EventHandler
     {
         $method = self::HANDLER_PREFIX . EventNameGuesser::guess($event);
         if (is_callable([$this, $method])) {
-            $this->state = $this->{$method}($event, $this->state, $metadata);
+            $updatedState = $this->{$method}(
+                $event,
+                $this->getState(),
+                $metadata
+            );
+
+            $this->updateState($updatedState);
         }
     }
 
-    public function reset(): self
+    final public function reset(): self
     {
-        $this->state = $this->initialization();
+        $this->updateState($this->initialState());
 
         return $this;
+    }
+
+    /**
+     * @param mixed $state
+     *
+     * @return mixed
+     */
+    protected function updateState($state)
+    {
+        $this->state = $state;
     }
 
     /**

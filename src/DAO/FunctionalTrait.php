@@ -6,7 +6,7 @@
  * Time: 13:54
  */
 
-namespace DayUse\Istorija\ReadModel;
+namespace DayUse\Istorija\DAO;
 
 
 trait FunctionalTrait

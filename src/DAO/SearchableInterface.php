@@ -6,7 +6,7 @@
  * Time: 13:24
  */
 
-namespace DayUse\Istorija\ReadModel;
+namespace DayUse\Istorija\DAO;
 
 
 interface SearchableInterface

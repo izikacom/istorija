@@ -6,7 +6,7 @@
  * Time: 11:03
  */
 
-namespace DayUse\Istorija\ReadModel\Proxy;
+namespace DayUse\Istorija\DAO\Proxy;
 
 use DayUse\Istorija\Utils\Ensure;
 

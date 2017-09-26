@@ -24,7 +24,7 @@ $player = new SimplePlayer(
     $eventStore, 
     $query
 );
-$player->playFromScratch();
+$player->playFromBeginning();
 
 $numUserCreation = $query->getState();
 ?>
@@ -42,7 +42,7 @@ use \DayUse\Istorija\Projection\Projector;
 use \DayUse\Istorija\Projection\Player\SimplePlayer;
 
 $projector = new class() extends Projector {
-    public function initialization() {
+    public function initialState() {
         return 0;
     }
     
@@ -56,13 +56,15 @@ $player = new SimplePlayer(
     $eventStore, 
     $projector
 );
-$player->playFromScratch();
+$player->playFromBeginning();
 
 $numUserCreation = $projector->getState();
 ?>
 ```
 
-# How to use a ReadModelProjector - replay case
+# How to use a PersistedProjector
+
+The state of this projector is stored using a DAO.
 
 ```php
 <?php
@@ -71,35 +73,34 @@ use \DayUse\Istorija\Utils\Ensure;
 use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
-use \DayUse\Istorija\Projection\ReadModelProjector;
+use \DayUse\Istorija\Projection\PersistedProjector;
 use \DayUse\Istorija\Projection\Player\SimplePlayer;
-use \DayUse\Istorija\ReadModel\Storage\InMemoryDAO;
-use \DayUse\Istorija\ReadModel\DAOInterface;
+use \DayUse\Istorija\DAO\Storage\InMemoryDAO;
+use \DayUse\Istorija\DAO\Proxy\Buffer;
+use \DayUse\Istorija\DAO\DAOInterface;
 
-$readModel = new InMemoryDAO();
-$projector = new class($readModel) extends ReadModelProjector {
-    private $readModel;
+$dao = new Buffer(new InMemoryDAO(), new InMemoryDAO());
+$projector = new class($dao) extends PersistedProjector {
+    private $dao;
     
-    public function __construct(DAOInterface $readModel) {
-        $this->readModel = $readModel;
+    public function __construct(DAOInterface $dao) {
+        $this->dao = $dao;
     }
     
-    public function initialization() {
-        $this->getReadModel()->save('users', 0);
-        
+    public function initialState() {
         return 0;
     }
     
-    public function getReadModel(): DAOInterface {
-        return $this->readModel;
+    protected function getName(): string {
+        return 'users';
+    }
+    
+    protected function getDAO(): DAOInterface {
+        return $this->dao;
     }
     
     public function whenUserCreated(DomainEvent $event, $previous, EventMetadata $metadata) {
-        $current = $previous + 1;
-        
-        $this->getReadModel()->save('users', $current);
-        
-        return $current;
+        return $previous + 1;
     }
 };
 
@@ -108,10 +109,11 @@ $player = new SimplePlayer(
     $eventStore, 
     $projector
 );
-$player->playFromScratch();
+$player->playFromBeginning();
+
+$dao->flushAndCommit();
 
 $numUserCreation = $projector->getState();
-
-Ensure::eq($projector->getState(), $readModel->find('users'));
+Ensure::eq($projector->getState(), $dao->find('users'));
 ?>
 ```

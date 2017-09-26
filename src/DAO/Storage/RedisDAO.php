@@ -6,14 +6,14 @@
  * Time: 13:37
  */
 
-namespace DayUse\Istorija\ReadModel\Storage;
+namespace DayUse\Istorija\DAO\Storage;
 
 
 use DayUse\Istorija\Utils\Ensure;
-use DayUse\Istorija\ReadModel\BulkableInterface;
-use DayUse\Istorija\ReadModel\DAOInterface;
-use DayUse\Istorija\ReadModel\FunctionalTrait;
-use DayUse\Istorija\ReadModel\IdentifiableValue;
+use DayUse\Istorija\DAO\BulkableInterface;
+use DayUse\Istorija\DAO\DAOInterface;
+use DayUse\Istorija\DAO\FunctionalTrait;
+use DayUse\Istorija\DAO\IdentifiableValue;
 
 /**
  * Class RedisDAO
@@ -21,7 +21,7 @@ use DayUse\Istorija\ReadModel\IdentifiableValue;
  * This DAO store data on redis with prefixed keys.
  *
  *
- * @package DayUse\Istorija\ReadModel\Storage
+ * @package DayUse\Istorija\DAO\Storage
  */
 class RedisDAO implements DAOInterface, BulkableInterface
 {

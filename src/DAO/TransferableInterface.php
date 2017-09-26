@@ -6,7 +6,7 @@
  * Time: 14:00
  */
 
-namespace DayUse\Istorija\ReadModel;
+namespace DayUse\Istorija\DAO;
 
 
 interface TransferableInterface

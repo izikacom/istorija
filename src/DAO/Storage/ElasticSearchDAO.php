@@ -6,14 +6,14 @@
  * Time: 14:04
  */
 
-namespace DayUse\Istorija\ReadModel\Storage;
+namespace DayUse\Istorija\DAO\Storage;
 
 
-use DayUse\Istorija\ReadModel\AdvancedDAOInterface;
-use DayUse\Istorija\ReadModel\BulkableInterface;
-use DayUse\Istorija\ReadModel\FunctionalTrait;
-use DayUse\Istorija\ReadModel\IdentifiableValue;
-use DayUse\Istorija\ReadModel\SearchableInterface;
+use DayUse\Istorija\DAO\AdvancedDAOInterface;
+use DayUse\Istorija\DAO\BulkableInterface;
+use DayUse\Istorija\DAO\FunctionalTrait;
+use DayUse\Istorija\DAO\IdentifiableValue;
+use DayUse\Istorija\DAO\SearchableInterface;
 use DayUse\Istorija\Utils\Ensure;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;

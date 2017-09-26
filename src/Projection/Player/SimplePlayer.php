@@ -44,7 +44,7 @@ class SimplePlayer
         $this->eventHandler       = $eventHandler;
     }
 
-    public function playFromScratch()
+    public function playFromBeginning()
     {
         $eventRecords = $this->eventStore->readAllEvents();
 

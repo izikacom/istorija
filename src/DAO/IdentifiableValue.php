@@ -6,14 +6,14 @@
  * Time: 14:25
  */
 
-namespace DayUse\Istorija\ReadModel;
+namespace DayUse\Istorija\DAO;
 
 /**
  * Class IdentifiableValue
  *
  * This class is used mainly for bulking process.
  *
- * @package DayUse\Istorija\ReadModel
+ * @package DayUse\Istorija\DAO
  */
 class IdentifiableValue
 {
