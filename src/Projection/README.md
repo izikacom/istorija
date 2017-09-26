@@ -65,6 +65,7 @@ $numUserCreation = $projector->getState();
 # How to use a PersistedProjector
 
 The state of this projector is stored using a DAO.
+For the example, I'm using a Buffered DAO.
 
 ```php
 <?php
