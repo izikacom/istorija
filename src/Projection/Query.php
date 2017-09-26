@@ -21,7 +21,7 @@ use DayUse\Istorija\Utils\Ensure;
  *
  * @package DayUse\Istorija\Projection
  */
-final class Query implements EventHandler
+final class Query implements Projection
 {
     /**
      * @var callable
@@ -90,7 +90,7 @@ final class Query implements EventHandler
         $this->state = call_user_func($handler($event, $this->state, $metadata));
     }
 
-    public function reset(): self
+    public function reset()
     {
         Ensure::notNull($this->initializationCallback, 'Did you forget to initialize this query?');
 

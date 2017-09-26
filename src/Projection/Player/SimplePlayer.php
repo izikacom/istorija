@@ -11,7 +11,7 @@ namespace DayUse\Istorija\Projection\Player;
 
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use DayUse\Istorija\EventStore\EventStore;
-use DayUse\Istorija\Projection\EventHandler;
+use DayUse\Istorija\Projection\Projection;
 
 class SimplePlayer
 {
@@ -26,30 +26,32 @@ class SimplePlayer
     private $eventStore;
 
     /**
-     * @var EventHandler
+     * @var Projection
      */
-    private $eventHandler;
+    private $projection;
 
     /**
      * SimplePlayer constructor.
      *
      * @param DomainEventFactory $domainEventFactory
      * @param EventStore         $eventStore
-     * @param EventHandler       $eventHandler
+     * @param Projection         $projection
      */
-    public function __construct(DomainEventFactory $domainEventFactory, EventStore $eventStore, EventHandler $eventHandler)
+    public function __construct(DomainEventFactory $domainEventFactory, EventStore $eventStore, Projection $projection)
     {
         $this->domainEventFactory = $domainEventFactory;
         $this->eventStore         = $eventStore;
-        $this->eventHandler       = $eventHandler;
+        $this->projection         = $projection;
     }
 
     public function playFromBeginning()
     {
         $eventRecords = $this->eventStore->readAllEvents();
 
+        $this->projection->reset();
+
         foreach($eventRecords as $eventRecord) {
-            $this->eventHandler->apply(
+            $this->projection->apply(
                 $this->domainEventFactory->fromEventRecord($eventRecord),
                 $eventRecord->getMetadata()
             );

@@ -12,7 +12,7 @@ use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
 use DayUse\Istorija\EventStore\EventMetadata;
 
-abstract class Projector implements EventHandler
+abstract class Projector implements Projection
 {
     const HANDLER_PREFIX = "when";
 
