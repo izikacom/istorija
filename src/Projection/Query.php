@@ -87,7 +87,7 @@ final class Query implements EventHandler
             return;
         }
 
-        $this->state = call_user_func($handler($event, $metadata, $this->state));
+        $this->state = call_user_func($handler($event, $this->state, $metadata));
     }
 
     public function reset(): self

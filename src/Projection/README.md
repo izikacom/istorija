@@ -14,7 +14,7 @@ $query = (new Query())
         return 0;
     })
     ->when([
-        'UserCreated' => function(DomainEvent $event, EventMetadata $metadata, $previous) {
+        'UserCreated' => function(DomainEvent $event, $previous, EventMetadata $metadata) {
             return $previous + 1;
         },
     ]);
@@ -46,7 +46,7 @@ $projector = new class() extends Projector {
         return 0;
     }
     
-    public function whenUserCreated(DomainEvent $event, EventMetadata $metadata, $previous) {
+    public function whenUserCreated(DomainEvent $event, $previous, EventMetadata $metadata) {
         return $previous + 1;
     }
 };
@@ -85,6 +85,8 @@ $projector = new class($readModel) extends ReadModelProjector {
     }
     
     public function initialization() {
+        $this->getReadModel()->save('users', 0);
+        
         return 0;
     }
     
@@ -92,7 +94,7 @@ $projector = new class($readModel) extends ReadModelProjector {
         return $this->readModel;
     }
     
-    public function whenUserCreated(DomainEvent $event, EventMetadata $metadata, $previous) {
+    public function whenUserCreated(DomainEvent $event, $previous, EventMetadata $metadata) {
         $current = $previous + 1;
         
         $this->getReadModel()->save('users', $current);

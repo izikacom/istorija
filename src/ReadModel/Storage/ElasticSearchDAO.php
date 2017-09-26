@@ -9,12 +9,12 @@
 namespace DayUse\Istorija\ReadModel\Storage;
 
 
-use DayUse\Istorija\Utils\Ensure;
 use DayUse\Istorija\ReadModel\AdvancedDAOInterface;
 use DayUse\Istorija\ReadModel\BulkableInterface;
 use DayUse\Istorija\ReadModel\FunctionalTrait;
 use DayUse\Istorija\ReadModel\IdentifiableValue;
 use DayUse\Istorija\ReadModel\SearchableInterface;
+use DayUse\Istorija\Utils\Ensure;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 
@@ -40,24 +40,26 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * ElasticSearchDAO constructor.
      *
-     * @param Client  $client
-     * @param string  $index
-     * @param string  $type
+     * @param Client $client
+     * @param string $index
+     * @param string $type
      */
     public function __construct(Client $client, $index, $type)
     {
         Ensure::string($type);
 
-        $this->client        = $client;
-        $this->index         = $index;
-        $this->type          = $type;
+        $this->client = $client;
+        $this->index  = $index;
+        $this->type   = $type;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function save(string $id, array $data)
+    public function save(string $id, $data)
     {
+        Ensure::isArray($data, 'ElasticSearch was tested only with value as array');
+
         $params = [
             'index'   => $this->index,
             'type'    => $this->type,
@@ -75,6 +77,9 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     public function saveBulk(array $models)
     {
         Ensure::allIsInstanceOf($models, IdentifiableValue::class);
+        Ensure::allSatisfy($models, function (IdentifiableValue $identifiableValue) {
+            return is_array($identifiableValue->getValue());
+        }, 'ElasticSearch was tested only with value as array');
 
         $params = [
             'refresh' => true,

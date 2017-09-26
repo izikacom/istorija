@@ -78,7 +78,7 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function save(string $id, array $data)
+    public function save(string $id, $data)
     {
         if ($this->enabled) {
             return $this->bufferDAO->save($id, $data);

@@ -23,7 +23,7 @@ class IdentifiableValue
     private $id;
 
     /**
-     * @var array
+     * @var mixed
      */
     private $value;
 
@@ -31,9 +31,9 @@ class IdentifiableValue
      * IdentifiableValue constructor.
      *
      * @param string $id
-     * @param array  $value
+     * @param mixed  $value
      */
-    public function __construct(string $id, array $value)
+    public function __construct(string $id, $value)
     {
         $this->id    = $id;
         $this->value = $value;
@@ -48,9 +48,9 @@ class IdentifiableValue
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getValue(): array
+    public function getValue()
     {
         return $this->value;
     }

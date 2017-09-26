@@ -20,14 +20,14 @@ interface DAOInterface
 
     /**
      * @param string $id
-     * @param array  $data
+     * @param mixed  $data
      */
-    public function save(string $id, array $data);
+    public function save(string $id, $data);
 
     /**
      * @param string $id
      *
-     * @return array|null
+     * @return mixed|null
      */
     public function find(string $id);
 

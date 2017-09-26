@@ -30,9 +30,9 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function save(string $id, array $model)
+    public function save(string $id, $data)
     {
-        $this->data[$id] = $model;
+        $this->data[$id] = $data;
     }
 
     /**
@@ -79,8 +79,8 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
         }
 
         // save one by one
-        foreach ($this->data as $id => $model) {
-            $otherDAO->save($id, $model);
+        foreach ($this->data as $id => $data) {
+            $otherDAO->save($id, $data);
         }
     }
 

@@ -81,7 +81,7 @@ class RedisDAO implements DAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function save(string $identifier, array $data)
+    public function save(string $identifier, $data)
     {
         $this->redis->set($this->generateKey($identifier), $data);
     }

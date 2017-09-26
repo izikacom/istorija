@@ -48,7 +48,7 @@ abstract class Projector implements EventHandler
     {
         $method = self::HANDLER_PREFIX . EventNameGuesser::guess($event);
         if (is_callable([$this, $method])) {
-            $this->state = $this->{$method}($event, $this->state);
+            $this->state = $this->{$method}($event, $this->state, $metadata);
         }
     }
 
