@@ -10,6 +10,7 @@ namespace DayUse\Istorija\Projection;
 
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
+use DayUse\Istorija\EventStore\EventMetadata;
 use DayUse\Istorija\Utils\Ensure;
 
 /**
@@ -77,7 +78,7 @@ final class Query implements EventHandler
         return $this;
     }
 
-    final public function apply(DomainEvent $event)
+    final public function apply(DomainEvent $event, EventMetadata $metadata)
     {
         $eventName = EventNameGuesser::guess($event);
         $handler   = $this->handlers[$eventName] ?? null;
@@ -86,7 +87,7 @@ final class Query implements EventHandler
             return;
         }
 
-        $this->state = call_user_func($handler($event, $this->state));
+        $this->state = call_user_func($handler($event, $metadata, $this->state));
     }
 
     public function reset(): self

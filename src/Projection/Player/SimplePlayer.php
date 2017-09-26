@@ -49,7 +49,10 @@ class SimplePlayer
         $eventRecords = $this->eventStore->readAllEvents();
 
         foreach($eventRecords as $eventRecord) {
-            $this->eventHandler->apply($this->domainEventFactory->fromEventRecord($eventRecord));
+            $this->eventHandler->apply(
+                $this->domainEventFactory->fromEventRecord($eventRecord),
+                $eventRecord->getMetadata()
+            );
         }
     }
 }

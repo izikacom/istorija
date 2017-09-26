@@ -10,8 +10,9 @@ namespace DayUse\Istorija\Projection;
 
 
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use DayUse\Istorija\EventStore\EventMetadata;
 
 interface EventHandler
 {
-    public function apply(DomainEvent $event);
+    public function apply(DomainEvent $event, EventMetadata $metadata);
 }

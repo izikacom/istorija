@@ -3,6 +3,7 @@
 ```php
 <?php
 
+use DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use \DayUse\Istorija\Projection\Query;
@@ -13,7 +14,7 @@ $query = (new Query())
         return 0;
     })
     ->when([
-        'UserCreated' => function(DomainEvent $event, $previous) {
+        'UserCreated' => function(DomainEvent $event, EventMetadata $metadata, $previous) {
             return $previous + 1;
         },
     ]);
@@ -34,6 +35,7 @@ $numUserCreation = $query->getState();
 ```php
 <?php
 
+use DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use \DayUse\Istorija\Projection\Projector;
@@ -44,7 +46,7 @@ $projector = new class() extends Projector {
         return 0;
     }
     
-    public function whenUserCreated(DomainEvent $event, $previous) {
+    public function whenUserCreated(DomainEvent $event, EventMetadata $metadata, $previous) {
         return $previous + 1;
     }
 };
@@ -66,6 +68,7 @@ $numUserCreation = $projector->getState();
 <?php
 
 use \DayUse\Istorija\Utils\Ensure;
+use DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use \DayUse\Istorija\Projection\ReadModelProjector;
@@ -89,7 +92,7 @@ $projector = new class($readModel) extends ReadModelProjector {
         return $this->readModel;
     }
     
-    public function whenUserCreated(DomainEvent $event, $previous) {
+    public function whenUserCreated(DomainEvent $event, EventMetadata $metadata, $previous) {
         $current = $previous + 1;
         
         $this->getReadModel()->save('users', $current);
