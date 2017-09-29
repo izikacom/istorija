@@ -57,4 +57,23 @@ class SimplePlayer
             );
         }
     }
+
+    public function subscribeToLive()
+    {
+
+    }
+
+    /**
+     * Call $onEvent on dispatched event; can throttle to avoid spamming.
+     *
+     * @param callable $onEvent
+     * @param int      $updateThrottled
+     */
+    public function playFromBeginningThenSwitchToLiveSubscription(callable $onEvent, $updateThrottled = 0)
+    {
+        // 1. subscribe to event-sourcing & store in-memory all dispatched event
+        // 2. store last checkpoint number
+        // 3. replay event-store from 0 to last stored checkpoint number
+        // 4. apply stored event from subscription; when empty, switch to live subscription
+    }
 }
