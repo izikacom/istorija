@@ -56,3 +56,51 @@ public function applyTaskDeleted(TaskDeleted $event)
     $this->releaseEntity($event->taskId, $event);
 }
 ```
+
+## Testing
+
+The scenario will help with testing event sourced aggregate roots. A
+scenario consists of three steps:
+
+1) given(): Initialize the aggregate root using a history of events
+2) when():  A callable that calls one or more methods on the event sourced aggregate root
+3) then():  Events that should have been applied
+
+`then()`take an array as argument. Accepted values are :
+* ClassName, ie: `TaskCreated::class`
+* DomainEvent instance
+* Callable: Throw exceptions or `return false` to make a faulty assertion.
+
+
+
+```php
+$taskId = TaskId::generate();
+$userId = UserId::generate();
+
+$scenario = new Scenario();
+$scenario->withAggregate(Task::class);
+$scenario->given([
+    TaskCreated::fromArray([
+        'id'   => $taskId,
+        'date' => DateTimeImmuatable::now(),
+    ]),
+]);
+$scenario->when(function(Task $task) use($userId) {
+    $task->assignTo($userId);
+    $task->labelize(['marketing', 'technical'];
+    $task->complete();
+});
+$scenario->then([
+    TaskAssigned::fromArray([
+        'id'     => $taskId,
+        'userId' => $userId,
+        'date'   => DateTimeImmutable::now(),
+    ]),
+    function(TaskLabelized $event) {
+        Assertion::count(2, $event->labels);
+        
+        return false; // will be seen as a faulty assertion.
+    },
+    TaskCompleted::class,
+]);
+```
