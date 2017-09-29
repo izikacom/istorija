@@ -17,9 +17,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "DayUse\\": [
-        "tests/DayUse"
-      ]
+      "DayUse\\Test\\Istorija\\": "tests"
     }
   },
   "minimum-stability": "stable",

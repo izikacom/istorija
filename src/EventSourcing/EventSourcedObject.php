@@ -100,7 +100,7 @@ trait EventSourcedObject
         $id = (string)$id;
 
         if (false === array_key_exists($id, $this->entities)) {
-            throw new \RuntimeException('Entity was not registered. Did you miss the entity registration on the apply{EventEntityCreated} ?');
+            throw new \RuntimeException('Try to release an entity that was never registered. Did you miss the entity registration from parent? See apply{EventEntityCreated} ?');
         }
 
         $this->entities[$id]->apply($latestEvent);
@@ -112,7 +112,7 @@ trait EventSourcedObject
     {
         $id = (string)$id;
         if (false === array_key_exists($id, $this->entities)) {
-            throw new \RuntimeException('Entity was not registered. Did you miss the entity registration on the apply{EventEntityCreated} ?');
+            throw new \RuntimeException('Try to release an entity that was never registered. Did you miss the entity registration from parent? See apply{EventEntityCreated} ?');
         }
 
         return $this->entities[$id];

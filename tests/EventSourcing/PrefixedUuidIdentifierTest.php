@@ -6,8 +6,9 @@
  * Time: 14:55
  */
 
-namespace DayUse\Istorija\Identifiers;
+namespace DayUse\Test\Istorija\EventSourcing;
 
+use DayUse\Istorija\Identifiers\PrefixedUuidIdentifier;
 use PHPUnit\Framework\TestCase;
 
 final class PrefixedUuidIdentifierTest extends TestCase
