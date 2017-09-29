@@ -59,6 +59,44 @@ class ScenarioTest extends TestCase
     /**
      * @test
      */
+    public function it_should_clone_aggregate_instance()
+    {
+        $memberId = MemberId::generate();
+        $member   = Member::register($memberId, new Username('thomas'), new Email('thomas@tourlourat.com'));
+
+        $scenario = Scenario::startFromInstance($member);
+        $scenario->when(function (Member $member) {
+        });
+
+        $member->confirmEmail();
+
+        $scenario->then([
+        ]);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_work_without_events()
+    {
+        $memberId = MemberId::generate();
+        $member   = Member::register($memberId, new Username('thomas'), new Email('thomas@tourlourat.com'));
+
+        $scenario = Scenario::startFromInstance($member);
+        $scenario->when(function (Member $member) {
+        });
+
+        $scenario->then([
+        ]);
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_work_with_aggregate_root_instance()
     {
         $memberId = MemberId::generate();
@@ -71,20 +109,6 @@ class ScenarioTest extends TestCase
 
         $scenario->then([
             MemberConfirmedEmail::class,
-        ]);
-
-        $scenario->then([
-            MemberConfirmedEmail::fromArray([
-                'memberId' => (string)$memberId,
-            ]),
-        ]);
-
-        $scenario->then([
-            function (MemberConfirmedEmail $event) use ($memberId) {
-                Ensure::eq($memberId, $event->memberId);
-
-                return true;
-            },
         ]);
 
         $this->assertTrue(true);

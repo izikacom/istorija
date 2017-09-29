@@ -52,11 +52,21 @@ class Scenario
         return new self($aggregateRootClass);
     }
 
+    /**
+     * The aggregateRoot instance passed as argument is used as the "given" events source.
+     *
+     * @param AggregateRoot $aggregateRoot
+     *
+     * @return Scenario
+     */
     static public function startFromInstance(AggregateRoot $aggregateRoot)
     {
-        $that = new self(get_class($aggregateRoot));
+        $that   = new self(get_class($aggregateRoot));
+        $events = $aggregateRoot->getRecordedEvents()->map(function (DomainEvent $event) use ($that) {
+            return $event;
+        });
 
-        $that->aggregateRoot = $aggregateRoot;
+        $that->given($events);
 
         return $that;
     }
@@ -65,12 +75,11 @@ class Scenario
     {
         Ensure::allIsInstanceOf($events, DomainEvent::class);
 
-        if($this->aggregateRoot) {
-            foreach($events as $event) {
+        if ($this->aggregateRoot) {
+            foreach ($events as $event) {
                 $this->aggregateRoot->apply($event);
             }
-        }
-        else {
+        } else {
             $this->aggregateRoot = $this->aggregateRootClass::reconstituteFromHistory(new DomainEventCollection($events));
         }
 
@@ -81,8 +90,6 @@ class Scenario
     {
         Ensure::isCallable($when);
         Ensure::notEmpty($this->aggregateRoot, 'Your aggregate was not instantiated; did you miss the given phase from this scenario?');
-
-        $this->aggregateRoot->clearRecordedEvents();
 
         $when($this->aggregateRoot);
 
@@ -95,16 +102,16 @@ class Scenario
         // 1. a callable
         // 2. a classname
         // 3. a domain event instance
-        Ensure::allSatisfy($allThen, function($then) {
-            if(is_callable($then)) {
+        Ensure::allSatisfy($allThen, function ($then) {
+            if (is_callable($then)) {
                 return true;
             }
 
-            if(is_string($then) && class_exists($then) && is_subclass_of($then, DomainEvent::class)) {
+            if (is_string($then) && class_exists($then) && is_subclass_of($then, DomainEvent::class)) {
                 return true;
             }
 
-            if($then instanceof DomainEvent) {
+            if ($then instanceof DomainEvent) {
                 return true;
             }
 
@@ -119,8 +126,8 @@ class Scenario
             sprintf('Scenario failed, expecting %s event(s), get %s', count($allThen), count($recordedEvents))
         );
 
-        array_map(function($idx, $then, DomainEvent $recordedEvent) {
-            if(is_string($then)) {
+        array_map(function ($idx, $then, DomainEvent $recordedEvent) {
+            if (is_string($then)) {
                 Ensure::isInstanceOf($recordedEvent, $then, sprintf(
                     '#%s expected event is not an instance of the given event class (%s)', $idx, $then
                 ));
@@ -128,7 +135,7 @@ class Scenario
                 return true;
             }
 
-            if(is_callable($then)) {
+            if (is_callable($then)) {
                 Ensure::satisfy($recordedEvent, $then, sprintf(
                     '#%s expected event does not satisfy the given callable', $idx
                 ));
