@@ -80,14 +80,14 @@ final class Query implements Projection
 
     final public function apply(DomainEvent $event, EventMetadata $metadata)
     {
-        $eventName = EventNameGuesser::guess($event);
+        $eventName = get_class($event);
         $handler   = $this->handlers[$eventName] ?? null;
 
         if (null === $handler) {
             return;
         }
 
-        $this->state = call_user_func($handler($event, $this->state, $metadata));
+        $this->state = call_user_func($handler, $event, $this->state, $metadata);
     }
 
     public function reset()
