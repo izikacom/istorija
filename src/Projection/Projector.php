@@ -32,12 +32,12 @@ abstract class Projector implements Projection
      * returned state will be used as current state;
      *
      * ie:
-     * whenUserPaid(UserPaid $event, $previous) {
+     * whenUserPaid($state, UserPaid $event) {
      *   $current = [
      *     'paid' => true,
      *   ];
      *
-     *   return array_merge($previous, $current);
+     *   return array_merge($state, $current);
      * }
      *
      *
@@ -49,8 +49,8 @@ abstract class Projector implements Projection
         $method = self::HANDLER_PREFIX . EventNameGuesser::guess($event);
         if (is_callable([$this, $method])) {
             $updatedState = $this->{$method}(
-                $event,
                 $this->getState(),
+                $event,
                 $metadata
             );
 

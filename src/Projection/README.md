@@ -14,8 +14,8 @@ $query = (new Query())
         return 0;
     })
     ->when([
-        'UserCreated' => function(DomainEvent $event, $previous, EventMetadata $metadata) {
-            return $previous + 1;
+        'UserCreated' => function($state, DomainEvent $event, EventMetadata $metadata) {
+            return $state + 1;
         },
     ]);
 
@@ -46,8 +46,8 @@ $projector = new class() extends Projector {
         return 0;
     }
     
-    public function whenUserCreated(DomainEvent $event, $previous, EventMetadata $metadata) {
-        return $previous + 1;
+    public function whenUserCreated($state, DomainEvent $event, EventMetadata $metadata) {
+        return $state + 1;
     }
 };
 
@@ -100,8 +100,8 @@ $projector = new class($dao) extends PersistedProjector {
         return $this->dao;
     }
     
-    public function whenUserCreated(DomainEvent $event, $previous, EventMetadata $metadata) {
-        return $previous + 1;
+    public function whenUserCreated($state, DomainEvent $event, EventMetadata $metadata) {
+        return $state + 1;
     }
 };
 
@@ -157,7 +157,7 @@ $projector = new class($dao) extends PersistedPartitionedProjector {
         return $this->dao;
     }
     
-    public function whenUserCreated(DomainEvent $event, $previous, EventMetadata $metadata) {
+    public function whenUserCreated($state, DomainEvent $event, EventMetadata $metadata) {
         return [
             'userId'    => '123',
             'confirmed' => false,

@@ -53,11 +53,11 @@ final class Query implements Projection
      * For example:
      *
      * when([
-     *     'UserCreated' => function (DomainEvent $event, array $state) {
+     *     'UserCreated' => function (array $state, DomainEvent $event) {
      *         $state['count']++;
      *         return $state;
      *     },
-     *     'UserDeleted' => function (DomainEvent $event, array $state) {
+     *     'UserDeleted' => function (array $state, DomainEvent $event) {
      *         $state['count']--;
      *         return $state;
      *     }
@@ -87,7 +87,7 @@ final class Query implements Projection
             return;
         }
 
-        $this->state = call_user_func($handler, $event, $this->state, $metadata);
+        $this->state = call_user_func($handler, $this->state, $event, $metadata);
     }
 
     public function reset()

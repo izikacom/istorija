@@ -52,13 +52,13 @@ $query = (new Query())
         return 0;
     })
     ->when([
-        'OrderPlaced' => function(DomainEvent $event, $previous, EventMetadata $metadata) {
-            return $previous + 1;
+        'OrderPlaced' => function($state, DomainEvent $event, EventMetadata $metadata) {
+            return $state + 1;
         },
     ]);
 
 $player = new SimplePlayer(
-    new DomainEventFactory(),
+    new DomainEventFactory(,
     $es,
     $query
 );

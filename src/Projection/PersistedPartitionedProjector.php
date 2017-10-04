@@ -26,12 +26,12 @@ abstract class PersistedPartitionedProjector implements Projection
      * returned state will be used as current state;
      *
      * ie:
-     * whenUserPaid(UserPaid $event, $previous) {
+     * whenUserPaid($state, UserPaid $event) {
      *   $current = [
      *     'paid' => true,
      *   ];
      *
-     *   return array_merge($previous, $current);
+     *   return array_merge($state, $current);
      * }
      *
      *
@@ -44,18 +44,18 @@ abstract class PersistedPartitionedProjector implements Projection
         if (is_callable([$this, $method])) {
             $partition    = $this->findPartitionFromEvent($event, $metadata);
             $updatedState = $this->{$method}(
+                $this->getDAO()->find($partition),
                 $event,
-                $this->dao->find($partition),
                 $metadata
             );
 
-            $this->dao->update($partition, $updatedState);
+            $this->getDAO()->update($partition, $updatedState);
         }
     }
 
     final public function reset(): self
     {
-        $this->dao->flush();
+        $this->getDAO()->flush();
 
         return $this;
     }
