@@ -391,7 +391,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         };
 
         $operators = array_keys($conditions);
-        if (in_array('=', $operators)) {
+        if (in_array('=', $operators, true)) {
             return [
                 'term' => [
                     $field => $conditions['='],
