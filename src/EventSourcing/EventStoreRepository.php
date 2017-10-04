@@ -7,8 +7,9 @@ use DayUse\Istorija\EventStore\EventStore;
 use DayUse\Istorija\EventStore\ExpectedVersion;
 use DayUse\Istorija\EventStore\StreamName;
 use DayUse\Istorija\Identifiers\Identifier;
+use DayUse\Istorija\SimpleMessaging\Bus;
 
-abstract class EventStoreRepository
+abstract class EventStoreRepository implements AggregateRootRepository
 {
     /**
      * @var EventStore
@@ -26,7 +27,7 @@ abstract class EventStoreRepository
     private $domainEventFactory;
 
     /**
-     * @var EventBus
+     * @var Bus
      */
     private $eventBus;
 
@@ -36,9 +37,9 @@ abstract class EventStoreRepository
      * @param EventStore           $eventStore
      * @param EventEnvelopeFactory $eventEnvelopeFactory
      * @param DomainEventFactory   $domainEventFactory
-     * @param EventBus             $eventBus
+     * @param Bus                  $eventBus
      */
-    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, EventBus $eventBus)
+    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, Bus $eventBus)
     {
         $this->eventStore           = $eventStore;
         $this->eventEnvelopeFactory = $eventEnvelopeFactory;
@@ -82,7 +83,6 @@ abstract class EventStoreRepository
 
         $aggregateRoot->clearRecordedEvents();
 
-        // TODO - Dispatch recorded events
-        // $this->eventBus;
+//        $this->eventBus->publish($message);
     }
 }
