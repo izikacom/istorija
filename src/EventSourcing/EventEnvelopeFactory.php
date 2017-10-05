@@ -24,6 +24,16 @@ class EventEnvelopeFactory
     private $serializer;
 
     /**
+     * EventEnvelopeFactory constructor.
+     *
+     * @param JsonObjectSerializer $serializer
+     */
+    public function __construct(JsonObjectSerializer $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+    /**
      * @param DomainEventCollection $domainEvents
      * @param array                 $context
      *

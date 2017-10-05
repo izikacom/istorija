@@ -22,7 +22,7 @@ class Bus
      *
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger = null)
     {
         $this->subscribers = [];
         $this->logger      = $logger ?? new NullLogger();

@@ -3,10 +3,8 @@
 namespace DayUse\Istorija\EventSourcing;
 
 use DayUse\Istorija\EventBus\EventBus;
-use DayUse\Istorija\EventBus\EventMessage;
 use DayUse\Istorija\EventBus\EventMessageFactory;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
-use DayUse\Istorija\EventStore\EventEnvelope;
 use DayUse\Istorija\EventStore\EventStore;
 use DayUse\Istorija\EventStore\ExpectedVersion;
 use DayUse\Istorija\EventStore\StreamName;
