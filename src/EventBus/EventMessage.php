@@ -13,6 +13,9 @@ use DayUse\Istorija\SimpleMessaging\Message;
 
 class EventMessage implements Message
 {
+    /**
+     * @var EventMessage
+     */
     private $eventEnvelope;
 
     /**
@@ -20,15 +23,15 @@ class EventMessage implements Message
      *
      * @param $eventEnvelope
      */
-    public function __construct($eventEnvelope)
+    public function __construct(EventMessage $eventEnvelope)
     {
         $this->eventEnvelope = $eventEnvelope;
     }
 
     /**
-     * @return mixed
+     * @return EventMessage
      */
-    public function getEventEnvelope()
+    public function getEventEnvelope(): EventMessage
     {
         return $this->eventEnvelope;
     }
