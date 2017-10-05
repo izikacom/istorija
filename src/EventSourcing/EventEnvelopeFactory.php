@@ -13,6 +13,7 @@ use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 use DayUse\Istorija\EventStore\EventData;
 use DayUse\Istorija\EventStore\EventEnvelope;
 use DayUse\Istorija\EventStore\EventMetadata;
+use DayUse\Istorija\Serializer\JsonObjectSerializer;
 use DayUse\Istorija\Utils\Contract;
 use Verraes\ClassFunctions\ClassFunctions;
 

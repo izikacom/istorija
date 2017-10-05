@@ -3,7 +3,7 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventSourcing;
+namespace DayUse\Istorija\Serializer;
 
 use DayUse\Istorija\Utils\Ensure;
 

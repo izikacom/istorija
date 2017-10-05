@@ -2,9 +2,9 @@
 
 namespace DayUse\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\EventSourcing\JsonObjectSerializer;
 use DayUse\Istorija\EventStore\EventRecord;
 use DayUse\Istorija\EventStore\SlicedReadResult;
+use DayUse\Istorija\Serializer\JsonObjectSerializer;
 
 class DomainEventFactory
 {
