@@ -2,12 +2,14 @@
 
 namespace DayUse\Istorija\EventSourcing;
 
+use DayUse\Istorija\EventBus\EventBus;
+use DayUse\Istorija\EventBus\EventMessage;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use DayUse\Istorija\EventStore\EventEnvelope;
 use DayUse\Istorija\EventStore\EventStore;
 use DayUse\Istorija\EventStore\ExpectedVersion;
 use DayUse\Istorija\EventStore\StreamName;
 use DayUse\Istorija\Identifiers\Identifier;
-use DayUse\Istorija\SimpleMessaging\Bus;
 
 abstract class EventStoreRepository implements AggregateRootRepository
 {
@@ -27,7 +29,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
     private $domainEventFactory;
 
     /**
-     * @var Bus
+     * @var EventBus
      */
     private $eventBus;
 
@@ -37,9 +39,9 @@ abstract class EventStoreRepository implements AggregateRootRepository
      * @param EventStore           $eventStore
      * @param EventEnvelopeFactory $eventEnvelopeFactory
      * @param DomainEventFactory   $domainEventFactory
-     * @param Bus                  $eventBus
+     * @param EventBus             $eventBus
      */
-    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, Bus $eventBus)
+    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, EventBus $eventBus)
     {
         $this->eventStore           = $eventStore;
         $this->eventEnvelopeFactory = $eventEnvelopeFactory;
@@ -63,26 +65,28 @@ abstract class EventStoreRepository implements AggregateRootRepository
         return $aggregateClass::reconstituteFromHistory($domainEvents);
     }
 
-    public function save(AggregateRoot $aggregateRoot, $context = null)
+    public function save(AggregateRoot $aggregateRoot, array $context = [])
     {
         if (!$aggregateRoot->hasRecordedEvents()) {
             return;
         }
 
-        $streamName   = $this->streamNameFromIdentifier($aggregateRoot->getId());
-        $domainEvents = $aggregateRoot->getRecordedEvents();
-        $recordEvents = $this->eventEnvelopeFactory->fromDomainEvents($domainEvents);
+        $streamName     = $this->streamNameFromIdentifier($aggregateRoot->getId());
+        $domainEvents   = $aggregateRoot->getRecordedEvents();
+        $eventEnvelopes = $this->eventEnvelopeFactory->fromDomainEvents($domainEvents, $context);
 
         // TODO - What about correlation id ?
         // TODO - Think about context
         $this->eventStore->append(
             $streamName,
             ExpectedVersion::ANY,
-            $recordEvents
+            $eventEnvelopes
         );
 
         $aggregateRoot->clearRecordedEvents();
 
-//        $this->eventBus->publish($message);
+        $this->eventBus->publishAll(array_map(function(EventEnvelope $eventEnvelope) {
+            return new EventMessage($eventEnvelope);
+        }, $eventEnvelopes));
     }
 }

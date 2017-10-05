@@ -58,7 +58,7 @@ $query = (new Query())
     ]);
 
 $player = new SimplePlayer(
-    new DomainEventFactory(,
+    new DomainEventFactory(),
     $es,
     $query
 );

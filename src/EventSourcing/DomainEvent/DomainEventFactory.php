@@ -2,11 +2,27 @@
 
 namespace DayUse\Istorija\EventSourcing\DomainEvent;
 
+use DayUse\Istorija\EventSourcing\JsonObjectSerializer;
 use DayUse\Istorija\EventStore\EventRecord;
 use DayUse\Istorija\EventStore\SlicedReadResult;
 
 class DomainEventFactory
 {
+    /**
+     * @var JsonObjectSerializer
+     */
+    private $serializer;
+
+    /**
+     * DomainEventFactory constructor.
+     *
+     * @param JsonObjectSerializer $serializer
+     */
+    public function __construct(JsonObjectSerializer $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
     /**
      * @param EventRecord $eventRecord
      *
@@ -14,7 +30,15 @@ class DomainEventFactory
      */
     public function fromEventRecord(EventRecord $eventRecord): DomainEvent
     {
-        return new DomainEventDummy();
+        $this->serializer->assertContentType($eventRecord->getMetadata()->getContentType());
+        $this->serializer->assertContentType($eventRecord->getData()->getContentType());
+
+        $metadata = $this->serializer->deserialize($eventRecord->getMetadata()->getPayload());
+
+        return $this->serializer->deserialize(
+            $eventRecord->getData()->getPayload(),
+            $metadata['typeHint']
+        );
     }
 
     /**

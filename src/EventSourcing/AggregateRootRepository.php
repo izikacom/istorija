@@ -14,5 +14,5 @@ use DayUse\Istorija\Identifiers\Identifier;
 interface AggregateRootRepository
 {
     public function get(Identifier $aggregateId);
-    public function save(AggregateRoot $aggregateRoot, $context = null);
+    public function save(AggregateRoot $aggregateRoot, array $context = []);
 }

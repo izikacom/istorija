@@ -12,28 +12,35 @@ namespace DayUse\Istorija\EventSourcing;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 use DayUse\Istorija\EventStore\EventData;
 use DayUse\Istorija\EventStore\EventEnvelope;
-use DayUse\Istorija\EventStore\EventRecord;
+use DayUse\Istorija\EventStore\EventMetadata;
 use DayUse\Istorija\Utils\Contract;
+use Verraes\ClassFunctions\ClassFunctions;
 
 class EventEnvelopeFactory
 {
     /**
-     * @param DomainEventCollection $domainEvents
-     *
-     * @return EventRecord[]
+     * @var JsonObjectSerializer
      */
-    public function fromDomainEvents(DomainEventCollection $domainEvents): array
+    private $serializer;
+
+    /**
+     * @param DomainEventCollection $domainEvents
+     * @param array                 $context
+     *
+     * @return array
+     */
+    public function fromDomainEvents(DomainEventCollection $domainEvents, array $context): array
     {
         $eventEnvelopes = [];
         foreach ($domainEvents as $domainEvent) {
-            // get data from serialized version of $domainEvent
-            $eventData     = new EventData(json_encode(['id' => '123', 'username' => sprintf('Boris-%d', $i)]), 'application/json');
-            $eventMetadata = null;
+            $eventMetadata = array_merge($context, [
+                'typeHint' => ClassFunctions::canonical($domainEvent),
+            ]);
 
             $eventEnvelopes[] = EventEnvelope::wrap(
                 Contract::canonicalFrom($domainEvent),
-                $eventData,
-                $eventMetadata
+                new EventData($this->serializer->serialize($domainEvent), $this->serializer->getContentType()),
+                new EventMetadata($this->serializer->serialize($eventMetadata), $this->serializer->getContentType())
             );
         }
 
