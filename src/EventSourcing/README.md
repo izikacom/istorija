@@ -77,7 +77,7 @@ scenario consists of three steps:
 $taskId = TaskId::generate();
 $userId = UserId::generate();
 
-$scenario = Scenario::startFromClass(Task::class);
+$scenario = Scenario::monitor(Task::class);
 $scenario->given([
     TaskCreated::fromArray([
         'id'   => $taskId,
@@ -109,5 +109,5 @@ To test factory methods, you could start a Scenario from an instantiated `Aggreg
 ```php
 $taskId   = TaskId::generate();
 $task     = Task::create($taskId);
-$scenario = Scenario::startFromInstance(Task::class);
+$scenario = Scenario::monitorAndStartFromInstance($task);
 ```
