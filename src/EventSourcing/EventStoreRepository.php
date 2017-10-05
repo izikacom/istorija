@@ -4,6 +4,7 @@ namespace DayUse\Istorija\EventSourcing;
 
 use DayUse\Istorija\EventBus\EventBus;
 use DayUse\Istorija\EventBus\EventMessage;
+use DayUse\Istorija\EventBus\EventMessageFactory;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use DayUse\Istorija\EventStore\EventEnvelope;
 use DayUse\Istorija\EventStore\EventStore;
@@ -29,6 +30,11 @@ abstract class EventStoreRepository implements AggregateRootRepository
     private $domainEventFactory;
 
     /**
+     * @var EventMessageFactory
+     */
+    private $eventMessageFactory;
+
+    /**
      * @var EventBus
      */
     private $eventBus;
@@ -39,16 +45,17 @@ abstract class EventStoreRepository implements AggregateRootRepository
      * @param EventStore           $eventStore
      * @param EventEnvelopeFactory $eventEnvelopeFactory
      * @param DomainEventFactory   $domainEventFactory
+     * @param EventMessageFactory  $eventMessageFactory
      * @param EventBus             $eventBus
      */
-    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, EventBus $eventBus)
+    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, EventMessageFactory $eventMessageFactory, EventBus $eventBus)
     {
         $this->eventStore           = $eventStore;
         $this->eventEnvelopeFactory = $eventEnvelopeFactory;
         $this->domainEventFactory   = $domainEventFactory;
+        $this->eventMessageFactory  = $eventMessageFactory;
         $this->eventBus             = $eventBus;
     }
-
 
     abstract protected function streamNameFromIdentifier(Identifier $identifier): StreamName;
 
@@ -85,8 +92,6 @@ abstract class EventStoreRepository implements AggregateRootRepository
 
         $aggregateRoot->clearRecordedEvents();
 
-        $this->eventBus->publishAll(array_map(function(EventEnvelope $eventEnvelope) {
-            return new EventMessage($eventEnvelope);
-        }, $eventEnvelopes));
+        $this->eventBus->publishAll($this->eventMessageFactory->fromEventEnvelopes($eventEnvelopes));
     }
 }
