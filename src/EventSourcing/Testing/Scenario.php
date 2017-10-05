@@ -93,8 +93,8 @@ class Scenario
         if(null === $this->aggregateRoot) {
             $aggregateRoot = $when($this->aggregateRoot);
 
-            Ensure::notEmpty($aggregateRoot, 'You have to return a value');
-            Ensure::isInstanceOf($aggregateRoot, $this->aggregateRootClass, sprintf('You have to return a %s', $this->aggregateRootClass));
+            Ensure::notEmpty($aggregateRoot, 'If you do not use the given() pass, the when() pass have to return an aggregate root');
+            Ensure::isInstanceOf($aggregateRoot, $this->aggregateRootClass, sprintf('Weird, the when() pass is returning %s instead of %s', get_class($aggregateRoot), $this->aggregateRootClass));
 
             $this->aggregateRoot = $aggregateRoot;
 
@@ -139,7 +139,7 @@ class Scenario
         array_map(function ($idx, $then, DomainEvent $recordedEvent) {
             if (is_string($then)) {
                 Ensure::isInstanceOf($recordedEvent, $then, sprintf(
-                    '#%s expected event is not an instance of the given event class (%s)', $idx, $then
+                    '#%s expected event is not an instance of the asserted event class (%s)', $idx, $then
                 ));
 
                 return true;
@@ -147,7 +147,7 @@ class Scenario
 
             if (is_callable($then)) {
                 Ensure::satisfy($recordedEvent, $then, sprintf(
-                    '#%s expected event does not satisfy the given callable', $idx
+                    '#%s expected event does not satisfy the callable algorithm', $idx
                 ));
 
                 return true;
@@ -155,7 +155,7 @@ class Scenario
 
             // right now; $then is a instance of DomainEvent (see assertion of then())
             Ensure::eq($then, $recordedEvent, sprintf(
-                '#%s expected event does not match the given event', $idx
+                '#%s expected event does not match the asserted event', $idx
             ));
 
             return true;

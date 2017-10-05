@@ -3,7 +3,9 @@
 namespace DayUse\Test\Istorija\EventSourcing\Testing;
 
 use DateTimeImmutable;
+use DayUse\Istorija\EventSourcing\AggregateRoot;
 use DayUse\Istorija\EventSourcing\Testing\Scenario;
+use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
 use DayUse\Istorija\Utils\Ensure;
 use DayUse\Test\Istorija\EventSourcing\Fixtures\Email;
 use DayUse\Test\Istorija\EventSourcing\Fixtures\Member;
@@ -101,14 +103,51 @@ class ScenarioTest extends TestCase
     {
         $scenario = Scenario::monitor(Member::class);
         $scenario->when(function () {
-            return Member::register(MemberId::generate(), new Username('thomas'), new Email('thomas@tourlourat.com'));
+            $member = Member::register(MemberId::generate(), new Username('thomas'), new Email('thomas@tourlourat.com'));
+            $member->confirmEmail();
+
+            return $member;
         });
 
         $scenario->then([
             MemberRegistered::class,
+            MemberConfirmedEmail::class,
         ]);
 
         $this->assertTrue(true);
+    }
 
+    /**
+     * @test
+     */
+    public function without_given_pass_when_must_return_aggregate_root()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $scenario = Scenario::monitor(Member::class);
+        $scenario->when(function () {
+            // not returned value
+        });
+
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function without_given_pass_when_must_return_aggregate_root_correspondig_to_the_monitored_class()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $scenario = Scenario::monitor(Member::class);
+        $scenario->when(function () {
+            return new class() extends AggregateRoot {
+                public function getId() {
+                    return GenericUuidIdentifier::generate();
+                }
+            };
+        });
+
+        $this->assertTrue(true);
     }
 }
