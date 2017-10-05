@@ -47,7 +47,7 @@ class Scenario
         $this->aggregateRootClass = $aggregateRootClass;
     }
 
-    static public function startFromClass($aggregateRootClass)
+    static public function monitor($aggregateRootClass)
     {
         return new self($aggregateRootClass);
     }
@@ -59,7 +59,7 @@ class Scenario
      *
      * @return Scenario
      */
-    static public function startFromInstance(AggregateRoot $aggregateRoot)
+    static public function monitorAndStartFromInstance(AggregateRoot $aggregateRoot)
     {
         $that   = new self(get_class($aggregateRoot));
         $events = $aggregateRoot->getRecordedEvents()->map(function (DomainEvent $event) use ($that) {
@@ -89,7 +89,17 @@ class Scenario
     public function when(callable $when)
     {
         Ensure::isCallable($when);
-        Ensure::notEmpty($this->aggregateRoot, 'Your aggregate was not instantiated; did you miss the given phase from this scenario?');
+
+        if(null === $this->aggregateRoot) {
+            $aggregateRoot = $when($this->aggregateRoot);
+
+            Ensure::notEmpty($aggregateRoot, 'You have to return a value');
+            Ensure::isInstanceOf($aggregateRoot, $this->aggregateRootClass, sprintf('You have to return a %s', $this->aggregateRootClass));
+
+            $this->aggregateRoot = $aggregateRoot;
+
+            return $this;
+        }
 
         $when($this->aggregateRoot);
 

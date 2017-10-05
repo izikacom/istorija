@@ -21,8 +21,8 @@ class ScenarioTest extends TestCase
     public function it_should_work_with_aggregate_root_class()
     {
         $memberId = MemberId::generate();
+        $scenario = Scenario::monitor(Member::class);
 
-        $scenario = Scenario::startFromClass(Member::class);
         $scenario->given([
             MemberRegistered::fromArray([
                 'memberId' => $memberId,
@@ -59,18 +59,18 @@ class ScenarioTest extends TestCase
     /**
      * @test
      */
-    public function it_should_clone_aggregate_instance()
+    public function it_should_work_with_aggregate_root_instance()
     {
         $memberId = MemberId::generate();
         $member   = Member::register($memberId, new Username('thomas'), new Email('thomas@tourlourat.com'));
 
-        $scenario = Scenario::startFromInstance($member);
+        $scenario = Scenario::monitorAndStartFromInstance($member);
         $scenario->when(function (Member $member) {
+            $member->confirmEmail();
         });
 
-        $member->confirmEmail();
-
         $scenario->then([
+            MemberConfirmedEmail::class,
         ]);
 
         $this->assertTrue(true);
@@ -84,7 +84,7 @@ class ScenarioTest extends TestCase
         $memberId = MemberId::generate();
         $member   = Member::register($memberId, new Username('thomas'), new Email('thomas@tourlourat.com'));
 
-        $scenario = Scenario::startFromInstance($member);
+        $scenario = Scenario::monitorAndStartFromInstance($member);
         $scenario->when(function (Member $member) {
         });
 
@@ -97,20 +97,18 @@ class ScenarioTest extends TestCase
     /**
      * @test
      */
-    public function it_should_work_with_aggregate_root_instance()
+    public function test_factory_method()
     {
-        $memberId = MemberId::generate();
-        $member   = Member::register($memberId, new Username('thomas'), new Email('thomas@tourlourat.com'));
-
-        $scenario = Scenario::startFromInstance($member);
-        $scenario->when(function (Member $member) {
-            $member->confirmEmail();
+        $scenario = Scenario::monitor(Member::class);
+        $scenario->when(function () {
+            return Member::register(MemberId::generate(), new Username('thomas'), new Email('thomas@tourlourat.com'));
         });
 
         $scenario->then([
-            MemberConfirmedEmail::class,
+            MemberRegistered::class,
         ]);
 
         $this->assertTrue(true);
+
     }
 }

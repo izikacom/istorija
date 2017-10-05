@@ -15,6 +15,6 @@ function hydrateFromRow(array $row, int $eventNumber)
         CommitId::fromString($row['commitId']),
         $eventNumber,
         new EventData($row['eventData'], $row['eventDataContentType']),
-        new EventMetadata($row['eventData'], $row['eventDataContentType'])
+        new EventMetadata($row['eventMetadata'], $row['eventMetadataContentType'])
     );
 }

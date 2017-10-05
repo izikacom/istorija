@@ -11,27 +11,27 @@ namespace DayUse\Istorija\EventBus;
 
 use DayUse\Istorija\SimpleMessaging\Message;
 
-class EventMessage implements Message
+class EventEnvelope implements Message
 {
     /**
-     * @var EventMessage
+     * @var EventEnvelope
      */
     private $eventEnvelope;
 
     /**
-     * EventMessage constructor.
+     * EventEnvelope constructor.
      *
      * @param $eventEnvelope
      */
-    public function __construct(EventMessage $eventEnvelope)
+    public function __construct(EventEnvelope $eventEnvelope)
     {
         $this->eventEnvelope = $eventEnvelope;
     }
 
     /**
-     * @return EventMessage
+     * @return EventEnvelope
      */
-    public function getEventEnvelope(): EventMessage
+    public function getEventEnvelope(): EventEnvelope
     {
         return $this->eventEnvelope;
     }

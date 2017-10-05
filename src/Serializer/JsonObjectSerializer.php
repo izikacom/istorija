@@ -76,7 +76,7 @@ class JsonObjectSerializer
             throw new \InvalidArgumentException('CorruptedSerializedMessage');
         }
 
-        if($typeHint) {
+        if(null === $typeHint) {
             return $rawData;
         }
 
