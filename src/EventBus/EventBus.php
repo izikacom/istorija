@@ -29,7 +29,6 @@ class EventBus
         $this->bus = $bus;
     }
 
-
     /**
      * @param EventMessage[] $eventMessages
      */

@@ -18,6 +18,16 @@ class CommandBus
      */
     private $bus;
 
+    /**
+     * CommandBus constructor.
+     *
+     * @param Bus $bus
+     */
+    public function __construct(Bus $bus)
+    {
+        $this->bus = $bus;
+    }
+
     public function register(string $commandType, callable $callable)
     {
         $this->bus->subscribe($commandType, $callable);
