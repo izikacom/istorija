@@ -36,17 +36,18 @@ class EventEnvelopeFactory
 
     /**
      * @param DomainEventCollection $domainEvents
-     * @param array                 $context
      *
      * @return array
      */
-    public function fromDomainEvents(DomainEventCollection $domainEvents, array $context): array
+    public function fromDomainEvents(DomainEventCollection $domainEvents): array
     {
         $eventEnvelopes = [];
         foreach ($domainEvents as $domainEvent) {
-            $eventMetadata = array_merge($context, [
-                'typeHint' => ClassFunctions::canonical($domainEvent),
-            ]);
+            $eventMetadata = [
+                'typeHint'   => ClassFunctions::canonical($domainEvent),
+                'date'       => (new \DateTime)->format(\DateTime::ATOM),
+                'dateFormat' => \DateTime::ATOM,
+            ];
 
             $eventEnvelopes[] = EventEnvelope::wrap(
                 Contract::canonicalFrom($domainEvent),

@@ -70,7 +70,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
         return $aggregateClass::reconstituteFromHistory($domainEvents);
     }
 
-    public function save(AggregateRoot $aggregateRoot, array $context = [])
+    public function save(AggregateRoot $aggregateRoot)
     {
         if (!$aggregateRoot->hasRecordedEvents()) {
             return;
@@ -78,10 +78,8 @@ abstract class EventStoreRepository implements AggregateRootRepository
 
         $streamName     = $this->streamNameFromIdentifier($aggregateRoot->getId());
         $domainEvents   = $aggregateRoot->getRecordedEvents();
-        $eventEnvelopes = $this->eventEnvelopeFactory->fromDomainEvents($domainEvents, $context);
+        $eventEnvelopes = $this->eventEnvelopeFactory->fromDomainEvents($domainEvents);
 
-        // TODO - What about correlation id ?
-        // TODO - Think about context
         $this->eventStore->append(
             $streamName,
             ExpectedVersion::ANY,

@@ -39,6 +39,5 @@ class EventBus
         foreach ($eventMessages as $eventMessage) {
             $this->bus->publish($eventMessage);
         }
-
     }
 }

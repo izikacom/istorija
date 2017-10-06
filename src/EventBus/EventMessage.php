@@ -9,9 +9,10 @@
 namespace DayUse\Istorija\EventBus;
 
 
+use DayUse\Istorija\EventStore\EventEnvelope;
 use DayUse\Istorija\SimpleMessaging\Message;
 
-class EventEnvelope implements Message
+class EventMessage implements Message
 {
     /**
      * @var EventEnvelope
