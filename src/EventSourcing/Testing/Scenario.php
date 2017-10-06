@@ -49,7 +49,7 @@ class Scenario
 
     static public function monitor($aggregateRootClass)
     {
-        return new self($aggregateRootClass);
+        return new static($aggregateRootClass);
     }
 
     /**
@@ -61,7 +61,7 @@ class Scenario
      */
     static public function monitorAndStartFromInstance(AggregateRoot $aggregateRoot)
     {
-        $that   = new self(get_class($aggregateRoot));
+        $that   = new static(get_class($aggregateRoot));
         $events = $aggregateRoot->getRecordedEvents()->map(function (DomainEvent $event) use ($that) {
             return $event;
         });
