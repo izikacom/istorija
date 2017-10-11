@@ -22,3 +22,10 @@ $bus->subscribe(CustomerRegistered::class, function(Message $message){
 });
 
 $bus->publish($customerRegistered);
+
+$i2 = new \DayUse\Istorija\Msg\Interf2();
+$i3 = new \DayUse\Istorija\Msg\Interf2();
+$i4 = new \DayUse\Istorija\Msg\Interf3();
+
+$i2->foo($i2);
+$i2->foo($i4);
