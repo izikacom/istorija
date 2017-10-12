@@ -10,6 +10,7 @@ namespace DayUse\Istorija\EventBus;
 
 
 use DayUse\Istorija\Messaging\Bus;
+use DayUse\Istorija\Messaging\SendOptions;
 use DayUse\Istorija\Utils\Ensure;
 
 class EventBus
@@ -37,7 +38,12 @@ class EventBus
         Ensure::allIsInstanceOf($eventMessages, EventMessage::class);
 
         foreach ($eventMessages as $eventMessage) {
-            $this->bus->publish($eventMessage);
+            $this->bus->send($eventMessage, (new SendOptions())->sendLocal());
         }
+    }
+
+    public function subscribe(string $eventType, callable $handler): void
+    {
+
     }
 }

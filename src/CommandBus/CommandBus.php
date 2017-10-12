@@ -10,6 +10,7 @@ namespace DayUse\Istorija\CommandBus;
 
 
 use DayUse\Istorija\Messaging\Bus;
+use DayUse\Istorija\Messaging\SendOptions;
 use DayUse\Istorija\Messaging\Subscription;
 use DayUse\Istorija\Messaging\Transport\MessageHandlerCallable;
 
@@ -37,6 +38,6 @@ class CommandBus
 
     public function handle(Command $command)
     {
-        $this->bus->send($command);
+        $this->bus->send($command, (new SendOptions())->sendLocal());
     }
 }
