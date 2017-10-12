@@ -31,14 +31,14 @@ class EventBus
     }
 
     /**
-     * @param EventMessage[] $eventMessages
+     * @param Event[] $events
      */
-    public function publishAll(array $eventMessages): void
+    public function publishAll(array $events): void
     {
-        Ensure::allIsInstanceOf($eventMessages, EventMessage::class);
+        Ensure::allIsInstanceOf($events, Event::class);
 
-        foreach ($eventMessages as $eventMessage) {
-            $this->bus->send($eventMessage, (new SendOptions())->sendLocal());
+        foreach ($events as $event) {
+            $this->bus->send($event, (new SendOptions())->sendLocal());
         }
     }
 
