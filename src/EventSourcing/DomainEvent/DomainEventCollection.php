@@ -2,8 +2,6 @@
 
 namespace DayUse\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\Exception\DomainEventsAreImmutable;
-
 class DomainEventCollection implements \Countable, \Iterator, \ArrayAccess
 {
     /**
