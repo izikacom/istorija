@@ -29,7 +29,7 @@ class StreamName
         $splitStreamName = explode(self::DELIMITER, $canonicalStreamName);
 
         $contractName   = $splitStreamName[0];
-        $identifierName = join(self::DELIMITER, array_slice($splitStreamName, 1));
+        $identifierName = implode(self::DELIMITER, array_slice($splitStreamName, 1));
 
         Ensure::notEmpty($contractName, sprintf('Canonical Stream must be a string containing the Contract and the identifier separated by a dash (%s)', self::DELIMITER));
         Ensure::notEmpty($identifierName, sprintf('Canonical Stream must be a string containing the Contract and the identifier separated by a dash (%s)', self::DELIMITER));
@@ -52,7 +52,7 @@ class StreamName
 
     public function getCanonicalStreamName(): string
     {
-        return join(self::DELIMITER, [
+        return implode(self::DELIMITER, [
             $this->contract,
             $this->identifier,
         ]);
