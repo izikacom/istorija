@@ -40,5 +40,8 @@
   },
   "config": {
     "bin-dir": "bin"
+  },
+  "scripts": {
+    "test": "bin/phpunit --testdox"
   }
 }
