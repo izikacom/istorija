@@ -9,6 +9,7 @@ use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
 use DayUse\Istorija\Messaging\Transport\Headers;
 use DayUse\Istorija\Utils\ExecutionContext as GlobalExecutionContext;
 use DayUse\Istorija\Utils\NotImplemented;
+use Verraes\ClassFunctions\ClassFunctions;
 
 class Bus
 {
@@ -42,7 +43,9 @@ class Bus
             // TODO Verifier messageContract === $message::class
             foreach ($this->subscriptions as $messageContract => $subscriptions) {
                 foreach ($subscriptions as $subscription) {
-                    $executionPipeline->addHandler($subscription->getHandler());
+                    if (ClassFunctions::fqcn($messageContract) === ClassFunctions::fqcn($subscription->getMessageContract())){
+                        $executionPipeline->addHandler($subscription->getHandler());
+                    }
                 }
             }
 
