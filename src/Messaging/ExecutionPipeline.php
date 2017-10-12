@@ -32,7 +32,6 @@ class ExecutionPipeline
     {
         foreach ($this->handlers as $handler) {
             $this->retryPolicy->execute(function () use ($handler, $message, $messageHandlerContext) {
-                printf("Try to execute: %s\n", get_class($handler));
                 call_user_func_array([$handler, 'handle'], [$message, $messageHandlerContext]);
             });
         }
