@@ -73,7 +73,8 @@ class JsonObjectSerializer
         $rawData = @json_decode($serializedString, true, $this->maxDepth, $this->jsonDecodeOptions);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new \InvalidArgumentException('CorruptedSerializedMessage');
+
+            throw new CorruptedSerializedMessage(json_last_error_msg());
         }
 
         if(null === $typeHint) {
@@ -82,7 +83,8 @@ class JsonObjectSerializer
 
         $messageClass = str_replace('.', '\\', $typeHint);
         if (!class_exists($messageClass)) {
-            throw new \InvalidArgumentException(sprintf('UnableToDeserializeMessage::invalidMessageType %s', $typeHint));
+
+            throw UnableToDeserializeMessage::invalidMessageContract($typeHint);
         }
 
         $refClass  = new \ReflectionClass($messageClass);
