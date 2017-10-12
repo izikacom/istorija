@@ -9,7 +9,9 @@
 namespace DayUse\Istorija\CommandBus;
 
 
-use DayUse\Istorija\SimpleMessaging\Bus;
+use DayUse\Istorija\Messaging\Bus;
+use DayUse\Istorija\Messaging\Subscription;
+use DayUse\Istorija\Messaging\Transport\MessageHandlerCallable;
 
 class CommandBus
 {
@@ -30,11 +32,11 @@ class CommandBus
 
     public function register(string $commandType, callable $callable)
     {
-        $this->bus->subscribe($commandType, $callable);
+        $this->bus->subscribe(new Subscription($commandType, new MessageHandlerCallable($callable)));
     }
 
     public function handle(Command $command)
     {
-        $this->bus->publish($command);
+        $this->bus->send($command);
     }
 }

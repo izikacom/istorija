@@ -38,6 +38,8 @@ class Bus
             }
 
             $executionPipeline = new ExecutionPipeline();
+
+            // TODO Verifier messageContract === $message::class
             foreach ($this->subscriptions as $messageContract => $subscriptions) {
                 foreach ($subscriptions as $subscription) {
                     $executionPipeline->addHandler($subscription->getHandler());

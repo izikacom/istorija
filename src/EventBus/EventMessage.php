@@ -10,7 +10,7 @@ namespace DayUse\Istorija\EventBus;
 
 
 use DayUse\Istorija\EventStore\EventEnvelope;
-use DayUse\Istorija\SimpleMessaging\Message;
+use DayUse\Istorija\Messaging\Message;
 
 class EventMessage implements Message
 {

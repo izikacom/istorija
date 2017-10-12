@@ -9,7 +9,7 @@
 namespace DayUse\Istorija\EventBus;
 
 
-use DayUse\Istorija\SimpleMessaging\Bus;
+use DayUse\Istorija\Messaging\Bus;
 use DayUse\Istorija\Utils\Ensure;
 
 class EventBus

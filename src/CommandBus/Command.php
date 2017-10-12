@@ -9,7 +9,7 @@
 namespace DayUse\Istorija\CommandBus;
 
 
-use DayUse\Istorija\SimpleMessaging\Message;
+use DayUse\Istorija\Messaging\Message;
 
 interface Command extends Message
 {
