@@ -12,35 +12,13 @@ use DayUse\Istorija\Identifiers\Identifier;
 
 abstract class EventStoreRepository implements AggregateRootRepository
 {
-    /**
-     * @var EventStore
-     */
     private $eventStore;
-
-    /**
-     * @var EventEnvelopeFactory
-     */
     private $eventEnvelopeFactory;
-
-    /**
-     * @var DomainEventFactory
-     */
     private $domainEventFactory;
-
-    /**
-     * @var EventBus
-     */
     private $eventBus;
 
-    /**
-     * EventStoreRepository constructor.
-     *
-     * @param EventStore           $eventStore
-     * @param EventEnvelopeFactory $eventEnvelopeFactory
-     * @param DomainEventFactory   $domainEventFactory
-     * @param EventBus             $eventBus
-     */
-    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory, DomainEventFactory $domainEventFactory, EventBus $eventBus)
+    public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory,
+        DomainEventFactory $domainEventFactory, EventBus $eventBus)
     {
         $this->eventStore           = $eventStore;
         $this->eventEnvelopeFactory = $eventEnvelopeFactory;
@@ -52,10 +30,11 @@ abstract class EventStoreRepository implements AggregateRootRepository
 
     abstract protected function aggregateRootClassFromIdentifier(Identifier $identifier): string;
 
-    public function get(Identifier $aggregateId)
+    public function get(Identifier $aggregateId): AggregateRoot
     {
         // TODO - Load all events from event store about stream Id
         $streamName     = $this->streamNameFromIdentifier($aggregateId);
+        /** @var AggregateRoot $aggregateClass */
         $aggregateClass = $this->aggregateRootClassFromIdentifier($aggregateId);
         $eventRecords   = $this->eventStore->readStreamEventsForward($streamName);
         $domainEvents   = $this->domainEventFactory->fromEventRecords($eventRecords);
@@ -63,7 +42,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
         return $aggregateClass::reconstituteFromHistory($domainEvents);
     }
 
-    public function save(AggregateRoot $aggregateRoot)
+    public function save(AggregateRoot $aggregateRoot): void
     {
         if (!$aggregateRoot->hasRecordedEvents()) {
             return;
