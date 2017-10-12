@@ -43,7 +43,7 @@ class Bus
             // TODO Verifier messageContract === $message::class
             foreach ($this->subscriptions as $messageContract => $subscriptions) {
                 foreach ($subscriptions as $subscription) {
-                    if (ClassFunctions::fqcn($messageContract) === ClassFunctions::fqcn($subscription->getMessageContract())){
+                    if (ClassFunctions::fqcn($message) === ClassFunctions::fqcn($subscription->getMessageContract())){
                         $executionPipeline->addHandler($subscription->getHandler());
                     }
                 }
