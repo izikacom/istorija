@@ -5,6 +5,7 @@ namespace DayUse\Istorija\EventSourcing;
 use DayUse\Istorija\EventBus\EventBus;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use DayUse\Istorija\EventSourcing\Exception\NoRecordedEvents;
 use DayUse\Istorija\EventStore\EventStore;
 use DayUse\Istorija\EventStore\ExpectedVersion;
 use DayUse\Istorija\EventStore\StreamName;
@@ -45,7 +46,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
     public function save(AggregateRoot $aggregateRoot): void
     {
         if (!$aggregateRoot->hasRecordedEvents()) {
-            return;
+            throw new NoRecordedEvents();
         }
 
         $streamName     = $this->streamNameFromIdentifier($aggregateRoot->getId());
