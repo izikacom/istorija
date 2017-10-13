@@ -11,6 +11,8 @@ namespace DayUse\Istorija\EventBus;
 
 use DayUse\Istorija\Messaging\Bus;
 use DayUse\Istorija\Messaging\SendOptions;
+use DayUse\Istorija\Messaging\Subscription;
+use DayUse\Istorija\Messaging\Transport\MessageHandlerCallable;
 use DayUse\Istorija\Utils\Ensure;
 
 class EventBus
@@ -44,6 +46,6 @@ class EventBus
 
     public function subscribe(string $eventType, callable $handler): void
     {
-
+        $this->bus->subscribe(new Subscription($eventType, new MessageHandlerCallable($handler)));
     }
 }
