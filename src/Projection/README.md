@@ -3,25 +3,25 @@
 ```php
 <?php
 
-use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use \DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
 use \DayUse\Istorija\Projection\Query;
 use \DayUse\Istorija\Projection\Player\SimplePlayer;
+use \DayUse\Istorija\Serializer\JsonObjectSerializer;
 
 $query = (new Query())
     ->init(function() {
         return 0;
     })
     ->when([
-        'UserCreated' => function($state, DomainEvent $event, EventMetadata $metadata) {
+        'UserCreated' => function($state, DomainEvent $event) {
             return $state + 1;
         },
     ]);
 
 $player = new SimplePlayer(
-    new DomainEventFactory(), 
     $eventStore, 
+    new EventStoreMessageTranslator(new JsonObjectSerializer()),
     $query
 );
 $player->playFromBeginning();
@@ -35,34 +35,40 @@ $numUserCreation = $query->getState();
 ```php
 <?php
 
-use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use \DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
 use \DayUse\Istorija\Projection\Projector;
 use \DayUse\Istorija\Projection\Player\SimplePlayer;
+use \DayUse\Istorija\Serializer\JsonObjectSerializer;
 
 $projector = new class() extends Projector {
-    public function initialState() {
-        return 0;
+    public $state;
+    
+    public function init(): void {
+        $this->state = 0;
     }
     
-    public function whenUserCreated($state, DomainEvent $event, EventMetadata $metadata) {
-        return $state + 1;
+    public function reset(): void {
+        $this->state = 0;
+    }
+    
+    public function whenUserCreated(DomainEvent $event) {
+        $this->state++;
     }
 };
 
 $player = new SimplePlayer(
-    new DomainEventFactory(), 
     $eventStore, 
+    new EventStoreMessageTranslator(new JsonObjectSerializer()),
     $projector
 );
 $player->playFromBeginning();
 
-$numUserCreation = $projector->getState();
+$numUserCreation = $projector->state;
 ?>
 ```
 
-# How to use a PersistedProjector
+# How to use a DAO with Projector
 
 The state of this projector is stored using a DAO.
 For the example, I'm using a Buffered DAO.
@@ -70,111 +76,46 @@ For the example, I'm using a Buffered DAO.
 ```php
 <?php
 
-use \DayUse\Istorija\Utils\Ensure;
-use \DayUse\Istorija\EventStore\EventMetadata;
 use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
-use \DayUse\Istorija\Projection\PersistedProjector;
+use \DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
+use \DayUse\Istorija\Projection\Projector;
 use \DayUse\Istorija\Projection\Player\SimplePlayer;
+use \DayUse\Istorija\Serializer\JsonObjectSerializer;
 use \DayUse\Istorija\DAO\Storage\InMemoryDAO;
 use \DayUse\Istorija\DAO\Proxy\Buffer;
 use \DayUse\Istorija\DAO\DAOInterface;
 
 $dao = new Buffer(new InMemoryDAO(), new InMemoryDAO());
-$projector = new class($dao) extends PersistedProjector {
+$projector = new class($dao) extends Projector {
     private $dao;
     
     public function __construct(DAOInterface $dao) {
         $this->dao = $dao;
     }
     
-    public function initialState() {
-        return 0;
+    public function init(): void {
+        $this->dao->save('users', 0);
     }
     
-    protected function getName(): string {
-        return 'users';
+    public function reset(): void {
+        $this->dao->flush();
     }
     
-    protected function getDAO(): DAOInterface {
-        return $this->dao;
-    }
-    
-    public function whenUserCreated($state, DomainEvent $event, EventMetadata $metadata) {
-        return $state + 1;
+    public function whenUserCreated(DomainEvent $event) {
+        $this->dao->save('users', $this->dao->find('users') + 1);
     }
 };
 
 $player = new SimplePlayer(
-    new DomainEventFactory(), 
     $eventStore, 
+    new EventStoreMessageTranslator(new JsonObjectSerializer()), 
     $projector
 );
 $player->playFromBeginning();
 
 $dao->flushAndCommit();
 
-$numUserCreation = $projector->getState();
-Ensure::eq($projector->getState(), $dao->find('users'));
-?>
-```
+$users = $dao->find('users');
 
-# How to use a PersistedPartitionedProjector
-
-Used to build complex state; like a list of members.
-
-```php
-<?php
-
-use \DayUse\Istorija\Utils\Ensure;
-use \DayUse\Istorija\EventStore\EventMetadata;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
-use \DayUse\Istorija\Projection\PersistedPartitionedProjector;
-use \DayUse\Istorija\Projection\Player\SimplePlayer;
-use \DayUse\Istorija\DAO\Storage\InMemoryDAO;
-use \DayUse\Istorija\DAO\DAOInterface;
-
-$dao = new InMemoryDAO();
-$projector = new class($dao) extends PersistedPartitionedProjector {
-    private $dao;
-    
-    public function __construct(DAOInterface $dao) {
-        $this->dao = $dao;
-    }
-    
-    protected function findPartitionFromEvent(DomainEvent $event, EventMetadata $metadata) {
-        switch(get_class($event)) {
-            case "UserCreated":
-            case "UserEmailConfirmed":
-                return $event->userId;
-            default:
-                throw new \InvalidArgumentException(sprintf('Are you sure that this %s event can be handled?', get_class($event)));
-        }
-    }
-    
-    protected function getDAO(): DAOInterface {
-        return $this->dao;
-    }
-    
-    public function whenUserCreated($state, DomainEvent $event, EventMetadata $metadata) {
-        return [
-            'userId'    => '123',
-            'confirmed' => false,
-        ];
-    }
-};
-
-$player = new SimplePlayer(
-    new DomainEventFactory(), 
-    $eventStore, 
-    $projector
-);
-$player->playFromBeginning();
-
-Ensure::eq([
-    'userId'    => '123',
-    'confirmed' => false,
-],$dao->find('123'));
 ?>
 ```

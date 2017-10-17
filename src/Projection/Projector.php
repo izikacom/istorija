@@ -15,12 +15,9 @@ abstract class Projector implements Projection
 {
     const HANDLER_PREFIX = "when";
 
-    /**
-     * @var mixed
-     */
-    private $state;
+    abstract public function init(): void;
 
-    abstract public function initialState();
+    abstract public function reset(): void;
 
     /**
      * This method is trying to apply received events on when{EventName} methods.
@@ -42,41 +39,11 @@ abstract class Projector implements Projection
      *
      * @param DomainEvent $event
      */
-    final public function apply(DomainEvent $event)
+    final public function apply(DomainEvent $event): void
     {
         $method = self::HANDLER_PREFIX . EventNameGuesser::guess($event);
         if (is_callable([$this, $method])) {
-            $updatedState = $this->{$method}(
-                $this->getState(),
-                $event
-            );
-
-            $this->updateState($updatedState);
+            call_user_func([$this, $method], $event);
         }
-    }
-
-    final public function reset(): self
-    {
-        $this->updateState($this->initialState());
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $state
-     *
-     * @return mixed
-     */
-    protected function updateState($state)
-    {
-        $this->state = $state;
-    }
-
-    /**
-     * @return array
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 }
