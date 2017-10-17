@@ -26,7 +26,7 @@
     "mathiasverraes/classfunctions": "^1.1",
     "ramsey/uuid": "^3.5",
     "doctrine/dbal": "^2.5",
-    "symfony/validator": "^3.2",
+    "symfony/validator": "^3.1",
     "borisguery/transient-error-handling": "^0.1.0"
   },
   "require-dev": {
