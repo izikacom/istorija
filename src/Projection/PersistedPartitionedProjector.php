@@ -35,18 +35,16 @@ abstract class PersistedPartitionedProjector implements Projection
      * }
      *
      *
-     * @param DomainEvent   $event
-     * @param EventMetadata $metadata
+     * @param DomainEvent $event
      */
-    final public function apply(DomainEvent $event, EventMetadata $metadata)
+    final public function apply(DomainEvent $event)
     {
         $method = self::HANDLER_PREFIX . EventNameGuesser::guess($event);
         if (is_callable([$this, $method])) {
-            $partition    = $this->findPartitionFromEvent($event, $metadata);
+            $partition    = $this->findPartitionFromEvent($event);
             $updatedState = $this->{$method}(
                 $this->getDAO()->find($partition),
-                $event,
-                $metadata
+                $event
             );
 
             $this->getDAO()->update($partition, $updatedState);
@@ -60,7 +58,7 @@ abstract class PersistedPartitionedProjector implements Projection
         return $this;
     }
 
-    abstract protected function findPartitionFromEvent(DomainEvent $event, EventMetadata $metadata);
+    abstract protected function findPartitionFromEvent(DomainEvent $event);
 
     /**
      * @return DAOInterface

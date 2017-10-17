@@ -10,7 +10,6 @@ namespace DayUse\Istorija\Projection;
 
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
-use DayUse\Istorija\EventStore\EventMetadata;
 
 abstract class Projector implements Projection
 {
@@ -41,17 +40,15 @@ abstract class Projector implements Projection
      * }
      *
      *
-     * @param DomainEvent   $event
-     * @param EventMetadata $metadata
+     * @param DomainEvent $event
      */
-    final public function apply(DomainEvent $event, EventMetadata $metadata)
+    final public function apply(DomainEvent $event)
     {
         $method = self::HANDLER_PREFIX . EventNameGuesser::guess($event);
         if (is_callable([$this, $method])) {
             $updatedState = $this->{$method}(
                 $this->getState(),
-                $event,
-                $metadata
+                $event
             );
 
             $this->updateState($updatedState);

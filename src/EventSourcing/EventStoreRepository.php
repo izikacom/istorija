@@ -4,7 +4,6 @@ namespace DayUse\Istorija\EventSourcing;
 
 use DayUse\Istorija\EventBus\EventBus;
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use DayUse\Istorija\EventSourcing\Exception\NoRecordedEvents;
 use DayUse\Istorija\EventStore\EventStore;
 use DayUse\Istorija\EventStore\ExpectedVersion;

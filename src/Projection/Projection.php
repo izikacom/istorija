@@ -14,6 +14,6 @@ use DayUse\Istorija\EventStore\EventMetadata;
 
 interface Projection
 {
-    public function apply(DomainEvent $event, EventMetadata $metadata);
+    public function apply(DomainEvent $event);
     public function reset();
 }

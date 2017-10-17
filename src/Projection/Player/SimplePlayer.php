@@ -10,20 +10,21 @@ namespace DayUse\Istorija\Projection\Player;
 
 
 use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
 use DayUse\Istorija\EventStore\EventStore;
 use DayUse\Istorija\Projection\Projection;
 
 class SimplePlayer
 {
     /**
-     * @var DomainEventFactory
-     */
-    private $domainEventFactory;
-
-    /**
      * @var EventStore
      */
     private $eventStore;
+
+    /**
+     * @var EventStoreMessageTranslator
+     */
+    private $eventStoreMessageTranslator;
 
     /**
      * @var Projection
@@ -33,15 +34,15 @@ class SimplePlayer
     /**
      * SimplePlayer constructor.
      *
-     * @param DomainEventFactory $domainEventFactory
-     * @param EventStore         $eventStore
-     * @param Projection         $projection
+     * @param EventStore                  $eventStore
+     * @param EventStoreMessageTranslator $eventStoreMessageTranslator
+     * @param Projection                  $projection
      */
-    public function __construct(DomainEventFactory $domainEventFactory, EventStore $eventStore, Projection $projection)
+    public function __construct(EventStore $eventStore, EventStoreMessageTranslator $eventStoreMessageTranslator, Projection $projection)
     {
-        $this->domainEventFactory = $domainEventFactory;
-        $this->eventStore         = $eventStore;
-        $this->projection         = $projection;
+        $this->eventStore                  = $eventStore;
+        $this->eventStoreMessageTranslator = $eventStoreMessageTranslator;
+        $this->projection                  = $projection;
     }
 
     public function playFromBeginning()
@@ -51,10 +52,9 @@ class SimplePlayer
         $this->projection->reset();
 
         foreach($eventRecords as $eventRecord) {
-            $this->projection->apply(
-                $this->domainEventFactory->fromEventRecord($eventRecord),
-                $eventRecord->getMetadata()
-            );
+            $domainEvent = $this->eventStoreMessageTranslator->fromEventRecord($eventRecord);
+
+            $this->projection->apply($domainEvent);
         }
     }
 
