@@ -18,7 +18,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
     private $eventBus;
 
     public function __construct(EventStore $eventStore, EventEnvelopeFactory $eventEnvelopeFactory,
-        DomainEventFactory $domainEventFactory, EventBus $eventBus)
+                                DomainEventFactory $domainEventFactory, EventBus $eventBus)
     {
         $this->eventStore           = $eventStore;
         $this->eventEnvelopeFactory = $eventEnvelopeFactory;
@@ -33,11 +33,11 @@ abstract class EventStoreRepository implements AggregateRootRepository
     public function get(Identifier $aggregateId): AggregateRoot
     {
         // TODO - Load all events from event store about stream Id
-        $streamName     = $this->streamNameFromIdentifier($aggregateId);
+        $streamName = $this->streamNameFromIdentifier($aggregateId);
         /** @var AggregateRoot $aggregateClass */
         $aggregateClass = $this->aggregateRootClassFromIdentifier($aggregateId);
-        $eventRecords   = $this->eventStore->readStreamEventsForward($streamName);
-        $domainEvents   = $this->domainEventFactory->fromEventRecords($eventRecords);
+        $eventRecords   = $this->getEventStore()->readStreamEventsForward($streamName);
+        $domainEvents   = $this->getDomainEventFactory()->fromEventRecords($eventRecords);
 
         return $aggregateClass::reconstituteFromHistory($domainEvents);
     }
@@ -50,7 +50,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
 
         $streamName     = $this->streamNameFromIdentifier($aggregateRoot->getId());
         $domainEvents   = $aggregateRoot->getRecordedEvents();
-        $eventEnvelopes = $this->eventEnvelopeFactory->fromDomainEvents($domainEvents);
+        $eventEnvelopes = $this->getEventEnvelopeFactory()->fromDomainEvents($domainEvents);
 
         $this->eventStore->append(
             $streamName,
@@ -60,8 +60,28 @@ abstract class EventStoreRepository implements AggregateRootRepository
 
         $aggregateRoot->clearRecordedEvents();
 
-        $this->eventBus->publishAll($domainEvents->map(function (DomainEvent $event) {
+        $this->getEventBus()->publishAll($domainEvents->map(function (DomainEvent $event) {
             return $event;
         }));
+    }
+
+    protected function getEventStore(): EventStore
+    {
+        return $this->eventStore;
+    }
+
+    protected function getEventEnvelopeFactory(): EventEnvelopeFactory
+    {
+        return $this->eventEnvelopeFactory;
+    }
+
+    protected function getDomainEventFactory(): DomainEventFactory
+    {
+        return $this->domainEventFactory;
+    }
+
+    protected function getEventBus(): EventBus
+    {
+        return $this->eventBus;
     }
 }
