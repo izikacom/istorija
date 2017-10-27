@@ -16,6 +16,11 @@ class StateRepositoryDAO implements StateRepository
      */
     private $dao;
 
+    public function __construct(DAOInterface $dao)
+    {
+        $this->dao = $dao;
+    }
+
     public function save(State $state): void
     {
         $this->dao->save($state->getProcessId(), $state->toArray());
