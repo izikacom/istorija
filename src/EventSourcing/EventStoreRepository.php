@@ -52,7 +52,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
         $domainEvents   = $aggregateRoot->getRecordedEvents();
         $eventEnvelopes = $this->getEventEnvelopeFactory()->fromDomainEvents($domainEvents);
 
-        $this->eventStore->append(
+        $this->getEventStore()->append(
             $streamName,
             ExpectedVersion::ANY,
             $eventEnvelopes
