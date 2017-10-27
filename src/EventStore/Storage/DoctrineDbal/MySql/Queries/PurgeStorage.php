@@ -3,7 +3,7 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
+namespace Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
 
 final class PurgeStorage
 {

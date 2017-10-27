@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Utils;
+namespace Dayuse\Istorija\Utils;
 
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\Ensure;
 use Verraes\ClassFunctions\ClassFunctions;
 
 final class Contract

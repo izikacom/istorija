@@ -3,11 +3,11 @@
 ```php
 <?php
 
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
-use \DayUse\Istorija\Projection\Query;
-use \DayUse\Istorija\Projection\Player\SimplePlayer;
-use \DayUse\Istorija\Serializer\JsonObjectSerializer;
+use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use \Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
+use \Dayuse\Istorija\Projection\Query;
+use \Dayuse\Istorija\Projection\Player\SimplePlayer;
+use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
 
 $query = (new Query())
     ->init(function() {
@@ -35,11 +35,11 @@ $numUserCreation = $query->getState();
 ```php
 <?php
 
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
-use \DayUse\Istorija\Projection\Projector;
-use \DayUse\Istorija\Projection\Player\SimplePlayer;
-use \DayUse\Istorija\Serializer\JsonObjectSerializer;
+use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use \Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
+use \Dayuse\Istorija\Projection\Projector;
+use \Dayuse\Istorija\Projection\Player\SimplePlayer;
+use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
 
 $projector = new class() extends Projector {
     public $state;
@@ -76,14 +76,14 @@ For the example, I'm using a Buffered DAO.
 ```php
 <?php
 
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
-use \DayUse\Istorija\Projection\Projector;
-use \DayUse\Istorija\Projection\Player\SimplePlayer;
-use \DayUse\Istorija\Serializer\JsonObjectSerializer;
-use \DayUse\Istorija\DAO\Storage\InMemoryDAO;
-use \DayUse\Istorija\DAO\Proxy\Buffer;
-use \DayUse\Istorija\DAO\DAOInterface;
+use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use \Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
+use \Dayuse\Istorija\Projection\Projector;
+use \Dayuse\Istorija\Projection\Player\SimplePlayer;
+use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
+use \Dayuse\Istorija\DAO\Storage\InMemoryDAO;
+use \Dayuse\Istorija\DAO\Proxy\Buffer;
+use \Dayuse\Istorija\DAO\DAOInterface;
 
 $dao = new Buffer(new InMemoryDAO(), new InMemoryDAO());
 $projector = new class($dao) extends Projector {

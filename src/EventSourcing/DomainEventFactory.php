@@ -6,13 +6,13 @@
  * Time: 16:38
  */
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
-use DayUse\Istorija\EventStore\EventRecord;
-use DayUse\Istorija\EventStore\SlicedReadResult;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
+use Dayuse\Istorija\EventStore\EventRecord;
+use Dayuse\Istorija\EventStore\SlicedReadResult;
 
 interface DomainEventFactory
 {

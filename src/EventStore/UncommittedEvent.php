@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore;
+namespace Dayuse\Istorija\EventStore;
 
-use DayUse\Istorija\Utils\Contract;
+use Dayuse\Istorija\Utils\Contract;
 
 class UncommittedEvent
 {

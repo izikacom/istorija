@@ -6,11 +6,11 @@
  * Time: 11:28
  */
 
-namespace DayUse\Istorija\CommandBus;
+namespace Dayuse\Istorija\CommandBus;
 
 
-use DayUse\Istorija\SimpleMessaging\Bus;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\SimpleMessaging\Bus;
+use Dayuse\Istorija\Utils\Ensure;
 
 class CommandBusValidator
 {

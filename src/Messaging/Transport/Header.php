@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Messaging\Transport;
+namespace Dayuse\Istorija\Messaging\Transport;
 
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\Ensure;
 
 class Header
 {

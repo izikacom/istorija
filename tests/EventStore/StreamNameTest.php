@@ -1,11 +1,11 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventStore;
+namespace Dayuse\Test\Istorija\EventStore;
 
 
-use DayUse\Istorija\EventStore\StreamName;
-use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
-use DayUse\Istorija\Utils\Contract;
+use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
+use Dayuse\Istorija\Utils\Contract;
 use PHPUnit\Framework\TestCase;
 
 class StreamNameTest extends TestCase

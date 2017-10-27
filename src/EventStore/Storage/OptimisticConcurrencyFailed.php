@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore\Storage;
+namespace Dayuse\Istorija\EventStore\Storage;
 
-use DayUse\Istorija\Exception;
+use Dayuse\Istorija\Exception;
 
 class OptimisticConcurrencyFailed extends \Exception implements Exception
 {

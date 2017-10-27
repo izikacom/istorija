@@ -6,11 +6,11 @@
  * Time: 10:39
  */
 
-namespace DayUse\Istorija\EventBus;
+namespace Dayuse\Istorija\EventBus;
 
 
-use DayUse\Istorija\EventStore\EventEnvelope;
-use DayUse\Istorija\Messaging\Message;
+use Dayuse\Istorija\EventStore\EventEnvelope;
+use Dayuse\Istorija\Messaging\Message;
 
 interface Event extends Message
 {

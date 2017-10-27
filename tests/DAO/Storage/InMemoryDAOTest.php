@@ -6,10 +6,10 @@
  * Time: 14:07
  */
 
-namespace DayUse\Test\Istorija\DAO\Storage;
+namespace Dayuse\Test\Istorija\DAO\Storage;
 
-use DayUse\Istorija\DAO\Storage\InMemoryDAO;
-use DayUse\Test\Istorija\DAO\DAOTestCase;
+use Dayuse\Istorija\DAO\Storage\InMemoryDAO;
+use Dayuse\Test\Istorija\DAO\DAOTestCase;
 
 class InMemoryDAOTest extends DAOTestCase
 {

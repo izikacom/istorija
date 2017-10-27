@@ -6,13 +6,13 @@
  * Time: 16:07
  */
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventRecorder;
-use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
-use DayUse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventRecorder;
+use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
+use Dayuse\Istorija\Identifiers\Identifier;
 
 trait EventSourcedObject
 {

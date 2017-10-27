@@ -6,10 +6,10 @@
  * Time: 17:54
  */
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
 
-use DayUse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\Identifiers\Identifier;
 
 interface AggregateRootRepository
 {

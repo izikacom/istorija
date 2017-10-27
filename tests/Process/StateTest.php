@@ -3,10 +3,10 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Test\Istorija\Process;
+namespace Dayuse\Test\Istorija\Process;
 
-use DayUse\Istorija\Process\ProcessId;
-use DayUse\Istorija\Process\State;
+use Dayuse\Istorija\Process\ProcessId;
+use Dayuse\Istorija\Process\State;
 use PHPUnit\Framework\TestCase;
 
 class StateTest extends TestCase

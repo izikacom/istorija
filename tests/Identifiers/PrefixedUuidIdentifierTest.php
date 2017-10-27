@@ -1,9 +1,9 @@
 <?php
 
-namespace DayUse\Test\Istorija\Identifiers;
+namespace Dayuse\Test\Istorija\Identifiers;
 
 
-use DayUse\Istorija\Identifiers\PrefixedUuidIdentifier;
+use Dayuse\Istorija\Identifiers\PrefixedUuidIdentifier;
 use PHPUnit\Framework\TestCase;
 
 class PrefixedUuidIdentifierTest extends TestCase

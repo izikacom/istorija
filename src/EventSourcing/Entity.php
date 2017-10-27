@@ -1,8 +1,8 @@
 <?php
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventRecorder;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventRecorder;
 
 abstract class Entity
 {

@@ -1,18 +1,18 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\Testing;
+namespace Dayuse\Test\Istorija\EventSourcing\Testing;
 
 use DateTimeImmutable;
-use DayUse\Istorija\EventSourcing\AggregateRoot;
-use DayUse\Istorija\EventSourcing\Testing\Scenario;
-use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
-use DayUse\Istorija\Utils\Ensure;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\Email;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\Member;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\MemberConfirmedEmail;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\MemberId;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\MemberRegistered;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\Username;
+use Dayuse\Istorija\EventSourcing\AggregateRoot;
+use Dayuse\Istorija\EventSourcing\Testing\Scenario;
+use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
+use Dayuse\Istorija\Utils\Ensure;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\Email;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\Member;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberConfirmedEmail;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberId;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberRegistered;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\Username;
 use PHPUnit\Framework\TestCase;
 
 class ScenarioTest extends TestCase

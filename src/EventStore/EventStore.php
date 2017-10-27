@@ -1,9 +1,9 @@
 <?php
 
-namespace DayUse\Istorija\EventStore;
+namespace Dayuse\Istorija\EventStore;
 
-use DayUse\Istorija\EventStore\Storage\RequiresInitialization;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\EventStore\Storage\RequiresInitialization;
+use Dayuse\Istorija\Utils\Ensure;
 
 /**
  * @author Boris Guéry <guery.b@gmail.com>

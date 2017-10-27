@@ -1,14 +1,14 @@
 <?php
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
-use DayUse\Istorija\EventBus\EventBus;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\Exception\NoRecordedEvents;
-use DayUse\Istorija\EventStore\EventStore;
-use DayUse\Istorija\EventStore\ExpectedVersion;
-use DayUse\Istorija\EventStore\StreamName;
-use DayUse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\EventBus\EventBus;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\Exception\NoRecordedEvents;
+use Dayuse\Istorija\EventStore\EventStore;
+use Dayuse\Istorija\EventStore\ExpectedVersion;
+use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\Identifiers\Identifier;
 
 abstract class EventStoreRepository implements AggregateRootRepository
 {

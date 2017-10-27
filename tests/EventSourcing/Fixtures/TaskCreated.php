@@ -1,8 +1,8 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\Fixtures;
+namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 
 class TaskCreated implements DomainEvent
 {

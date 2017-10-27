@@ -3,10 +3,10 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Test\Istorija\Process;
+namespace Dayuse\Test\Istorija\Process;
 
-use DayUse\Istorija\Process\AutoNameProcessTrait;
-use DayUse\Istorija\Process\Process;
+use Dayuse\Istorija\Process\AutoNameProcessTrait;
+use Dayuse\Istorija\Process\Process;
 use PHPUnit\Framework\TestCase;
 
 class AutoNameProcessTraitTest extends TestCase

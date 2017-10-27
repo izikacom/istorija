@@ -3,11 +3,11 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\Process;
+namespace Dayuse\Istorija\Process;
 
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\Utils\Ensure;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 

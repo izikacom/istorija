@@ -6,10 +6,10 @@
  * Time: 16:18
  */
 
-namespace DayUse\Istorija\Projection;
+namespace Dayuse\Istorija\Projection;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
 
 abstract class Projector implements Projection
 {

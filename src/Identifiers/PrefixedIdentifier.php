@@ -6,7 +6,7 @@
  * Time: 10:38
  */
 
-namespace DayUse\Istorija\Identifiers;
+namespace Dayuse\Istorija\Identifiers;
 
 
 abstract class PrefixedIdentifier implements Identifier, GeneratesIdentifier

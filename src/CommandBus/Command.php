@@ -6,10 +6,10 @@
  * Time: 11:27
  */
 
-namespace DayUse\Istorija\CommandBus;
+namespace Dayuse\Istorija\CommandBus;
 
 
-use DayUse\Istorija\Messaging\Message;
+use Dayuse\Istorija\Messaging\Message;
 
 interface Command extends Message
 {

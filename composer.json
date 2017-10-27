@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "DayUse\\Istorija\\": "src"
+      "Dayuse\\Istorija\\": "src"
     },
     "files": [
       "src/EventStore/Storage/DoctrineDbal/MySql/functions.php"
@@ -17,7 +17,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "DayUse\\Test\\Istorija\\": "tests"
+      "Dayuse\\Test\\Istorija\\": "tests"
     }
   },
   "minimum-stability": "stable",

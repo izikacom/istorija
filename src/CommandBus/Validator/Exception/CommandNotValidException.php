@@ -6,7 +6,7 @@
  * Time: 11:27
  */
 
-namespace DayUse\Istorija\CommandBus\Validator\Exception;
+namespace Dayuse\Istorija\CommandBus\Validator\Exception;
 
 
 class CommandNotValidException extends \RuntimeException

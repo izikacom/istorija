@@ -1,8 +1,8 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\Fixtures;
+namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
-use DayUse\Istorija\Identifiers\UuidIdentifier;
+use Dayuse\Istorija\Identifiers\UuidIdentifier;
 
 class TaskId extends UuidIdentifier
 {

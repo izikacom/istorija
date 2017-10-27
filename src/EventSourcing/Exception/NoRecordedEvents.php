@@ -6,10 +6,10 @@
  * Time: 08:39
  */
 
-namespace DayUse\Istorija\EventSourcing\Exception;
+namespace Dayuse\Istorija\EventSourcing\Exception;
 
 
-use DayUse\Istorija\Exception;
+use Dayuse\Istorija\Exception;
 
 class NoRecordedEvents implements Exception
 {

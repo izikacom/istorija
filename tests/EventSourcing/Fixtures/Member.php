@@ -1,10 +1,10 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\Fixtures;
+namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
 use DateTimeImmutable;
-use DayUse\Istorija\EventSourcing\AggregateRoot;
-use DayUse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\EventSourcing\AggregateRoot;
+use Dayuse\Istorija\Identifiers\Identifier;
 
 class Member extends AggregateRoot
 {

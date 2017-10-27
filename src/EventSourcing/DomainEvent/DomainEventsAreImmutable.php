@@ -1,7 +1,7 @@
 <?php
 
-namespace DayUse\Istorija\EventSourcing\DomainEvent;
+namespace Dayuse\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\Exception;
+use Dayuse\Istorija\Exception;
 
 class DomainEventsAreImmutable extends \DomainException implements Exception {}

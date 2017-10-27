@@ -3,11 +3,11 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\Process;
+namespace Dayuse\Istorija\Process;
 
 
-use DayUse\Istorija\Identifiers\Identifier;
-use DayUse\Istorija\Identifiers\PrefixedIdentifier;
+use Dayuse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\Identifiers\PrefixedIdentifier;
 
 class ProcessId extends PrefixedIdentifier
 {

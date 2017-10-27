@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Identifiers;
+namespace Dayuse\Istorija\Identifiers;
 
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\Ensure;
 use Ramsey\Uuid\Uuid;
 
 abstract class UuidIdentifier implements Identifier, GeneratesIdentifier

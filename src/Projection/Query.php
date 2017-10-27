@@ -6,10 +6,10 @@
  * Time: 16:17
  */
 
-namespace DayUse\Istorija\Projection;
+namespace Dayuse\Istorija\Projection;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\Utils\Ensure;
 
 /**
  * Class Query
@@ -17,7 +17,7 @@ use DayUse\Istorija\Utils\Ensure;
  * An event store query reads one or multiple event stream, aggregates some state from it and makes it accessible.
  * A query is non-persistent, will only get executed once, return a result, and that's it.
  *
- * @package DayUse\Istorija\Projection
+ * @package Dayuse\Istorija\Projection
  */
 final class Query implements Projection
 {

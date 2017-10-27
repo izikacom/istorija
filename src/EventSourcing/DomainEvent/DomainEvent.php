@@ -1,8 +1,8 @@
 <?php
 
-namespace DayUse\Istorija\EventSourcing\DomainEvent;
+namespace Dayuse\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\EventBus\Event;
+use Dayuse\Istorija\EventBus\Event;
 
 /**
  * Something that happened in the past, that is of importance to the business.

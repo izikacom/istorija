@@ -3,6 +3,6 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Messaging;
+namespace Dayuse\Istorija\Messaging;
 
 interface Message {}

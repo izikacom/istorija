@@ -3,10 +3,10 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Messaging;
+namespace Dayuse\Istorija\Messaging;
 
-use DayUse\Istorija\Messaging\Transport\Headers;
-use DayUse\Istorija\Utils\ExecutionContext as GlobalExecutionContext;
+use Dayuse\Istorija\Messaging\Transport\Headers;
+use Dayuse\Istorija\Utils\ExecutionContext as GlobalExecutionContext;
 
 class MessageHandlerContext
 {

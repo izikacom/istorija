@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija;
+namespace Dayuse\Istorija;
 
 /**
  * @author Boris Guéry <guery.b@gmail.com>

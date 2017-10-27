@@ -6,13 +6,13 @@
  * Time: 09:36
  */
 
-namespace DayUse\Istorija\Projection\Player;
+namespace Dayuse\Istorija\Projection\Player;
 
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
-use DayUse\Istorija\EventSourcing\EventStoreMessageTranslator;
-use DayUse\Istorija\EventStore\EventStore;
-use DayUse\Istorija\Projection\Projection;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
+use Dayuse\Istorija\EventStore\EventStore;
+use Dayuse\Istorija\Projection\Projection;
 
 class SimplePlayer
 {

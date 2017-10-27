@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Utils;
+namespace Dayuse\Istorija\Utils;
 
 use Assert\InvalidArgumentException;
-use DayUse\Istorija\Exception;
+use Dayuse\Istorija\Exception;
 
 class EnsureFailed extends InvalidArgumentException implements Exception {}

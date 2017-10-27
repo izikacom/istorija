@@ -3,13 +3,13 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\Process;
+namespace Dayuse\Istorija\Process;
 
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
-use DayUse\Istorija\EventSourcing\EventSourcedObject;
-use DayUse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
+use Dayuse\Istorija\EventSourcing\EventSourcedObject;
+use Dayuse\Istorija\Identifiers\Identifier;
 
 abstract class Process
 {

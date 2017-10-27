@@ -3,7 +3,7 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Identifiers;
+namespace Dayuse\Istorija\Identifiers;
 
 interface Identifier
 {

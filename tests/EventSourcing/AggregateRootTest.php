@@ -1,16 +1,16 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing;
+namespace Dayuse\Test\Istorija\EventSourcing;
 
 
-use DayUse\Test\Istorija\EventSourcing\Fixtures\Email;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\Member;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\MemberConfirmedEmail;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\MemberId;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\MemberRegistered;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\TaskCreated;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\TaskId;
-use DayUse\Test\Istorija\EventSourcing\Fixtures\Username;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\Email;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\Member;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberConfirmedEmail;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberId;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberRegistered;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\TaskCreated;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\TaskId;
+use Dayuse\Test\Istorija\EventSourcing\Fixtures\Username;
 use PHPUnit\Framework\TestCase;
 
 class AggregateRootTest extends TestCase

@@ -5,16 +5,16 @@
 
 require __DIR__ . '/../../../vendor/autoload.php';
 
-use DayUse\Istorija\Messaging\Settings;
-use DayUse\Istorija\Messaging\Configuration;
-use DayUse\Istorija\Messaging\Bus;
-use DayUse\Istorija\Utils\ExecutionContext;
-use DayUse\Istorija\Messaging\Message;
-use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
-use DayUse\Istorija\Messaging\Subscription;
-use DayUse\Istorija\Messaging\MessageHandler;
-use DayUse\Istorija\Messaging\MessageHandlerContext;
-use DayUse\Istorija\Messaging\SendOptions;
+use Dayuse\Istorija\Messaging\Settings;
+use Dayuse\Istorija\Messaging\Configuration;
+use Dayuse\Istorija\Messaging\Bus;
+use Dayuse\Istorija\Utils\ExecutionContext;
+use Dayuse\Istorija\Messaging\Message;
+use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
+use Dayuse\Istorija\Messaging\Subscription;
+use Dayuse\Istorija\Messaging\MessageHandler;
+use Dayuse\Istorija\Messaging\MessageHandlerContext;
+use Dayuse\Istorija\Messaging\SendOptions;
 
 $executionContext = new ExecutionContext();
 $executionContext->set('InitiatedBy', trim(`whoami`));

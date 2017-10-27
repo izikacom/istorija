@@ -6,11 +6,11 @@
  * Time: 10:57
  */
 
-namespace DayUse\Test\Istorija\EventSourcing\Fixtures;
+namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
 use DateTimeImmutable;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\Entity;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\Entity;
 
 class Task extends Entity
 {

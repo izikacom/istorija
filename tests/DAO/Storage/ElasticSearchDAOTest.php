@@ -6,11 +6,11 @@
  * Time: 14:33
  */
 
-namespace DayUse\Test\Istorija\DAO\Storage;
+namespace Dayuse\Test\Istorija\DAO\Storage;
 
 
-use DayUse\Istorija\DAO\Storage\ElasticSearchDAO;
-use DayUse\Test\Istorija\DAO\DAOTestCase;
+use Dayuse\Istorija\DAO\Storage\ElasticSearchDAO;
+use Dayuse\Test\Istorija\DAO\DAOTestCase;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Common\Exceptions\NoNodesAvailableException;

@@ -6,12 +6,12 @@
  * Time: 14:18
  */
 
-namespace DayUse\Istorija\Messaging\Transport;
+namespace Dayuse\Istorija\Messaging\Transport;
 
 
-use DayUse\Istorija\Messaging\Message;
-use DayUse\Istorija\Messaging\MessageHandler;
-use DayUse\Istorija\Messaging\MessageHandlerContext;
+use Dayuse\Istorija\Messaging\Message;
+use Dayuse\Istorija\Messaging\MessageHandler;
+use Dayuse\Istorija\Messaging\MessageHandlerContext;
 
 class MessageHandlerCallable implements MessageHandler
 {

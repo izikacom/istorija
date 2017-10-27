@@ -6,10 +6,10 @@
  * Time: 16:40
  */
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 
 interface EventEnvelopeFactory
 {

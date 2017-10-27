@@ -3,7 +3,7 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Messaging\Transport;
+namespace Dayuse\Istorija\Messaging\Transport;
 
 class Headers implements \Iterator, \Countable, \ArrayAccess, \JsonSerializable
 {

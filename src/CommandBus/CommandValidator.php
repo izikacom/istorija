@@ -6,10 +6,10 @@
  * Time: 11:26
  */
 
-namespace DayUse\Istorija\CommandBus;
+namespace Dayuse\Istorija\CommandBus;
 
 
-use DayUse\Istorija\CommandBus\Validator\Exception\CommandNotValidException;
+use Dayuse\Istorija\CommandBus\Validator\Exception\CommandNotValidException;
 
 interface CommandValidator
 {

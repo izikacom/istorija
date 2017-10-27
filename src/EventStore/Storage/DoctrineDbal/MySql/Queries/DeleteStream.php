@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
+namespace Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
 
-use DayUse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\EventStore\StreamName;
 
 class DeleteStream
 {

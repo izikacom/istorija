@@ -1,12 +1,12 @@
 <?php
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql;
+namespace Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql;
 
-use DayUse\Istorija\EventStore\CommitId;
-use DayUse\Istorija\EventStore\EventData;
-use DayUse\Istorija\EventStore\EventId;
-use DayUse\Istorija\EventStore\EventMetadata;
-use DayUse\Istorija\EventStore\EventRecord;
+use Dayuse\Istorija\EventStore\CommitId;
+use Dayuse\Istorija\EventStore\EventData;
+use Dayuse\Istorija\EventStore\EventId;
+use Dayuse\Istorija\EventStore\EventMetadata;
+use Dayuse\Istorija\EventStore\EventRecord;
 
 function hydrateFromRow(array $row, int $eventNumber)
 {

@@ -6,9 +6,9 @@
  * Time: 11:03
  */
 
-namespace DayUse\Istorija\DAO\Proxy;
+namespace Dayuse\Istorija\DAO\Proxy;
 
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\Ensure;
 
 class BufferManager
 {

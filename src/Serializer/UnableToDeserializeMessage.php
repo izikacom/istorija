@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Serializer;
+namespace Dayuse\Istorija\Serializer;
 
-use DayUse\Istorija\Exception;
+use Dayuse\Istorija\Exception;
 
 class UnableToDeserializeMessage extends \RuntimeException implements Exception
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\DomainEvent;
+namespace Dayuse\Test\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 use PHPUnit\Framework\TestCase;
 
 class DomainEventCollectionTest extends TestCase

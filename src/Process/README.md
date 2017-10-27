@@ -3,11 +3,11 @@
 ```php
 <?php
 
-use DayUse\Istorija\Process\Process;
-use DayUse\Istorija\Process\State;
-use DayUse\Istorija\Process\StateRepository;
-use DayUse\Istorija\Process\AutoNameProcessTrait;
-use DayUse\Istorija\CommandBus\CommandBus;
+use Dayuse\Istorija\Process\Process;
+use Dayuse\Istorija\Process\State;
+use Dayuse\Istorija\Process\StateRepository;
+use Dayuse\Istorija\Process\AutoNameProcessTrait;
+use Dayuse\Istorija\CommandBus\CommandBus;
 
 class RegisterReservationWhenBookingAttemptConfirmedProcess extends Process
 {

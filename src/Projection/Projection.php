@@ -6,11 +6,11 @@
  * Time: 15:18
  */
 
-namespace DayUse\Istorija\Projection;
+namespace Dayuse\Istorija\Projection;
 
 
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventStore\EventMetadata;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventStore\EventMetadata;
 
 interface Projection
 {

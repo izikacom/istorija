@@ -3,12 +3,12 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Messaging;
+namespace Dayuse\Istorija\Messaging;
 
-use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
-use DayUse\Istorija\Messaging\Transport\Headers;
-use DayUse\Istorija\Utils\ExecutionContext as GlobalExecutionContext;
-use DayUse\Istorija\Utils\NotImplemented;
+use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
+use Dayuse\Istorija\Messaging\Transport\Headers;
+use Dayuse\Istorija\Utils\ExecutionContext as GlobalExecutionContext;
+use Dayuse\Istorija\Utils\NotImplemented;
 use Verraes\ClassFunctions\ClassFunctions;
 
 class Bus

@@ -3,7 +3,7 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\Utils;
+namespace Dayuse\Istorija\Utils;
 
 class ExecutionContext
 {

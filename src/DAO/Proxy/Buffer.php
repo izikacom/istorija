@@ -6,16 +6,16 @@
  * Time: 11:03
  */
 
-namespace DayUse\Istorija\DAO\Proxy;
+namespace Dayuse\Istorija\DAO\Proxy;
 
-use DayUse\Istorija\DAO\DAOInterface;
-use DayUse\Istorija\DAO\FunctionalTrait;
-use DayUse\Istorija\DAO\TransferableInterface;
+use Dayuse\Istorija\DAO\DAOInterface;
+use Dayuse\Istorija\DAO\FunctionalTrait;
+use Dayuse\Istorija\DAO\TransferableInterface;
 
 /**
  * Class Buffer
  *
- * @package DayUse\Istorija\DAO\Proxy
+ * @package Dayuse\Istorija\DAO\Proxy
  */
 class Buffer implements DAOInterface
 {

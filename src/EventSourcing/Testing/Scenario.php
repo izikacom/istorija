@@ -6,20 +6,20 @@
  * Time: 10:30
  */
 
-namespace DayUse\Istorija\EventSourcing\Testing;
+namespace Dayuse\Istorija\EventSourcing\Testing;
 
 
-use DayUse\Istorija\EventSourcing\AggregateRoot;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use DayUse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\EventSourcing\AggregateRoot;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
+use Dayuse\Istorija\Utils\Ensure;
 
 /**
  * given, when & then methods could be used more than once.
  *
  * Class Scenario
  *
- * @package DayUse\Istorija\EventSourcing\Testing
+ * @package Dayuse\Istorija\EventSourcing\Testing
  */
 class Scenario
 {

@@ -3,11 +3,11 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore;
+namespace Dayuse\Istorija\EventStore;
 
-use DayUse\Istorija\Identifiers\Identifier;
-use DayUse\Istorija\Utils\Contract;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\Utils\Contract;
+use Dayuse\Istorija\Utils\Ensure;
 
 class StreamName
 {

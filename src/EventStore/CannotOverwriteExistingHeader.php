@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore;
+namespace Dayuse\Istorija\EventStore;
 
-use DayUse\Istorija\Exception;
+use Dayuse\Istorija\Exception;
 
 class CannotOverwriteExistingHeader extends \DomainException implements Exception
 {

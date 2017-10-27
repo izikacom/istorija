@@ -3,8 +3,8 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore;
+namespace Dayuse\Istorija\EventStore;
 
-use DayUse\Istorija\Identifiers\UuidIdentifier;
+use Dayuse\Istorija\Identifiers\UuidIdentifier;
 
 final class CommitId extends UuidIdentifier {}

@@ -6,10 +6,10 @@
  * Time: 14:08
  */
 
-namespace DayUse\Test\Istorija\DAO;
+namespace Dayuse\Test\Istorija\DAO;
 
-use DayUse\Istorija\DAO\DAOInterface;
-use DayUse\Istorija\DAO\SearchableInterface;
+use Dayuse\Istorija\DAO\DAOInterface;
+use Dayuse\Istorija\DAO\SearchableInterface;
 use PHPUnit\Framework\TestCase;
 
 abstract class DAOTestCase extends TestCase

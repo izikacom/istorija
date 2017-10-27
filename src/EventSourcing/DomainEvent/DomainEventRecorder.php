@@ -6,7 +6,7 @@
  * Time: 15:59
  */
 
-namespace DayUse\Istorija\EventSourcing\DomainEvent;
+namespace Dayuse\Istorija\EventSourcing\DomainEvent;
 
 class DomainEventRecorder
 {

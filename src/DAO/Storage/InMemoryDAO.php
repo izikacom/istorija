@@ -6,14 +6,14 @@
  * Time: 13:59
  */
 
-namespace DayUse\Istorija\DAO\Storage;
+namespace Dayuse\Istorija\DAO\Storage;
 
-use DayUse\Istorija\DAO\AdvancedDAOInterface;
-use DayUse\Istorija\DAO\BulkableInterface;
-use DayUse\Istorija\DAO\DAOInterface;
-use DayUse\Istorija\DAO\FunctionalTrait;
-use DayUse\Istorija\DAO\IdentifiableValue;
-use DayUse\Istorija\DAO\TransferableInterface;
+use Dayuse\Istorija\DAO\AdvancedDAOInterface;
+use Dayuse\Istorija\DAO\BulkableInterface;
+use Dayuse\Istorija\DAO\DAOInterface;
+use Dayuse\Istorija\DAO\FunctionalTrait;
+use Dayuse\Istorija\DAO\IdentifiableValue;
+use Dayuse\Istorija\DAO\TransferableInterface;
 
 
 /**

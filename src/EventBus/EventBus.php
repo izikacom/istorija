@@ -6,14 +6,14 @@
  * Time: 10:50
  */
 
-namespace DayUse\Istorija\EventBus;
+namespace Dayuse\Istorija\EventBus;
 
 
-use DayUse\Istorija\Messaging\Bus;
-use DayUse\Istorija\Messaging\SendOptions;
-use DayUse\Istorija\Messaging\Subscription;
-use DayUse\Istorija\Messaging\Transport\MessageHandlerCallable;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Messaging\Bus;
+use Dayuse\Istorija\Messaging\SendOptions;
+use Dayuse\Istorija\Messaging\Subscription;
+use Dayuse\Istorija\Messaging\Transport\MessageHandlerCallable;
+use Dayuse\Istorija\Utils\Ensure;
 
 class EventBus
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\Fixtures;
+namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
 use Assert\Assertion;
 

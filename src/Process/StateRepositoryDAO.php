@@ -3,11 +3,11 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\Process;
+namespace Dayuse\Istorija\Process;
 
 
-use DayUse\Istorija\DAO\DAOInterface;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\DAO\DAOInterface;
+use Dayuse\Istorija\Utils\Ensure;
 
 class StateRepositoryDAO implements StateRepository
 {

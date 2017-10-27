@@ -3,13 +3,13 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
+namespace Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries;
 
-use DayUse\Istorija\EventStore\CommitId;
-use DayUse\Istorija\EventStore\Stream;
-use DayUse\Istorija\EventStore\StreamName;
-use DayUse\Istorija\EventStore\UncommittedEvent;
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\EventStore\CommitId;
+use Dayuse\Istorija\EventStore\Stream;
+use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\EventStore\UncommittedEvent;
+use Dayuse\Istorija\Utils\Ensure;
 
 class PersistUncommitedEvent
 {

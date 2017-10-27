@@ -3,9 +3,9 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\Process;
+namespace Dayuse\Istorija\Process;
 
-use DayUse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\Ensure;
 
 class State
 {

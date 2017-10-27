@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\EventStore\Storage;
+namespace Dayuse\Istorija\EventStore\Storage;
 
 /**
  * @author Boris Guéry <guery.b@gmail.com>

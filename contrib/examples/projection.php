@@ -5,21 +5,21 @@
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use DayUse\Istorija\Utils\Contract;
-use DayUse\Istorija\EventStore\EventData;
-use DayUse\Istorija\EventStore\EventRecord;
-use DayUse\Istorija\EventStore\EventMetadata;
-use DayUse\Istorija\EventStore\EventStore;
-use DayUse\Istorija\EventStore\EventEnvelope;
-use DayUse\Istorija\EventStore\ExpectedVersion;
-use DayUse\Istorija\EventStore\StreamName;
-use DayUse\Istorija\Identifiers\GenericUuidIdentifier;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \DayUse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
-use \DayUse\Istorija\Projection\Query;
-use \DayUse\Istorija\Projection\Player\SimplePlayer;
+use Dayuse\Istorija\Utils\Contract;
+use Dayuse\Istorija\EventStore\EventData;
+use Dayuse\Istorija\EventStore\EventRecord;
+use Dayuse\Istorija\EventStore\EventMetadata;
+use Dayuse\Istorija\EventStore\EventStore;
+use Dayuse\Istorija\EventStore\EventEnvelope;
+use Dayuse\Istorija\EventStore\ExpectedVersion;
+use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
+use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
+use \Dayuse\Istorija\Projection\Query;
+use \Dayuse\Istorija\Projection\Player\SimplePlayer;
 
-$configuration = \DayUse\Istorija\EventStore\ConfigurationBuilder::create()
+$configuration = \Dayuse\Istorija\EventStore\ConfigurationBuilder::create()
     ->usingMySqlDbalStorage('mysql://root@192.168.33.10/event_store')
     ->initializeStorageIfRequired()
     ->build()

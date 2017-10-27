@@ -1,33 +1,33 @@
 <?php
 
-namespace DayUse\Istorija\EventStore\Storage\DoctrineDbal;
+namespace Dayuse\Istorija\EventStore\Storage\DoctrineDbal;
 
-use DayUse\Istorija\EventStore\AdvancedReadQuery;
-use DayUse\Istorija\EventStore\AdvancedStorage;
-use DayUse\Istorija\EventStore\AllEventsReadResult;
-use DayUse\Istorija\EventStore\AllEventsReadResultUsingGenerator;
-use DayUse\Istorija\EventStore\EventRecord;
-use DayUse\Istorija\EventStore\EventRecordNotFound;
-use DayUse\Istorija\EventStore\ExpectedVersion;
-use DayUse\Istorija\EventStore\SlicedReadResult;
-use DayUse\Istorija\EventStore\SlicedReadResultUsingGenerator;
-use DayUse\Istorija\EventStore\Storage;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\CheckExpectedVersion;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\DeleteStream;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\InitStorage;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\PersistUncommitedEvent;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadAllEvents;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadEvent;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadStreamEvents;
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\SelectAndSetCurrentStreamVersion;
-use DayUse\Istorija\EventStore\CommitId;
-use DayUse\Istorija\EventStore\StreamName;
-use DayUse\Istorija\Utils\NotImplemented;
+use Dayuse\Istorija\EventStore\AdvancedReadQuery;
+use Dayuse\Istorija\EventStore\AdvancedStorage;
+use Dayuse\Istorija\EventStore\AllEventsReadResult;
+use Dayuse\Istorija\EventStore\AllEventsReadResultUsingGenerator;
+use Dayuse\Istorija\EventStore\EventRecord;
+use Dayuse\Istorija\EventStore\EventRecordNotFound;
+use Dayuse\Istorija\EventStore\ExpectedVersion;
+use Dayuse\Istorija\EventStore\SlicedReadResult;
+use Dayuse\Istorija\EventStore\SlicedReadResultUsingGenerator;
+use Dayuse\Istorija\EventStore\Storage;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\CheckExpectedVersion;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\DeleteStream;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\InitStorage;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\PersistUncommitedEvent;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadAllEvents;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadEvent;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadStreamEvents;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\SelectAndSetCurrentStreamVersion;
+use Dayuse\Istorija\EventStore\CommitId;
+use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\Utils\NotImplemented;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DriverException;
-use DayUse\Istorija\EventStore\Storage\OptimisticConcurrencyFailed;
-use DayUse\Istorija\EventStore\Storage\RequiresInitialization;
-use function DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySql\hydrateFromRow;
+use Dayuse\Istorija\EventStore\Storage\OptimisticConcurrencyFailed;
+use Dayuse\Istorija\EventStore\Storage\RequiresInitialization;
+use function Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\hydrateFromRow;
 
 /**
  * @author Boris Guéry <guery.b@gmail.com>

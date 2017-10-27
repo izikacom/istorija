@@ -1,10 +1,10 @@
 <?php
 
-namespace DayUse\Istorija\EventSourcing;
+namespace Dayuse\Istorija\EventSourcing;
 
-use DayUse\Istorija\EventStore\StreamName;
-use DayUse\Istorija\Identifiers\Identifier;
-use DayUse\Istorija\Utils\Contract;
+use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\Utils\Contract;
 
 class StreamNameGenerator
 {

@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace DayUse\Istorija\EventStore;
+namespace Dayuse\Istorija\EventStore;
 
-use DayUse\Istorija\EventStore\Storage\DoctrineDbal\MySqlDbalStorage;
+use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySqlDbalStorage;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
 use Doctrine\DBAL\DriverManager;
 

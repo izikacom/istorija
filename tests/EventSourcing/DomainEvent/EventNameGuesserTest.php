@@ -1,8 +1,8 @@
 <?php
 
-namespace DayUse\Test\Istorija\EventSourcing\DomainEvent;
+namespace Dayuse\Test\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
+use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
 use PHPUnit\Framework\TestCase;
 
 class EventNameGuesserTest extends TestCase
