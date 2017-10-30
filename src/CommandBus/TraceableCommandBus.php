@@ -1,0 +1,38 @@
+<?php
+/**
+ * @author Thomas Tourlourat <thomas@tourlourat.com>
+ */
+
+namespace DayUse\Istorija\CommandBus;
+
+
+class TraceableCommandBus implements CommandBus
+{
+    /**
+     * @var CommandBus
+     */
+    private $commandBus;
+
+    /**
+     * @var Command[]
+     */
+    private $recordedCommands;
+
+    public function __construct(CommandBus $commandBus)
+    {
+        $this->commandBus       = $commandBus;
+        $this->recordedCommands = [];
+    }
+
+    public function register(string $commandType, callable $callable): void
+    {
+        $this->commandBus->register($commandType, $callable);
+    }
+
+    public function handle(Command $command): void
+    {
+        $this->recordedCommands[] = $command;
+
+        $this->commandBus->handle($command);
+    }
+}

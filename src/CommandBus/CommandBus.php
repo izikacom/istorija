@@ -14,30 +14,8 @@ use Dayuse\Istorija\Messaging\SendOptions;
 use Dayuse\Istorija\Messaging\Subscription;
 use Dayuse\Istorija\Messaging\Transport\MessageHandlerCallable;
 
-class CommandBus
+interface CommandBus
 {
-    /**
-     * @var Bus
-     */
-    private $bus;
-
-    /**
-     * CommandBus constructor.
-     *
-     * @param Bus $bus
-     */
-    public function __construct(Bus $bus)
-    {
-        $this->bus = $bus;
-    }
-
-    public function register(string $commandType, callable $callable)
-    {
-        $this->bus->subscribe(new Subscription($commandType, new MessageHandlerCallable($callable)));
-    }
-
-    public function handle(Command $command)
-    {
-        $this->bus->send($command, (new SendOptions())->sendLocal());
-    }
+    public function register(string $commandType, callable $callable) : void;
+    public function handle(Command $command) : void;
 }
