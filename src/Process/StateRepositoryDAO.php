@@ -34,7 +34,7 @@ class StateRepositoryDAO implements StateRepository
 
         $state = State::fromArray($data);
 
-        Ensure::false($state->isDone(), sprintf('State have been already done; %s', $processId));
+        Ensure::false($state->isDone(), sprintf('State have been already processed by %s', $processId));
 
         return $state;
     }
