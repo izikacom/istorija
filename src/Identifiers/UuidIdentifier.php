@@ -17,6 +17,11 @@ abstract class UuidIdentifier implements Identifier, GeneratesIdentifier
         return new static(Uuid::uuid4()->toString());
     }
 
+    public static function generateFrom(string $name)
+    {
+        return new static(Uuid::uuid5(Uuid::NAMESPACE_OID, $name)->toString());
+    }
+
     public static function fromString(string $uuid)
     {
         return new static($uuid);
