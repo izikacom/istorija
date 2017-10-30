@@ -77,21 +77,24 @@ MYSQL;
 
     public function save(string $identifier, $data)
     {
+        Ensure::isArray($data, 'DoctrineDAO was tested only with value as array');
+
         $key = $this->generateKey($identifier);
 
+
         if (null === $this->find($identifier)) {
-            $this->connection->insert($this->tableName, [
-                '`key`'   => $key,
-                '`value`' => json_encode($data),
-            ]);
+            $query = sprintf("INSERT INTO `%s` (`key`, `value`) VALUES (:key, :value)", $this->tableName);
         } else {
-            $this->connection->update($this->tableName, [
-                '`key`'   => $key,
-                '`value`' => json_encode($data),
-            ], [
-                '`key`' => $key,
-            ]);
+            $query = sprintf("UPDATE `%s` SET `value` = :value WHERE `key` = :key", $this->tableName);
         }
+
+        $this->connection->executeQuery(
+            $query,
+            [
+                ':key'   => $key,
+                ':value' => json_encode($data),
+            ]
+        );
     }
 
     public function saveBulk(array $models)
