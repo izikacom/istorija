@@ -136,7 +136,7 @@ MYSQL;
         return sprintf($query, $this->tableName);
     }
 
-    private function generateKey(string $identifier): string
+    protected function generateKey(string $identifier): string
     {
         return $identifier;
     }

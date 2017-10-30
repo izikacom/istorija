@@ -108,8 +108,6 @@ class RedisDAO implements DAOInterface, BulkableInterface
     }
 
     /**
-     * default : dictionary:{identifier}
-     *
      * @param string $identifier
      *
      * @return string
