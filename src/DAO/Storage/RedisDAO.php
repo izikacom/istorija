@@ -47,12 +47,9 @@ class RedisDAO implements DAOInterface, BulkableInterface
     {
         Ensure::notBlank($prefix);
         Ensure::eq(\Redis::SERIALIZER_PHP, $redis->getOption(\Redis::OPT_SERIALIZER), 'Are you sure that your redis serializer is well configured?');
-//        $redis->setOption(\Redis::OPT_SERIALIZER, \Redis::SERIALIZER_PHP);
 
         $this->redis  = $redis;
         $this->prefix = $prefix;
-
-
     }
 
     /**
