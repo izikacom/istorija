@@ -35,4 +35,14 @@ class TraceableCommandBus implements CommandBus
 
         $this->commandBus->handle($command);
     }
+
+    public function getRecordedCommands(): array
+    {
+        return $this->recordedCommands;
+    }
+
+    public function resetRecordedCommands(): void
+    {
+        $this->recordedCommands = [];
+    }
 }
