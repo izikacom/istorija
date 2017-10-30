@@ -3,7 +3,7 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\DAO\Storage;
+namespace Dayuse\Istorija\DAO\Storage;
 
 
 use Dayuse\Istorija\DAO\BulkableInterface;
