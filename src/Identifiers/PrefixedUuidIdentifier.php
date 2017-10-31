@@ -16,7 +16,7 @@ abstract class PrefixedUuidIdentifier extends PrefixedIdentifier
         return parent::fromString(static::prefix() . self::SEPARATOR . GenericUuidIdentifier::generate());
     }
 
-    public static function generateFrom(string $name)
+    protected static function generateFrom(string $name)
     {
         return parent::fromString(static::prefix() . self::SEPARATOR . GenericUuidIdentifier::generateFrom($name));
     }
