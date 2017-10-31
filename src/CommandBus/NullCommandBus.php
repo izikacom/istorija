@@ -3,7 +3,7 @@
  * @author Thomas Tourlourat <thomas@tourlourat.com>
  */
 
-namespace DayUse\Istorija\CommandBus;
+namespace Dayuse\Istorija\CommandBus;
 
 
 class NullCommandBus implements CommandBus
