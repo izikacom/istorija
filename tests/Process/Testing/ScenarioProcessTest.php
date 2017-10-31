@@ -6,7 +6,7 @@ use Dayuse\Istorija\CommandBus\Command;
 use Dayuse\Istorija\CommandBus\CommandBus;
 use Dayuse\Istorija\Process\Process;
 use Dayuse\Istorija\Process\StateRepository;
-use Dayuse\Istorija\Process\Testing\TestCase;
+use Dayuse\Istorija\Process\Testing\ProcessTestCase;
 use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Test\Istorija\Process\Fixtures\ApplicantId;
 use Dayuse\Test\Istorija\Process\Fixtures\Command\CreateMember;
@@ -16,7 +16,7 @@ use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationRefused;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationRegistered;
 use Dayuse\Test\Istorija\Process\Fixtures\MemberId;
 
-class ScenarioTest extends TestCase
+class ScenarioProcessTest extends ProcessTestCase
 {
     protected function createProcess(CommandBus $commandBus, StateRepository $repository): Process
     {

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class ScenarioPHPUnit extends Scenario
 {
     /**
-     * @var TestCase
+     * @var ProcessTestCase
      */
     private $testCase;
 
@@ -35,5 +35,4 @@ class ScenarioPHPUnit extends Scenario
             $this->testCase->fail($e->getMessage());
         }
     }
-
 }

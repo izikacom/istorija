@@ -14,7 +14,7 @@ use Dayuse\Istorija\Process\StateRepository;
 use Dayuse\Istorija\Process\StateRepositoryDAO;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class TestCase extends BaseTestCase
+abstract class ProcessTestCase extends BaseTestCase
 {
     /**
      * @var Scenario
