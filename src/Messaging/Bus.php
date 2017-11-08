@@ -35,7 +35,7 @@ class Bus
             $headers['Destination'] = SendOptions::ENDPOINT_LOOPBACK;
 
             foreach ($this->globalExecutionContext->all() as $context => $value) {
-                $headers[$context] = $value;
+                $headers[$context] = (string) $value;
             }
 
             $executionPipeline = new ExecutionPipeline();
