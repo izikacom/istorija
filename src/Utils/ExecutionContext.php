@@ -16,7 +16,17 @@ class ExecutionContext
 
     public function get(string $key)
     {
+        if (isset($this->context[$key])) {
+
+            throw ExecutionContextError::missingKey($key);
+        }
+
         return $this->context[$key];
+    }
+
+    public function tryGet(string $key, $default = null)
+    {
+        return $this->context[$key] ?? $default;
     }
 
     public function all(): array
