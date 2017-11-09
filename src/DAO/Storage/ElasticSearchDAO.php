@@ -606,4 +606,9 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     {
         return [];
     }
+
+    final protected function getConnection(): Client
+    {
+        return $this->client;
+    }
 }

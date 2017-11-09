@@ -107,6 +107,11 @@ class RedisDAO implements DAOInterface, BulkableInterface
         }
     }
 
+    final protected function getConnection(): \Redis
+    {
+        return $this->redis;
+    }
+
     /**
      * @param string $identifier
      *

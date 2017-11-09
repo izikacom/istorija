@@ -143,4 +143,9 @@ MYSQL;
     {
         return $identifier;
     }
+
+    final protected function getConnection(): Connection
+    {
+        return $this->connection;
+    }
 }
