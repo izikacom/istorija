@@ -57,6 +57,14 @@ class Bus
         throw NotImplemented::feature('Asynchronous send() is not available yet. Use SendOptions::sendLocal() to send synchronous Message');
     }
 
+    public function sendLocal(Message $message, ?SendOptions $options = null): void
+    {
+        $options = $options ?? new SendOptions();
+        $options->sendLocal();
+
+        $this->send($message, $options);
+    }
+
     public function publish(Message $message, ?SendOptions $options = null): void
     {
         throw NotImplemented::method('Use send() instead');
