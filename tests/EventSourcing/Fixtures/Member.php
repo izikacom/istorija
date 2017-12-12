@@ -3,10 +3,10 @@
 namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
 use DateTimeImmutable;
-use Dayuse\Istorija\EventSourcing\AggregateRoot;
+use Dayuse\Istorija\EventSourcing\AbstractAggregateRoot;
 use Dayuse\Istorija\Identifiers\Identifier;
 
-class Member extends AggregateRoot
+class Member extends AbstractAggregateRoot
 {
     /** @var MemberId */
     private $memberId;

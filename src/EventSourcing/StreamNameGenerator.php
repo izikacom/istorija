@@ -8,7 +8,7 @@ use Dayuse\Istorija\Utils\Contract;
 
 class StreamNameGenerator
 {
-    public static function fromAggregate(AggregateRoot $aggregateRoot, Identifier $aggregateId)
+    public static function fromAggregate(AbstractAggregateRoot $aggregateRoot, Identifier $aggregateId)
     {
         $class = trim(get_class($aggregateRoot), "\\");
         $parts = explode("\\", $class);

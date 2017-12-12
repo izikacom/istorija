@@ -30,11 +30,11 @@ abstract class EventStoreRepository implements AggregateRootRepository
 
     abstract protected function aggregateRootClassFromIdentifier(Identifier $identifier): string;
 
-    public function get(Identifier $aggregateId): AggregateRoot
+    public function get(Identifier $aggregateId): AbstractAggregateRoot
     {
         // TODO - Load all events from event store about stream Id
         $streamName = $this->streamNameFromIdentifier($aggregateId);
-        /** @var AggregateRoot $aggregateClass */
+        /** @var AbstractAggregateRoot $aggregateClass */
         $aggregateClass = $this->aggregateRootClassFromIdentifier($aggregateId);
         $eventRecords   = $this->getEventStore()->readStreamEventsForward($streamName);
         $domainEvents   = $this->getDomainEventFactory()->fromEventRecords($eventRecords);
@@ -42,7 +42,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
         return $aggregateClass::reconstituteFromHistory($domainEvents);
     }
 
-    public function save(AggregateRoot $aggregateRoot): void
+    public function save(AbstractAggregateRoot $aggregateRoot): void
     {
         if (!$aggregateRoot->hasRecordedEvents()) {
             throw new NoRecordedEvents();

@@ -4,7 +4,7 @@ namespace Dayuse\Istorija\EventSourcing;
 
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventRecorder;
 
-abstract class Entity
+abstract class AbstractEntity
 {
     use EventSourcedObject;
 

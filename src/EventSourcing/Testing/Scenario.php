@@ -9,7 +9,7 @@
 namespace Dayuse\Istorija\EventSourcing\Testing;
 
 
-use Dayuse\Istorija\EventSourcing\AggregateRoot;
+use Dayuse\Istorija\EventSourcing\AbstractAggregateRoot;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 use Dayuse\Istorija\Utils\Ensure;
@@ -24,12 +24,12 @@ use Dayuse\Istorija\Utils\Ensure;
 class Scenario
 {
     /**
-     * @var AggregateRoot::class
+     * @var AbstractAggregateRoot::class
      */
     private $aggregateRootClass;
 
     /**
-     * @var AggregateRoot
+     * @var AbstractAggregateRoot
      */
     private $aggregateRoot;
 
@@ -42,7 +42,7 @@ class Scenario
     {
         Ensure::string($aggregateRootClass);
         Ensure::classExists($aggregateRootClass);
-        Ensure::subclassOf($aggregateRootClass, AggregateRoot::class);
+        Ensure::subclassOf($aggregateRootClass, AbstractAggregateRoot::class);
 
         $this->aggregateRootClass = $aggregateRootClass;
     }
@@ -55,11 +55,11 @@ class Scenario
     /**
      * The aggregateRoot instance passed as argument is used as the "given" events source.
      *
-     * @param AggregateRoot $aggregateRoot
+     * @param AbstractAggregateRoot $aggregateRoot
      *
      * @return Scenario
      */
-    static public function monitorAndStartFromInstance(AggregateRoot $aggregateRoot)
+    static public function monitorAndStartFromInstance(AbstractAggregateRoot $aggregateRoot)
     {
         $that   = new static(get_class($aggregateRoot));
         $events = $aggregateRoot->getRecordedEvents()->map(function (DomainEvent $event) use ($that) {

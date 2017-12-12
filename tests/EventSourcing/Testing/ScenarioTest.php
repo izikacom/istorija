@@ -3,7 +3,7 @@
 namespace Dayuse\Test\Istorija\EventSourcing\Testing;
 
 use DateTimeImmutable;
-use Dayuse\Istorija\EventSourcing\AggregateRoot;
+use Dayuse\Istorija\EventSourcing\AbstractAggregateRoot;
 use Dayuse\Istorija\EventSourcing\Testing\Scenario;
 use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
 use Dayuse\Istorija\Utils\Ensure;
@@ -141,7 +141,7 @@ class ScenarioTest extends TestCase
 
         $scenario = Scenario::monitor(Member::class);
         $scenario->when(function () {
-            return new class() extends AggregateRoot {
+            return new class() extends AbstractAggregateRoot {
                 public function getId() {
                     return GenericUuidIdentifier::generate();
                 }

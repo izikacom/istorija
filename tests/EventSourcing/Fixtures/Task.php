@@ -10,9 +10,9 @@ namespace Dayuse\Test\Istorija\EventSourcing\Fixtures;
 
 use DateTimeImmutable;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use Dayuse\Istorija\EventSourcing\Entity;
+use Dayuse\Istorija\EventSourcing\AbstractEntity;
 
-class Task extends Entity
+class Task extends AbstractEntity
 {
     /**
      * @var MemberId

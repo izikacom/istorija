@@ -4,7 +4,7 @@ namespace Dayuse\Istorija\EventSourcing;
 
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 
-abstract class AggregateRoot
+abstract class AbstractAggregateRoot
 {
     use EventSourcedObject;
 

@@ -22,7 +22,7 @@ trait EventSourcedObject
     private $domainEventRecorder;
 
     /**
-     * @var Entity[]
+     * @var AbstractEntity[]
      */
     private $entities = [];
 
@@ -40,7 +40,7 @@ trait EventSourcedObject
 
     public static function reconstituteFromSingleEvent(DomainEvent $event)
     {
-        /** @var AggregateRoot $instance */
+        /** @var AbstractAggregateRoot $instance */
         $instance = new static();
         $instance->configureEventRecorder();
         $instance->apply($event);
@@ -53,11 +53,11 @@ trait EventSourcedObject
      *
      * @param DomainEventCollection $history
      *
-     * @return AggregateRoot
+     * @return AbstractAggregateRoot
      */
     public static function reconstituteFromHistory(DomainEventCollection $history)
     {
-        /** @var AggregateRoot $instance */
+        /** @var AbstractAggregateRoot $instance */
         $instance = new static();
         $instance->configureEventRecorder();
 
@@ -93,11 +93,11 @@ trait EventSourcedObject
 
     /**
      *
-     * @param Entity $entity
+     * @param AbstractEntity $entity
      *
-     * @return Entity
+     * @return AbstractEntity
      */
-    protected function captureEntity(Entity $entity)
+    protected function captureEntity(AbstractEntity $entity)
     {
         $entity->changeEventRecorder($this->domainEventRecorder, true);
 
@@ -106,12 +106,12 @@ trait EventSourcedObject
 
     protected function registerEntity($entityClass, DomainEvent $firstEvent)
     {
-        if (false === is_subclass_of($entityClass, Entity::class)) {
+        if (false === is_subclass_of($entityClass, AbstractEntity::class)) {
             throw new \InvalidArgumentException('First argument should be an entity');
         }
 
-        /** @var Entity $entityClass */
-        /** @var Entity $entity */
+        /** @var AbstractEntity $entityClass */
+        /** @var AbstractEntity $entity */
         $entity = $entityClass::reconstituteFromSingleEvent($firstEvent);
 
         $id = (string)$entity->getId();
@@ -180,7 +180,7 @@ trait EventSourcedObject
             return;
         }
 
-        /** @var Entity $entity */
+        /** @var AbstractEntity $entity */
         foreach ($this->entities as $entity) {
             if (false === $entity->isEventCanBeApplied($event)) {
                 continue;
