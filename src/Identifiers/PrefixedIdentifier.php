@@ -11,14 +11,14 @@ namespace Dayuse\Istorija\Identifiers;
 
 abstract class PrefixedIdentifier implements Identifier, GeneratesIdentifier
 {
-    const SEPARATOR = '-';
+    protected const SEPARATOR = '-';
 
     /**
      * @var string
      */
     private $value;
 
-    abstract static protected function prefix();
+    abstract protected static function prefix();
 
     protected function __construct(string $value)
     {
@@ -29,7 +29,7 @@ abstract class PrefixedIdentifier implements Identifier, GeneratesIdentifier
         $this->value = $value;
     }
 
-    static final public function isMatchingPattern(string $string): bool
+    final public static function isMatchingPattern(string $string): bool
     {
         $prefixPattern = sprintf('/^(%s)%s/i',
             static::prefix(),

@@ -42,16 +42,16 @@ class ProcessesHandler
             try {
                 $process->apply($event);
 
-                $this->logger->info(sprintf('Event have been processed.', [
+                $this->logger->info('Event have been processed.', [
                     'event'   => $event,
                     'process' => $process->getName(),
-                ]));
+                ]);
             } catch (\Throwable $e) {
-                $this->logger->error(sprintf('An error occurred when processing an event.', [
+                $this->logger->error('An error occurred when processing an event.', [
                     'exception' => $e,
                     'event'     => $event,
                     'process'   => $process->getName(),
-                ]));
+                ]);
             }
         }
     }

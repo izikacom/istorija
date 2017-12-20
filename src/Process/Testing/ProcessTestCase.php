@@ -17,10 +17,11 @@ use PHPUnit\Framework\TestCase;
 
 abstract class ProcessTestCase extends TestCase
 {
-    /**
-     * @var Scenario
-     */
+    /** @var Scenario */
     protected $scenario;
+
+    /** @var Process */
+    protected $process;
 
     protected function setUp()
     {
@@ -56,6 +57,11 @@ abstract class ProcessTestCase extends TestCase
                 }
             }
         };
+    }
+
+    public function getProcess(): Process
+    {
+        return $this->process;
     }
 
     abstract protected function createProcess(CommandBus $commandBus, StateRepository $repository): Process;

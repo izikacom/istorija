@@ -5,7 +5,6 @@
 
 namespace Dayuse\Test\Istorija\Process;
 
-use Dayuse\Istorija\Process\ProcessId;
 use Dayuse\Istorija\Process\State;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +15,7 @@ class StateTest extends TestCase
      */
     public function could_get_initialized_value()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
-
-        $state = new State($processIdProphecy->reveal(), [
+        $state = new State([
             'title' => 'Le petit chat',
         ]);
 
@@ -30,12 +27,12 @@ class StateTest extends TestCase
      */
     public function could_set_then_get_value()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
+        $state = new State();
 
-        $state = new State($processIdProphecy->reveal());
-        $state->set('title', 'Le petit chat');
+        $updatedState = $state->set('title', 'Le petit chat');
 
-        $this->assertEquals('Le petit chat', $state->get('title'));
+        $this->assertEquals(null, $state->get('title'));
+        $this->assertEquals('Le petit chat', $updatedState->get('title'));
     }
 
     /**
@@ -43,15 +40,16 @@ class StateTest extends TestCase
      */
     public function could_set_then_merge_value()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
+        $state = new State([
+            'title' => 'Le petit chat',
+        ]);
 
-        $state = new State($processIdProphecy->reveal());
-        $state->set('title', 'Le petit chat');
-        $state->merge([
+        $updatedState = $state->merge([
             'title' => 'Le gros chien',
         ]);
 
-        $this->assertEquals('Le gros chien', $state->get('title'));
+        $this->assertEquals('Le petit chat', $state->get('title'));
+        $this->assertEquals('Le gros chien', $updatedState->get('title'));
     }
 
     /**
@@ -59,45 +57,34 @@ class StateTest extends TestCase
      */
     public function could_serialize_to_array()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
-        $processIdProphecy->__toString()->willReturn('abc');
-
-        $state = new State($processIdProphecy->reveal());
-        $state->set('title', 'Le petit chat');
+        $state = new State([
+            'title' => 'Le petit chat',
+        ]);
 
         $this->assertEquals([
-            'processId' => 'abc',
-            'data'      => [
+            'data'     => [
                 'title' => 'Le petit chat',
             ],
-            'doneAt'    => null,
+            'closedAt' => null,
         ], $state->toArray());
-
-        $state->done();
-
-        $data = $state->toArray();
-
-        // 2017-10-26T13:37:09.083004+00:00
-        $this->assertNotEmpty($data['doneAt']);
     }
 
     /**
      * @test
      */
-    public function could_not_be_done_twice()
+    public function could_not_be_closed_twice()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
-        $processIdProphecy->__toString()->willReturn('abc');
+        $state = new State();
 
-        $state = new State($processIdProphecy->reveal());
+        $this->assertFalse($state->isClosed());
 
-        $this->assertFalse($state->isDone());
+        $updatedState = $state->close();
 
-        $state->done();
-        $this->assertTrue($state->isDone());
+        $this->assertFalse($state->isClosed());
+        $this->assertTrue($updatedState->isClosed());
 
         $this->expectException(\InvalidArgumentException::class);
-        $state->done();
+        $updatedState->close();
     }
 
     /**
@@ -105,14 +92,13 @@ class StateTest extends TestCase
      */
     public function could_not_set_data_on_done_state()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
-        $processIdProphecy->__toString()->willReturn('abc');
+        $state = new State();
+        $state->close();
 
-        $state = new State($processIdProphecy->reveal());
-        $state->done();
+        $updatedState = $state->close();
 
         $this->expectException(\InvalidArgumentException::class);
-        $state->set('title', 'Le petit chat');
+        $updatedState->set('title', 'Le petit chat');
     }
 
     /**
@@ -120,14 +106,11 @@ class StateTest extends TestCase
      */
     public function could_not_merge_data_on_done_state()
     {
-        $processIdProphecy = $this->prophesize(ProcessId::class);
-        $processIdProphecy->__toString()->willReturn('abc');
-
-        $state = new State($processIdProphecy->reveal());
-        $state->done();
+        $state = new State();
+        $updatedState = $state->close();
 
         $this->expectException(\InvalidArgumentException::class);
-        $state->merge([
+        $updatedState->merge([
             'title' => 'Le petit chat',
         ]);
     }

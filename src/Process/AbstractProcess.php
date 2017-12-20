@@ -6,13 +6,20 @@
 namespace Dayuse\Istorija\Process;
 
 
+use Dayuse\Istorija\EventSourcing\AbstractEventHandler;
+use Dayuse\Istorija\Identifiers\Identifier;
 use Dayuse\Istorija\Utils\Ensure;
 
-trait AutoNameProcessTrait
+abstract class AbstractProcess extends AbstractEventHandler implements Process
 {
+    public function getProcessId(Identifier $identifier) : ProcessId
+    {
+        return ProcessId::generateFromIdentifier($this->getName(), $identifier);
+    }
+
     public function getName(): string
     {
-        $class = trim(get_class($this), "\\");
+        $class = trim(\get_class($this), "\\");
 
         if (strpos($class, "\\") === false) {
             return $class;
@@ -25,6 +32,6 @@ trait AutoNameProcessTrait
 
         Ensure::eq('Process', $classNamePieces[count($classNamePieces) - 1], 'When using AutoNameProcessTrait, your class must end with Process.');
 
-        return strtolower(join('-', $usefulClassNamePieces));
+        return strtolower(implode('-', $usefulClassNamePieces));
     }
 }

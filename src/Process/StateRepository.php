@@ -8,6 +8,6 @@ namespace Dayuse\Istorija\Process;
 
 interface StateRepository
 {
-    public function save(State $state) : void;
+    public function save(ProcessId $processId, State $state) : void;
     public function find(ProcessId $processId) : State;
 }

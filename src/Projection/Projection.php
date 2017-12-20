@@ -10,10 +10,11 @@ namespace Dayuse\Istorija\Projection;
 
 
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
+use Dayuse\Istorija\EventSourcing\EventHandler;
 use Dayuse\Istorija\EventStore\EventMetadata;
 
-interface Projection
+interface Projection extends EventHandler
 {
-    public function apply(DomainEvent $event);
-    public function reset();
+    public function init(): void;
+    public function reset(): void;
 }

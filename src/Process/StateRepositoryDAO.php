@@ -21,9 +21,9 @@ class StateRepositoryDAO implements StateRepository
         $this->dao = $dao;
     }
 
-    public function save(State $state): void
+    public function save(ProcessId $processId, State $state): void
     {
-        $this->dao->save($state->getProcessId(), $state->toArray());
+        $this->dao->save($processId, $state->toArray());
     }
 
     public function find(ProcessId $processId): State
@@ -34,7 +34,7 @@ class StateRepositoryDAO implements StateRepository
 
         $state = State::fromArray($data);
 
-        Ensure::false($state->isDone(), sprintf('State have been already processed by %s', $processId));
+        Ensure::false($state->isClosed(), sprintf('State have been already processed by %s', $processId));
 
         return $state;
     }

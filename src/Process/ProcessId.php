@@ -11,7 +11,7 @@ use Dayuse\Istorija\Identifiers\PrefixedIdentifier;
 
 class ProcessId extends PrefixedIdentifier
 {
-    static public function generateFromAggregate(string $processName, Identifier $aggregateId) : self
+    public static function generateFromIdentifier(string $processName, Identifier $aggregateId) : self
     {
         return self::fromString(self::prefix() . self::SEPARATOR . $processName . self::SEPARATOR . $aggregateId);
     }
@@ -21,7 +21,7 @@ class ProcessId extends PrefixedIdentifier
         throw new \InvalidArgumentException('This method could not be called. Use static::generateFromAggregate factory instead');
     }
 
-    static protected function prefix()
+    protected static function prefix()
     {
         return 'process';
     }

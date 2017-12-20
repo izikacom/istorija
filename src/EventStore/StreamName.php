@@ -5,13 +5,14 @@
 
 namespace Dayuse\Istorija\EventStore;
 
+use Dayuse\Istorija\Identifiers\GenericIdentifier;
 use Dayuse\Istorija\Identifiers\Identifier;
 use Dayuse\Istorija\Utils\Contract;
 use Dayuse\Istorija\Utils\Ensure;
 
 class StreamName
 {
-    const DELIMITER = '-';
+    private const DELIMITER = '-';
 
     private $identifier;
     private $contract;
@@ -29,14 +30,14 @@ class StreamName
         $splitStreamName = explode(self::DELIMITER, $canonicalStreamName);
 
         $contractName   = $splitStreamName[0];
-        $identifierName = implode(self::DELIMITER, array_slice($splitStreamName, 1));
+        $identifierName = implode(self::DELIMITER, \array_slice($splitStreamName, 1));
 
         Ensure::notEmpty($contractName, sprintf('Canonical Stream must be a string containing the Contract and the identifier separated by a dash (%s)', self::DELIMITER));
         Ensure::notEmpty($identifierName, sprintf('Canonical Stream must be a string containing the Contract and the identifier separated by a dash (%s)', self::DELIMITER));
 
         return new self(
-            Identifier::fromString($splitStreamName[1]),
-            Contract::with($splitStreamName[0])
+            GenericIdentifier::fromString($identifierName),
+            Contract::with($contractName)
         );
     }
 

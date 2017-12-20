@@ -9,90 +9,89 @@ use Dayuse\Istorija\Utils\Ensure;
 
 class State
 {
-    const DATE_FORMAT = 'Y-m-d\TH:i:s.uP';
-
-    /**
-     * @var ProcessId
-     */
-    private $processId;
+    private const DATE_FORMAT = 'Y-m-d\TH:i:s.uP';
 
     /**
      * @var array
      */
-    private $data = [];
+    private $data;
 
     /**
      * @var \DateTimeInterface
      */
-    private $doneAt;
+    private $closedAt;
 
-    public function __construct(ProcessId $processId, array $data = [])
+    public function __construct(array $data = [])
     {
         Ensure::allScalar($data);
 
-        $this->processId = $processId;
-        $this->data      = $data;
-        $this->doneAt    = null;
+        $this->data = $data;
     }
 
-    public function get($key)
+    public function get(string $key, $default = null)
     {
-        return $this->data[$key];
+        return $this->data[$key] ?? $default;
     }
 
-    public function set($key, $value): void
+    public function set(string $key, $value): State
     {
-        Ensure::null($this->doneAt, 'This state have been already marked as done. Could not change data');
+        Ensure::null($this->closedAt, 'This state have been already marked as done. Could not change data');
         Ensure::scalar($value);
 
-        $this->data[$key] = $value;
+        return new self(array_merge(
+            $this->data,
+            [
+                $key => $value,
+            ]
+        ));
     }
 
-    public function merge(array $data): void
+    public function merge(array $data): State
     {
-        Ensure::null($this->doneAt, 'This state have been already marked as done. Could not change data');
+        Ensure::null($this->closedAt, 'This state have been already marked as done. Could not change data');
         Ensure::allScalar($data);
 
-        $this->data = array_merge($this->data, $data);
+        return new self(array_merge(
+            $this->data,
+            $data
+        ));
     }
 
-    public function done(): void
+    public function close(): State
     {
-        Ensure::null($this->doneAt, 'This state have been already marked as done.');
+        Ensure::null($this->closedAt, 'This state have been already marked as done.');
 
-        $this->doneAt = \DateTimeImmutable::createFromFormat(
+        $that = new self($this->data);
+
+        $that->closedAt = \DateTimeImmutable::createFromFormat(
             'U.u',
             sprintf('%.6F', microtime(true)),
             new \DateTimeZone('UTC')
         );
+
+        return $that;
     }
 
-    public function isDone(): bool
+    public function isClosed(): bool
     {
-        return null !== $this->doneAt;
+        return null !== $this->closedAt;
     }
 
-    public function getProcessId(): ProcessId
-    {
-        return $this->processId;
-    }
-
-    public function toArray()
+    public function toArray(): array
     {
         return [
-            'processId' => (string)$this->processId,
-            'data'      => $this->data,
-            'doneAt'    => $this->doneAt ? $this->doneAt->format(self::DATE_FORMAT) : null,
+            'data'     => $this->data,
+            'closedAt' => $this->closedAt ? $this->closedAt->format(self::DATE_FORMAT) : null,
         ];
     }
 
-    static public function fromArray(array $data)
+    public static function fromArray(array $data): State
     {
         Ensure::allScalar($data['data']);
 
-        $that         = new self(ProcessId::fromString($data['processId']));
-        $that->data   = $data['data'];
-        $that->doneAt = $data['doneAt'] ? \DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $data['doneAt']) : null;
+        $that           = new self();
+        $that->data     = $data['data'];
+        $that->closedAt = $data['closedAt'] ? \DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $data['closedAt']) : null;
 
         return $that;
     }

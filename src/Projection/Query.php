@@ -8,6 +8,7 @@
 
 namespace Dayuse\Istorija\Projection;
 
+use Dayuse\Istorija\EventSourcing\AbstractEventHandler;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\Utils\Ensure;
 
@@ -19,7 +20,7 @@ use Dayuse\Istorija\Utils\Ensure;
  *
  * @package Dayuse\Istorija\Projection
  */
-final class Query implements Projection
+final class Query extends AbstractEventHandler implements Projection
 {
     /**
      * @var callable
@@ -36,15 +37,13 @@ final class Query implements Projection
      */
     private $state;
 
-    public function init(callable $callback): self
+    public function init(callable $callback): void
     {
         Ensure::null($this->initializationCallback, 'Query was already initialized');
 
         $this->initializationCallback = $callback;
 
-        $this->state = call_user_func($this->initializationCallback);
-
-        return $this;
+        $this->state = $this->initializationCallback();
     }
 
     /**
@@ -62,30 +61,26 @@ final class Query implements Projection
      * ])
      *
      * @param array $handlers
-     *
-     * @return self
      */
-    public function when(array $handlers)
+    public function when(array $handlers): void
     {
         Ensure::noContent($this->handlers, 'Handlers were already configured.');
         Ensure::allString(array_keys($handlers));
         Ensure::allIsCallable(array_values($handlers));
 
         $this->handlers = $handlers;
-
-        return $this;
     }
 
-    final public function apply(DomainEvent $event)
+    public function apply(DomainEvent $event): void
     {
-        $eventName = get_class($event);
+        $eventName = \get_class($event);
         $handler   = $this->handlers[$eventName] ?? null;
 
         if (null === $handler) {
             return;
         }
 
-        $this->state = call_user_func($handler, $this->state, $event);
+        $this->state = $handler($this->state, $event);
     }
 
     public function reset()
