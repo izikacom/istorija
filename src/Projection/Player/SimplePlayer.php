@@ -9,7 +9,6 @@
 namespace Dayuse\Istorija\Projection\Player;
 
 
-use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventFactory;
 use Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
 use Dayuse\Istorija\EventStore\EventStore;
 use Dayuse\Istorija\Projection\Projection;
@@ -45,7 +44,7 @@ class SimplePlayer
         $this->projection                  = $projection;
     }
 
-    public function playFromBeginning()
+    public function playFromBeginning(): void
     {
         $eventRecords = $this->eventStore->readAllEvents();
 
@@ -58,7 +57,7 @@ class SimplePlayer
         }
     }
 
-    public function subscribeToLive()
+    public function subscribeToLive(): void
     {
 
     }
@@ -69,7 +68,7 @@ class SimplePlayer
      * @param callable $onEvent
      * @param int      $updateThrottled
      */
-    public function playFromBeginningThenSwitchToLiveSubscription(callable $onEvent, $updateThrottled = 0)
+    public function playFromBeginningThenSwitchToLiveSubscription(callable $onEvent, $updateThrottled = 0): void
     {
         // 1. subscribe to event-sourcing & store in-memory all dispatched event
         // 2. store last checkpoint number

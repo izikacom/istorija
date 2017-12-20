@@ -33,7 +33,7 @@ final class Query extends AbstractEventHandler implements Projection
     private $handlers;
 
     /**
-     * @var mixed
+     * @var State
      */
     private $state;
 

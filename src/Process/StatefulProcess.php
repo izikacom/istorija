@@ -34,7 +34,7 @@ abstract class StatefulProcess extends AbstractProcess
         $this->repository->save($processId, $state);
     }
 
-    public function setState(Identifier $identifier, \Closure $updateMethod): void
+    public function setState(Identifier $identifier, callable $updateMethod): void
     {
         $processId    = $this->getProcessId($identifier);
         $currentState = $this->repository->find($processId);

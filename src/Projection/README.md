@@ -11,11 +11,13 @@ use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
 
 $query = (new Query())
     ->init(function() {
-        return 0;
+        return new State([
+            'numUsers' => 0,
+        ]);
     })
     ->when([
-        'UserCreated' => function($state, DomainEvent $event) {
-            return $state + 1;
+        'UserCreated' => function(State $state, DomainEvent $event) {
+            return $state->set('numUsers', $state->get('numUsers') + 1);
         },
     ]);
 
@@ -26,49 +28,11 @@ $player = new SimplePlayer(
 );
 $player->playFromBeginning();
 
-$numUserCreation = $query->getState();
+$numUserCreation = $query->getState()->get('numUsers');
 ?>
 ```
 
-# How to use a Projector
-
-```php
-<?php
-
-use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
-use \Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
-use \Dayuse\Istorija\Projection\Projector;
-use \Dayuse\Istorija\Projection\Player\SimplePlayer;
-use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
-
-$projector = new class() extends Projector {
-    public $state;
-    
-    public function init(): void {
-        $this->state = 0;
-    }
-    
-    public function reset(): void {
-        $this->state = 0;
-    }
-    
-    public function whenUserCreated(DomainEvent $event) {
-        $this->state++;
-    }
-};
-
-$player = new SimplePlayer(
-    $eventStore, 
-    new EventStoreMessageTranslator(new JsonObjectSerializer()),
-    $projector
-);
-$player->playFromBeginning();
-
-$numUserCreation = $projector->state;
-?>
-```
-
-# How to use a DAO with Projector
+# How to use a StatefulProjector
 
 The state of this projector is stored using a DAO.
 For the example, I'm using a Buffered DAO.
@@ -86,23 +50,11 @@ use \Dayuse\Istorija\DAO\Proxy\Buffer;
 use \Dayuse\Istorija\DAO\DAOInterface;
 
 $dao = new Buffer(new InMemoryDAO(), new InMemoryDAO());
-$projector = new class($dao) extends Projector {
-    private $dao;
-    
-    public function __construct(DAOInterface $dao) {
-        $this->dao = $dao;
-    }
-    
-    public function init(): void {
-        $this->dao->save('users', 0);
-    }
-    
-    public function reset(): void {
-        $this->dao->flush();
-    }
-    
+$projector = new class($dao) extends StatefulProjector {
     public function whenUserCreated(DomainEvent $event) {
-        $this->dao->save('users', $this->dao->find('users') + 1);
+        $this->setState($event->getUser(), function(State $state) use ($event) {
+            return $state->set('created', true);
+        });
     }
 };
 
