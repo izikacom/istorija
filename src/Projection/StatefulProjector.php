@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\Projection;
+namespace Dayuse\Istorija\Projection;
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\Identifiers\Identifier;
 

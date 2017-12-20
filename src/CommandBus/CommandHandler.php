@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\CommandBus;
+namespace Dayuse\Istorija\CommandBus;
 
 interface CommandHandler
 {
