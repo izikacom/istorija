@@ -10,7 +10,7 @@ use Dayuse\Istorija\Process\Testing\ProcessTestCase;
 use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Test\Istorija\Process\Fixtures\ApplicantId;
 use Dayuse\Test\Istorija\Process\Fixtures\Command\CreateMember;
-use Dayuse\Test\Istorija\Process\Fixtures\CreateMemberWhenApplicantAcceptedProcess;
+use Dayuse\Test\Istorija\Process\Fixtures\CreateMemberWhenApplicantAcceptedStatefulProcess;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationAccepted;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationRefused;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationRegistered;
@@ -20,7 +20,7 @@ class ScenarioProcessTest extends ProcessTestCase
 {
     protected function createProcess(CommandBus $commandBus, StateRepository $repository): Process
     {
-        return new CreateMemberWhenApplicantAcceptedProcess($commandBus, $repository);
+        return new CreateMemberWhenApplicantAcceptedStatefulProcess($commandBus, $repository);
     }
 
     /**

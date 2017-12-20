@@ -6,14 +6,14 @@
 namespace Dayuse\Test\Istorija\Process\Fixtures;
 
 
-use Dayuse\Istorija\Process\SimpleProcess;
+use Dayuse\Istorija\Process\StatefulProcess;
 use Dayuse\Istorija\Process\State;
 use Dayuse\Test\Istorija\Process\Fixtures\Command\CreateMember;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationAccepted;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationRefused;
 use Dayuse\Test\Istorija\Process\Fixtures\Event\ApplicationRegistered;
 
-class CreateMemberWhenApplicantAcceptedProcess extends SimpleProcess
+class CreateMemberWhenApplicantAcceptedStatefulProcess extends StatefulProcess
 {
     public function whenApplicationRegistered(ApplicationRegistered $event)
     {

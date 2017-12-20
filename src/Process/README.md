@@ -3,10 +3,10 @@
 ```php
 <?php
 
-use Dayuse\Istorija\Process\SimpleProcess;
+use Dayuse\Istorija\Process\StatefulProcess;
 use Dayuse\Istorija\Process\State;
 
-class RegisterReservationWhenBookingAttemptConfirmedProcess extends SimpleProcess
+class RegisterReservationWhenBookingAttemptConfirmedProcess extends StatefulProcess
 {
     public function whenAttemptBookingRequested(Event\AttemptBookingRequested $event)
     {

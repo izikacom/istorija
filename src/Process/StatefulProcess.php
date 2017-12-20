@@ -9,7 +9,7 @@ use Dayuse\Istorija\CommandBus\Command;
 use Dayuse\Istorija\CommandBus\CommandBus;
 use Dayuse\Istorija\Identifiers\Identifier;
 
-abstract class SimpleProcess extends AbstractProcess
+abstract class StatefulProcess extends AbstractProcess
 {
     /**
      * @var CommandBus

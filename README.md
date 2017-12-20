@@ -1,5 +1,7 @@
 # EventStore
 
+[![CircleCI](https://circleci.com/gh/dayuse/istorija.svg?style=svg&circle-token=6fb221231fda90514f1a57870cbdf2e7f3798f9c)](https://circleci.com/gh/dayuse/istorija)
+
 ## Storage
 
 ### Configure the EventStore using a MySQL Storage
