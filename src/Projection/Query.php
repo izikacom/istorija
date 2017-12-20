@@ -37,6 +37,11 @@ final class Query extends AbstractEventHandler implements Projection
      */
     private $state;
 
+    public function __construct()
+    {
+        $this->state = new State();
+    }
+
     public function init(callable $callback): void
     {
         Ensure::null($this->initializationCallback, 'Query was already initialized');
@@ -46,22 +51,6 @@ final class Query extends AbstractEventHandler implements Projection
         $this->state = $this->initializationCallback();
     }
 
-    /**
-     * For example:
-     *
-     * when([
-     *     'UserCreated' => function (array $state, DomainEvent $event) {
-     *         $state['count']++;
-     *         return $state;
-     *     },
-     *     'UserDeleted' => function (array $state, DomainEvent $event) {
-     *         $state['count']--;
-     *         return $state;
-     *     }
-     * ])
-     *
-     * @param array $handlers
-     */
     public function when(array $handlers): void
     {
         Ensure::noContent($this->handlers, 'Handlers were already configured.');
@@ -83,16 +72,14 @@ final class Query extends AbstractEventHandler implements Projection
         $this->state = $handler($this->state, $event);
     }
 
-    public function reset()
+    public function reset(): void
     {
         Ensure::notNull($this->initializationCallback, 'Did you forget to initialize this query?');
 
-        $this->state = call_user_func($this->initializationCallback);
-
-        return $this;
+        $this->state = $this->initializationCallback();
     }
 
-    public function getState()
+    public function getState(): State
     {
         return $this->state;
     }

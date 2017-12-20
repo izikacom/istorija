@@ -15,6 +15,4 @@ use Dayuse\Istorija\EventStore\EventMetadata;
 
 interface Projection extends EventHandler
 {
-    public function init(): void;
-    public function reset(): void;
 }

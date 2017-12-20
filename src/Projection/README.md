@@ -5,18 +5,19 @@
 
 use \Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use \Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
-use \Dayuse\Istorija\Projection\Query;
+use \Dayuse\Istorija\Projection\QueryBuilder;
+use \Dayuse\Istorija\Projection\State;
 use \Dayuse\Istorija\Projection\Player\SimplePlayer;
 use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
 
-$query = (new Query())
+$query = (new QueryBuilder())
     ->init(function() {
         return new State([
             'numUsers' => 0,
         ]);
     })
     ->when([
-        'UserCreated' => function(State $state, DomainEvent $event) {
+        'UserCreated' => function(DomainEvent $event) {
             return $state->set('numUsers', $state->get('numUsers') + 1);
         },
     ]);

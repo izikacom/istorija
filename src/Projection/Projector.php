@@ -14,5 +14,4 @@ use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
 
 abstract class Projector extends AbstractEventHandler implements Projection
 {
-
 }
