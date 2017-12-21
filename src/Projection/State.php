@@ -5,6 +5,8 @@
 
 namespace Dayuse\Istorija\Projection;
 
+use Dayuse\Istorija\Utils\Ensure;
+
 class State
 {
     /**
