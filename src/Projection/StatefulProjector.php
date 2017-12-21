@@ -25,7 +25,7 @@ abstract class StatefulProjector extends Projector
         return State::fromArray($data ?? []);
     }
 
-    protected function setState(Identifier $identifier, callable $updateMethod): State
+    protected function setState(Identifier $identifier, callable $updateMethod): void
     {
         $currentState = $this->getState($identifier);
 
