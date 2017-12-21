@@ -24,5 +24,3 @@ final class PurgeStorage
         $this->tableName = $tableName ?? Defaults::TABLE_NAME;
     }
 }
-
-

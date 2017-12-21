@@ -2,7 +2,6 @@
 
 namespace Dayuse\Test\Istorija\Identifiers;
 
-
 use Dayuse\Istorija\Identifiers\PrefixedUuidIdentifier;
 use Dayuse\Istorija\Identifiers\UuidIdentifier;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +21,7 @@ class UuidIdentifierTest extends TestCase
 
 class PredictiveId extends UuidIdentifier
 {
-    static protected function prefix()
+    protected static function prefix()
     {
         return 'predictive';
     }

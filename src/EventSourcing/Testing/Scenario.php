@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\EventSourcing\Testing;
 
-
 use Dayuse\Istorija\EventSourcing\AbstractAggregateRoot;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
@@ -47,7 +46,7 @@ class Scenario
         $this->aggregateRootClass = $aggregateRootClass;
     }
 
-    static public function monitor($aggregateRootClass)
+    public static function monitor($aggregateRootClass)
     {
         return new static($aggregateRootClass);
     }
@@ -59,7 +58,7 @@ class Scenario
      *
      * @return Scenario
      */
-    static public function monitorAndStartFromInstance(AbstractAggregateRoot $aggregateRoot)
+    public static function monitorAndStartFromInstance(AbstractAggregateRoot $aggregateRoot)
     {
         $that   = new static(get_class($aggregateRoot));
         $events = $aggregateRoot->getRecordedEvents()->map(function (DomainEvent $event) use ($that) {
@@ -90,7 +89,7 @@ class Scenario
     {
         Ensure::isCallable($when);
 
-        if(null === $this->aggregateRoot) {
+        if (null === $this->aggregateRoot) {
             $aggregateRoot = $when($this->aggregateRoot);
 
             Ensure::notEmpty($aggregateRoot, 'If you do not use the given() pass, the when() pass have to return an aggregate root');
@@ -139,7 +138,9 @@ class Scenario
         array_map(function ($idx, $then, DomainEvent $recordedEvent) {
             if (is_string($then)) {
                 Ensure::isInstanceOf($recordedEvent, $then, sprintf(
-                    '#%s expected event is not an instance of the asserted event class (%s)', $idx, $then
+                    '#%s expected event is not an instance of the asserted event class (%s)',
+                    $idx,
+                    $then
                 ));
 
                 return true;
@@ -147,7 +148,8 @@ class Scenario
 
             if (is_callable($then)) {
                 Ensure::satisfy($recordedEvent, $then, sprintf(
-                    '#%s expected event does not satisfy the callable algorithm', $idx
+                    '#%s expected event does not satisfy the callable algorithm',
+                    $idx
                 ));
 
                 return true;
@@ -155,7 +157,8 @@ class Scenario
 
             // right now; $then is a instance of DomainEvent (see assertion of then())
             Ensure::eq($then, $recordedEvent, sprintf(
-                '#%s expected event does not match the asserted event', $idx
+                '#%s expected event does not match the asserted event',
+                $idx
             ));
 
             return true;

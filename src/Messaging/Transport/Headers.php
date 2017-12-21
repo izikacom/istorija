@@ -77,10 +77,8 @@ class Headers implements \Iterator, \Countable, \ArrayAccess, \JsonSerializable
 
     public function jsonSerialize()
     {
-        return array_map(function(Header $header) {
+        return array_map(function (Header $header) {
             return $header->getValue();
         }, $this->headers);
     }
-
-
 }

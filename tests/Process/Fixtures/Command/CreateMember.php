@@ -5,7 +5,6 @@
 
 namespace Dayuse\Test\Istorija\Process\Fixtures\Command;
 
-
 use Dayuse\Istorija\CommandBus\Command;
 use Dayuse\Test\Istorija\Process\Fixtures\MemberId;
 

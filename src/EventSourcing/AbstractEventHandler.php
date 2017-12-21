@@ -1,9 +1,9 @@
 <?php
 
 namespace Dayuse\Istorija\EventSourcing;
+
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
-
 
 /**
  * @author : Thomas Tourlourat <thomas@tourlourat.com>
@@ -16,7 +16,7 @@ class AbstractEventHandler implements EventHandler
     {
         $method = $this->methodNameResolver($event);
 
-        if(!$this->supportEvent($event)) {
+        if (!$this->supportEvent($event)) {
             throw new \InvalidArgumentException('Event handler does not support event');
         }
 

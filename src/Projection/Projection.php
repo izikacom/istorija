@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\Projection;
 
-
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\EventSourcing\EventHandler;
 use Dayuse\Istorija\EventStore\EventMetadata;

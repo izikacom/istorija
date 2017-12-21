@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\DAO;
 
-
 interface AdvancedDAOInterface extends DAOInterface
 {
     /**

@@ -15,7 +15,6 @@ use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
 use Dayuse\Istorija\DAO\TransferableInterface;
 
-
 /**
  * In-memory implementation of a read model DAO.
  *

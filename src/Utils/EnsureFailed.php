@@ -8,4 +8,6 @@ namespace Dayuse\Istorija\Utils;
 use Assert\InvalidArgumentException;
 use Dayuse\Istorija\Exception;
 
-class EnsureFailed extends InvalidArgumentException implements Exception {}
+class EnsureFailed extends InvalidArgumentException implements Exception
+{
+}

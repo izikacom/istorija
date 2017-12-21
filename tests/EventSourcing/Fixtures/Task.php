@@ -29,7 +29,7 @@ class Task extends AbstractEntity
      */
     private $completed;
 
-    static public function guardCreation(MemberId $memberId, TaskId $taskId)
+    public static function guardCreation(MemberId $memberId, TaskId $taskId)
     {
         $errorDetected = false;
         if ($errorDetected) {
@@ -37,7 +37,7 @@ class Task extends AbstractEntity
         }
     }
 
-    static public function create(MemberId $memberId, TaskId $taskId)
+    public static function create(MemberId $memberId, TaskId $taskId)
     {
         $that = new self();
 

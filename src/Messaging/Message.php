@@ -5,4 +5,6 @@
 
 namespace Dayuse\Istorija\Messaging;
 
-interface Message {}
+interface Message
+{
+}

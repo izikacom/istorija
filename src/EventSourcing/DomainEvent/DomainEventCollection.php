@@ -114,7 +114,7 @@ class DomainEventCollection implements \Countable, \Iterator, \ArrayAccess
         throw new DomainEventsAreImmutable();
     }
 
-    public function map(Callable $callback)
+    public function map(callable $callback)
     {
         return array_map($callback, $this->events);
     }

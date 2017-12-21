@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\EventSourcing;
 
-
 use Dayuse\Istorija\Identifiers\Identifier;
 
 interface AggregateRootRepository

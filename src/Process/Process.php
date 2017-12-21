@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\Process;
 
-
 use Dayuse\Istorija\EventSourcing\EventHandler;
 use Dayuse\Istorija\Identifiers\Identifier;
 

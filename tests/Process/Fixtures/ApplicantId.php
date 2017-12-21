@@ -5,12 +5,11 @@
 
 namespace Dayuse\Test\Istorija\Process\Fixtures;
 
-
 use Dayuse\Istorija\Identifiers\PrefixedUuidIdentifier;
 
 class ApplicantId extends PrefixedUuidIdentifier
 {
-    static protected function prefix()
+    protected static function prefix()
     {
         return 'applicant';
     }

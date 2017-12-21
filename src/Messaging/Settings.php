@@ -17,7 +17,6 @@ class Settings
     public function get(string $key)
     {
         if (!isset($this->settings[$key])) {
-
             throw new \DomainException(sprintf('"%s" doesn\'t exist', $key));
         }
 

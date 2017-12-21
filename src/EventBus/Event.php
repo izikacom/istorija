@@ -8,11 +8,9 @@
 
 namespace Dayuse\Istorija\EventBus;
 
-
 use Dayuse\Istorija\EventStore\EventEnvelope;
 use Dayuse\Istorija\Messaging\Message;
 
 interface Event extends Message
 {
-
 }

@@ -74,7 +74,6 @@ final class EventStore
     public function readUsingAdvancedQuery(AdvancedReadQuery $query)
     {
         if (!$this->storage instanceof AdvancedStorage) {
-
             throw AdvancedStorageNotAvailable::onStorage($this->storage);
         }
 

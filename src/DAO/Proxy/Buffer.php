@@ -53,7 +53,7 @@ class Buffer implements DAOInterface
         $this->enabled     = false;
     }
 
-    static public function create(DAOInterface $targetedDAO, DAOInterface $bufferDAO)
+    public static function create(DAOInterface $targetedDAO, DAOInterface $bufferDAO)
     {
         return new Buffer($targetedDAO, $bufferDAO);
     }

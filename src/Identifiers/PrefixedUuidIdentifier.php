@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\Identifiers;
 
-
 abstract class PrefixedUuidIdentifier extends PrefixedIdentifier
 {
     public static function generate()

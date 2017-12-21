@@ -13,9 +13,11 @@ class JsonObjectSerializer
     private $jsonDecodeOptions;
     private $maxDepth;
 
-    public function __construct(int $jsonEncodeOptions = 0, ?int $jsonDecodeOptions = null,
-                                int $maxDepth = 512)
-    {
+    public function __construct(
+        int $jsonEncodeOptions = 0,
+        ?int $jsonDecodeOptions = null,
+                                int $maxDepth = 512
+    ) {
         $this->jsonDecodeOptions = $jsonDecodeOptions ?? JSON_OBJECT_AS_ARRAY;
         $this->jsonEncodeOptions = $jsonEncodeOptions;
         $this->maxDepth          = $maxDepth;
@@ -73,17 +75,15 @@ class JsonObjectSerializer
         $rawData = @json_decode($serializedString, true, $this->maxDepth, $this->jsonDecodeOptions);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
-
             throw new CorruptedSerializedMessage(json_last_error_msg());
         }
 
-        if(null === $typeHint) {
+        if (null === $typeHint) {
             return $rawData;
         }
 
         $messageClass = str_replace('.', '\\', $typeHint);
         if (!class_exists($messageClass)) {
-
             throw UnableToDeserializeMessage::invalidMessageContract($typeHint);
         }
 

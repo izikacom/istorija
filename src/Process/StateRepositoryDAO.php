@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\Process;
 
-
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\Utils\Ensure;
 
@@ -38,5 +37,4 @@ class StateRepositoryDAO implements StateRepository
 
         return $state;
     }
-
 }

@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\DAO;
 
-
 use Dayuse\Istorija\Utils\Ensure;
 
 trait FunctionalTrait
@@ -25,14 +24,13 @@ trait FunctionalTrait
 
         $data = $that->find($id);
 
-        if(false === $allowCreation) {
+        if (false === $allowCreation) {
             Ensure::notNull($data, 'Trying to update a not found value.');
         }
 
         if (null === $data) {
             $updatedData = $updateMethod();
-        }
-        else {
+        } else {
             $updatedData = $updateMethod($data);
         }
 

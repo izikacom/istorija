@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\Identifiers;
 
-
 abstract class PrefixedIdentifier implements Identifier, GeneratesIdentifier
 {
     protected const SEPARATOR = '-';
@@ -31,7 +30,8 @@ abstract class PrefixedIdentifier implements Identifier, GeneratesIdentifier
 
     final public static function isMatchingPattern(string $string): bool
     {
-        $prefixPattern = sprintf('/^(%s)%s/i',
+        $prefixPattern = sprintf(
+            '/^(%s)%s/i',
             static::prefix(),
             self::SEPARATOR
         );

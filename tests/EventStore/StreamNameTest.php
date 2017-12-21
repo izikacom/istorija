@@ -2,7 +2,6 @@
 
 namespace Dayuse\Test\Istorija\EventStore;
 
-
 use Dayuse\Istorija\EventStore\StreamName;
 use Dayuse\Istorija\Identifiers\GenericUuidIdentifier;
 use Dayuse\Istorija\Utils\Contract;
@@ -53,4 +52,3 @@ class StreamNameTest extends TestCase
         $this->assertEquals("App.Domain.Reservation.Reservation", $streamName->getContract());
     }
 }
-

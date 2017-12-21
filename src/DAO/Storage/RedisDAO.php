@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\DAO\Storage;
 
-
 use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;

@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\CommandBus;
 
-
 use Dayuse\Istorija\Messaging\Bus;
 use Dayuse\Istorija\Messaging\SendOptions;
 use Dayuse\Istorija\Messaging\Subscription;

@@ -17,7 +17,7 @@ abstract class AbstractEntity
      */
     public function changeEventRecorder(DomainEventRecorder $otherEventRecorder, bool $doCopy)
     {
-        if($doCopy) {
+        if ($doCopy) {
             $otherEventRecorder->recordFromEventRecorder($this->domainEventRecorder);
         }
 

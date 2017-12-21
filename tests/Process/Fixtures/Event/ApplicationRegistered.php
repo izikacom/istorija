@@ -5,7 +5,6 @@
 
 namespace Dayuse\Test\Istorija\Process\Fixtures\Event;
 
-
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Test\Istorija\Process\Fixtures\ApplicantId;
 

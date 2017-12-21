@@ -8,10 +8,8 @@
 
 namespace Dayuse\Istorija\EventSourcing\Exception;
 
-
 use Dayuse\Istorija\Exception;
 
 class NoRecordedEvents implements Exception
 {
-
 }

@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\EventSourcing;
 
-
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 
 interface EventEnvelopeFactory

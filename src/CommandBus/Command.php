@@ -8,10 +8,8 @@
 
 namespace Dayuse\Istorija\CommandBus;
 
-
 use Dayuse\Istorija\Messaging\Message;
 
 interface Command extends Message
 {
-
 }

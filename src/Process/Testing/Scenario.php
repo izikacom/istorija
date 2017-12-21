@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\Process\Testing;
 
-
 use Dayuse\Istorija\CommandBus\Command;
 use Dayuse\Istorija\CommandBus\TraceableCommandBus;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
@@ -93,7 +92,9 @@ class Scenario
         array_map(function ($idx, $then, Command $recordedCommand) {
             if (is_string($then)) {
                 Ensure::isInstanceOf($recordedCommand, $then, sprintf(
-                    '#%s expected command is not an instance of the asserted command class (%s)', $idx, $then
+                    '#%s expected command is not an instance of the asserted command class (%s)',
+                    $idx,
+                    $then
                 ));
 
                 return true;
@@ -101,7 +102,8 @@ class Scenario
 
             if (is_callable($then)) {
                 Ensure::satisfy($recordedCommand, $then, sprintf(
-                    '#%s expected command does not satisfy the callable algorithm', $idx
+                    '#%s expected command does not satisfy the callable algorithm',
+                    $idx
                 ));
 
                 return true;
@@ -109,7 +111,8 @@ class Scenario
 
             // right now; $then is a instance of DomainEvent (see assertion of then())
             Ensure::eq($then, $recordedCommand, sprintf(
-                '#%s expected command does not match the asserted command', $idx
+                '#%s expected command does not match the asserted command',
+                $idx
             ));
 
             return true;

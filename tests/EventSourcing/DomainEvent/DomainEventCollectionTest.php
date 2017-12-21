@@ -49,4 +49,3 @@ class WhateverWasDone implements DomainEvent
         $this->bar = $bar;
     }
 }
-

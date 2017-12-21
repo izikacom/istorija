@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\EventStore;
 
-
 class Configuration
 {
     private $storage;

@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\Projection\Player;
 
-
 use Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
 use Dayuse\Istorija\EventStore\EventStore;
 use Dayuse\Istorija\Projection\Projection;
@@ -50,7 +49,7 @@ class SimplePlayer
 
         $this->projection->reset();
 
-        foreach($eventRecords as $eventRecord) {
+        foreach ($eventRecords as $eventRecord) {
             $domainEvent = $this->eventStoreMessageTranslator->fromEventRecord($eventRecord);
 
             $this->projection->apply($domainEvent);
@@ -59,7 +58,6 @@ class SimplePlayer
 
     public function subscribeToLive(): void
     {
-
     }
 
     /**

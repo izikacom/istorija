@@ -15,9 +15,13 @@ class EventRecord
     private $data;
     private $metadata;
 
-    public function __construct(EventId $id, CommitId $commitId, int $eventNumber,
-        EventData $data, ?EventMetadata $metadata)
-    {
+    public function __construct(
+        EventId $id,
+        CommitId $commitId,
+        int $eventNumber,
+        EventData $data,
+        ?EventMetadata $metadata
+    ) {
         Ensure::min($eventNumber, 0);
         $this->eventId = $id;
         $this->commitId = $commitId;

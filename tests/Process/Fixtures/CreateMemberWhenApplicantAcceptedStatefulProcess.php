@@ -5,7 +5,6 @@
 
 namespace Dayuse\Test\Istorija\Process\Fixtures;
 
-
 use Dayuse\Istorija\Process\StatefulProcess;
 use Dayuse\Istorija\Process\State;
 use Dayuse\Test\Istorija\Process\Fixtures\Command\CreateMember;

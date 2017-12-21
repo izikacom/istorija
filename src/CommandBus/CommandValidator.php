@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\CommandBus;
 
-
 use Dayuse\Istorija\CommandBus\Validator\Exception\CommandNotValidException;
 
 interface CommandValidator

@@ -33,8 +33,7 @@ abstract class ProcessTestCase extends TestCase
             new StateRepositoryDAO(new InMemoryDAO())
         );
 
-        $this->scenario = new class($process, $commandBus, $this) extends Scenario
-        {
+        $this->scenario = new class($process, $commandBus, $this) extends Scenario {
             /**
              * @var TestCase
              */
@@ -44,7 +43,8 @@ abstract class ProcessTestCase extends TestCase
             {
                 parent::__construct($process, $commandBus);
 
-                $this->testCase = $testCase;;
+                $this->testCase = $testCase;
+                ;
             }
 
             public function then(array $allThen = [])

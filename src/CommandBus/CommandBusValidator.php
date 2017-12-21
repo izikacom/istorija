@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\CommandBus;
 
-
 use Dayuse\Istorija\SimpleMessaging\Bus;
 use Dayuse\Istorija\Utils\Ensure;
 
@@ -46,8 +45,8 @@ class CommandBusValidator
     public function handle(Command $command)
     {
         /** @var CommandValidator $validator */
-        foreach($this->validators as $validator) {
-            if(false === $validator->support($command)) {
+        foreach ($this->validators as $validator) {
+            if (false === $validator->support($command)) {
                 continue;
             }
 

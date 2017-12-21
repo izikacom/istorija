@@ -15,7 +15,7 @@ class StreamNameGenerator
         $type = end($parts);
         
         return new StreamName(
-            $aggregateId, 
+            $aggregateId,
             Contract::with($type)
         );
     }

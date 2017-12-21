@@ -2,7 +2,6 @@
 
 namespace Dayuse\Test\Istorija\EventSourcing;
 
-
 use Dayuse\Test\Istorija\EventSourcing\Fixtures\Email;
 use Dayuse\Test\Istorija\EventSourcing\Fixtures\Member;
 use Dayuse\Test\Istorija\EventSourcing\Fixtures\MemberConfirmedEmail;

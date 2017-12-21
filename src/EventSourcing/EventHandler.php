@@ -4,7 +4,6 @@ namespace Dayuse\Istorija\EventSourcing;
 
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 
-
 /**
  * @author : Thomas Tourlourat <thomas@tourlourat.com>
  */

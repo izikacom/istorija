@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\Projection\Testing;
 
-
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\Projection\Projection;
@@ -53,7 +52,7 @@ class Scenario
         // - key : identifier within DAO
         // - value : expected data
 
-        foreach($allThen as $identifier => $data) {
+        foreach ($allThen as $identifier => $data) {
             Ensure::eq($data, $this->dao->find($identifier));
         }
 

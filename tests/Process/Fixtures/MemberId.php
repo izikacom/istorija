@@ -5,17 +5,16 @@
 
 namespace Dayuse\Test\Istorija\Process\Fixtures;
 
-
 use Dayuse\Istorija\Identifiers\PrefixedUuidIdentifier;
 
 class MemberId extends PrefixedUuidIdentifier
 {
-    static protected function prefix()
+    protected static function prefix()
     {
         return 'member';
     }
 
-    static public function generateFromApplicant(ApplicantId $applicantId)
+    public static function generateFromApplicant(ApplicantId $applicantId)
     {
         return self::generateFrom((string)$applicantId);
     }

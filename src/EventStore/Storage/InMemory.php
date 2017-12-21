@@ -86,7 +86,7 @@ class InMemory implements Storage
         $events        = $this->streamedEvents[$streamName->getCanonicalStreamName()];
         $partialEvents = array_slice($events, $start, $count);
 
-        if(empty($partialEvents)) {
+        if (empty($partialEvents)) {
             return new SlicedReadResult(
                 $streamName,
                 [],
@@ -111,7 +111,7 @@ class InMemory implements Storage
             $allEvents = array_merge($allEvents, $events);
         }
 
-        if(empty($allEvents)) {
+        if (empty($allEvents)) {
             return new AllEventsReadResult(
                 [],
                 $start,
@@ -136,5 +136,4 @@ class InMemory implements Storage
             new EventMetadata($row['eventMetadata'], $row['eventMetadataContentType'])
         );
     }
-
 }

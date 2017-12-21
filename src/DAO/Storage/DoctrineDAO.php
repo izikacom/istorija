@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\DAO\Storage;
 
-
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
@@ -72,7 +71,6 @@ MYSQL;
             sprintf($query, $this->tableName),
             [':key' => $key]
         );
-
     }
 
     public function save(string $identifier, $data)

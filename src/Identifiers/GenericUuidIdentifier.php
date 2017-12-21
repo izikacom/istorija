@@ -5,4 +5,6 @@
 
 namespace Dayuse\Istorija\Identifiers;
 
-class GenericUuidIdentifier extends UuidIdentifier {}
+class GenericUuidIdentifier extends UuidIdentifier
+{
+}

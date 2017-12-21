@@ -1,6 +1,7 @@
 <?php
 
 namespace Dayuse\Istorija\Projection;
+
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\Identifiers\Identifier;
 
@@ -33,6 +34,4 @@ abstract class StatefulProjector extends Projector
 
         $this->dao->save($identifier, $nextState->toArray());
     }
-
-
 }

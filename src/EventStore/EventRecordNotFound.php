@@ -9,7 +9,7 @@ use Dayuse\Istorija\Exception;
 
 class EventRecordNotFound extends \Exception implements Exception
 {
-    static public function onStream(StreamName $stream, int $eventNumber)
+    public static function onStream(StreamName $stream, int $eventNumber)
     {
         return new self(
             sprintf(

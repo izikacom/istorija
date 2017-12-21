@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\DAO;
 
-
 interface TransferableInterface
 {
     public function transferTo(DAOInterface $otherDAO);

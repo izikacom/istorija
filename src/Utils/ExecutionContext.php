@@ -17,7 +17,6 @@ class ExecutionContext
     public function get(string $key)
     {
         if (isset($this->context[$key])) {
-
             throw ExecutionContextError::missingKey($key);
         }
 

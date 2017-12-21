@@ -25,8 +25,7 @@ abstract class ProjectionTestCase extends TestCase
         $dao        = new InMemoryDAO();
         $projection = $this->createProjection($dao);
 
-        $this->scenario = new class($projection, $dao, $this) extends Scenario
-        {
+        $this->scenario = new class($projection, $dao, $this) extends Scenario {
             /**
              * @var TestCase
              */
@@ -36,7 +35,8 @@ abstract class ProjectionTestCase extends TestCase
             {
                 parent::__construct($projection, $dao);
 
-                $this->testCase = $testCase;;
+                $this->testCase = $testCase;
+                ;
             }
 
             public function then(array $allThen = [])

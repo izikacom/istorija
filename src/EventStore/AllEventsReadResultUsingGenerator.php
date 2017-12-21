@@ -12,7 +12,6 @@ class AllEventsReadResultUsingGenerator extends AllEventsReadResult
 
     public function __construct(callable $wrappedGeneratorCallback, int $start, int $count)
     {
-        
         parent::__construct([], $start, $count);
         $this->wrappedGenerator = $wrappedGeneratorCallback();
     }

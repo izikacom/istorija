@@ -38,11 +38,10 @@ class ConfigurationBuilder
                 ['url' => $dsn],
                 new DbalConfiguration()
             );
-        } else if (is_array($data)) {
+        } elseif (is_array($data)) {
             $params = $data;
             $dbal   = DriverManager::getConnection($params, new DbalConfiguration());
-        }
-        else {
+        } else {
             // @see http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
             throw new \InvalidArgumentException('First parameter should be either a string to represent a DSN or an array to describe connection parameters');
         }

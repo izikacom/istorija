@@ -26,7 +26,7 @@ class GenericIdentifier implements Identifier
 
     public function equals(Identifier $other): bool
     {
-        if(!$other instanceof $this) {
+        if (!$other instanceof $this) {
             return false;
         }
 

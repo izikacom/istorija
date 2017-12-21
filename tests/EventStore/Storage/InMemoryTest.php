@@ -2,7 +2,6 @@
 
 namespace Dayuse\Test\Istorija\EventStore\Storage;
 
-
 use Dayuse\Istorija\EventStore\Configuration;
 use Dayuse\Istorija\EventStore\EventData;
 use Dayuse\Istorija\EventStore\EventEnvelope;
@@ -55,4 +54,3 @@ class InMemoryTest extends TestCase
         $this->assertCount(0, $eventStore->readAllEvents());
     }
 }
-

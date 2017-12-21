@@ -56,7 +56,7 @@ class Member extends AbstractAggregateRoot
 
     public function createTask(TaskId $taskId)
     {
-        if(array_key_exists((string) $taskId, $this->tasks)) {
+        if (array_key_exists((string) $taskId, $this->tasks)) {
             throw new \DomainException('Task already created');
         }
 
@@ -71,7 +71,7 @@ class Member extends AbstractAggregateRoot
 
     public function completeTask(TaskId $taskId)
     {
-        if(!array_key_exists((string) $taskId, $this->tasks)) {
+        if (!array_key_exists((string) $taskId, $this->tasks)) {
             throw new \DomainException('Task never created');
         }
 
@@ -80,7 +80,7 @@ class Member extends AbstractAggregateRoot
 
     public function deleteTask(TaskId $taskId)
     {
-        if(!array_key_exists((string) $taskId, $this->tasks)) {
+        if (!array_key_exists((string) $taskId, $this->tasks)) {
             throw new \DomainException('Task never created');
         }
 

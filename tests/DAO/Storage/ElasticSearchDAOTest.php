@@ -8,7 +8,6 @@
 
 namespace Dayuse\Test\Istorija\DAO\Storage;
 
-
 use Dayuse\Istorija\DAO\Storage\ElasticSearchDAO;
 use Dayuse\Test\Istorija\DAO\DAOTestCase;
 use Elasticsearch\Client;
@@ -26,11 +25,9 @@ class ElasticSearchDAOTest extends DAOTestCase
     {
         try {
             $this->client->ping();
-        }
-        catch(NoNodesAvailableException $e) {
+        } catch (NoNodesAvailableException $e) {
             $this->markTestSkipped('ElasticSearch does not pong.');
         }
-
     }
 
     protected function createDAO()

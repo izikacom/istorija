@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\CommandBus;
 
-
 class TraceableCommandBus implements CommandBus
 {
     /**

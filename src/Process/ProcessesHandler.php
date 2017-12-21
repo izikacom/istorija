@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\Process;
 
-
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\Utils\Ensure;
 use Psr\Log\LoggerInterface;

@@ -142,7 +142,8 @@ class ScenarioTest extends TestCase
         $scenario = Scenario::monitor(Member::class);
         $scenario->when(function () {
             return new class() extends AbstractAggregateRoot {
-                public function getId() {
+                public function getId()
+                {
                     return GenericUuidIdentifier::generate();
                 }
             };

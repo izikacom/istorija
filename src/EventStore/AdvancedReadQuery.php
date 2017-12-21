@@ -5,4 +5,6 @@
 
 namespace Dayuse\Istorija\EventStore;
 
-interface AdvancedReadQuery {}
+interface AdvancedReadQuery
+{
+}

@@ -5,7 +5,6 @@
 
 namespace Dayuse\Istorija\Process;
 
-
 use Dayuse\Istorija\Identifiers\Identifier;
 use Dayuse\Istorija\Identifiers\PrefixedIdentifier;
 

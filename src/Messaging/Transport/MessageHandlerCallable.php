@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\Messaging\Transport;
 
-
 use Dayuse\Istorija\Messaging\Message;
 use Dayuse\Istorija\Messaging\MessageHandler;
 use Dayuse\Istorija\Messaging\MessageHandlerContext;

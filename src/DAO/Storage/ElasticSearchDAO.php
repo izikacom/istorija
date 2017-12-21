@@ -8,7 +8,6 @@
 
 namespace Dayuse\Istorija\DAO\Storage;
 
-
 use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
@@ -324,7 +323,6 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
                     ],
                 ];
             }
-
         } else {
             return [
                 "must" => [
@@ -446,7 +444,8 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         while (\true) {
 
             // Execute a Scroll request
-            $response = $this->client->scroll([
+            $response = $this->client->scroll(
+                [
                     "scroll_id" => $scroll_id,  //...using our previously obtained _scroll_id
                     "scroll"    => "2s"           // and the same timeout window
                 ]

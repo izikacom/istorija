@@ -2,7 +2,6 @@
 
 namespace Dayuse\Test\Istorija\Identifiers;
 
-
 use Dayuse\Istorija\Identifiers\PrefixedUuidIdentifier;
 use PHPUnit\Framework\TestCase;
 

@@ -87,7 +87,6 @@ class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitializati
 
 
         if (false === $row) {
-
             throw EventRecordNotFound::onStream($stream, $eventNumber);
         }
 
@@ -101,10 +100,9 @@ class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitializati
         $stmt = $this->dbal->prepare($query->getSql());
         $stmt->execute($query->getParameters());
 
-        $generatorLambda = function() use ($stmt, $start) {
+        $generatorLambda = function () use ($stmt, $start) {
             $eventNumber = $start;
             while (false !== ($row = $stmt->fetch(\PDO::FETCH_ASSOC))) {
-
                 yield hydrateFromRow($row, $eventNumber++);
             }
         };
@@ -119,10 +117,9 @@ class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitializati
         $stmt = $this->dbal->prepare($query->getSql());
         $stmt->execute($query->getParameters());
 
-        $generatorLambda = function() use ($stmt, $start) {
+        $generatorLambda = function () use ($stmt, $start) {
             $eventNumber = $start;
             while (false !== ($row = $stmt->fetch(\PDO::FETCH_ASSOC))) {
-
                 yield hydrateFromRow($row, $eventNumber++);
             }
         };
@@ -143,7 +140,6 @@ class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitializati
     private function checkExpectedVersionInCurrentTransaction(StreamName $stream, int $expectedVersion)
     {
         if (!$this->dbal->isTransactionActive()) {
-
             throw new \LogicException('No active transaction');
         }
 
@@ -160,7 +156,6 @@ class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitializati
                 $stmt->execute($checkExpectedVersionQuery->getParameters());
             } catch (DriverException $e) {
                 if ('45001' === $e->getSQLState()) {
-
                     throw OptimisticConcurrencyFailed::versionDoesNotMatch($expectedVersion, $currentStreamVersion);
                 }
 
