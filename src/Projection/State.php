@@ -55,8 +55,8 @@ class State
 
     public static function fromArray(array $data): State
     {
-        Ensure::allScalar($data['data']);
+        Ensure::allScalar($data);
 
-        return new self($data['data']);
+        return new self($data);
     }
 }
