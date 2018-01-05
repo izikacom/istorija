@@ -8,6 +8,6 @@
 
 namespace Dayuse\Istorija\CommandBus\Validator\Exception;
 
-class CommandNotValidException extends \RuntimeException
-{
-}
+use Dayuse\Istorija\Exception;
+
+class CommandNotValidException extends \RuntimeException implements Exception {}
