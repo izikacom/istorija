@@ -3,9 +3,9 @@
  * @author Boris Guéry <guery.b@gmail.com>
  */
 
-namespace Dayuse\Istorija\EventSourcing;
+namespace DayUse\Istorija\EventSourcing;
 
-interface Entity extends Identified
+interface Identified
 {
     public function getId();
 }
