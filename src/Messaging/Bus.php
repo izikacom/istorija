@@ -69,12 +69,12 @@ class Bus
         throw NotImplemented::method('Use send() instead');
     }
 
-    public function subscribe(Subscription $subscription)
+    public function subscribe(Subscription $subscription): void
     {
         $this->subscriptions[$subscription->getMessageContract()][] = $subscription;
     }
 
-    public function start()
+    public function start(): void
     {
         throw NotImplemented::feature('Start is used when starting the bus in Consuming mode');
     }
