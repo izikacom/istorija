@@ -5,7 +5,7 @@
 
 namespace Dayuse\Test\Istorija\EventSourcing\DomainEvent;
 
-use DayUse\Istorija\EventSourcing\DomainEvent\EventDateTime;
+use Dayuse\Istorija\EventSourcing\DomainEvent\EventDateTime;
 use PHPUnit\Framework\TestCase;
 
 class EventDateTimeTest extends TestCase

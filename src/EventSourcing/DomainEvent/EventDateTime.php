@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\EventSourcing\DomainEvent;
+namespace Dayuse\Istorija\EventSourcing\DomainEvent;
 
 class EventDateTime
 {
