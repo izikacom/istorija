@@ -20,5 +20,5 @@ interface SearchableInterface
      *
      * @return array[]
      */
-    public function search($text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50);
+    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : array;
 }

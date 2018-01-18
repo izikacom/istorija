@@ -16,10 +16,10 @@ interface AdvancedDAOInterface extends DAOInterface
      *
      * @return array[]
      */
-    public function findAll(int $page = 0, int $maxPerPage = 50);
+    public function findAll(int $page = 0, int $maxPerPage = 50): array;
 
     /**
      * @return integer
      */
-    public function countAll();
+    public function countAll(): int;
 }

@@ -36,12 +36,6 @@ class RedisDAO implements DAOInterface, BulkableInterface
      */
     private $prefix;
 
-    /**
-     * RedisDictionary constructor.
-     *
-     * @param \Redis $redis
-     * @param string $prefix
-     */
     public function __construct(\Redis $redis, string $prefix)
     {
         Ensure::notBlank($prefix);
@@ -68,7 +62,7 @@ class RedisDAO implements DAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function remove(string $identifier)
+    public function remove(string $identifier) : void
     {
         $this->redis->del($this->generateKey($identifier));
     }
@@ -76,7 +70,7 @@ class RedisDAO implements DAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function save(string $identifier, $data)
+    public function save(string $identifier, $data) : void
     {
         $this->redis->set(
             $this->generateKey($identifier),
@@ -87,7 +81,7 @@ class RedisDAO implements DAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function flush()
+    public function flush() : void
     {
         $iterator = null;
         while (false !== ($keys = $this->redis->scan($iterator, $this->generateKey('*')))) {
@@ -98,7 +92,7 @@ class RedisDAO implements DAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function saveBulk(array $models)
+    public function saveBulk(array $models) : void
     {
         Ensure::allIsInstanceOf($models, IdentifiableValue::class);
 
@@ -113,12 +107,7 @@ class RedisDAO implements DAOInterface, BulkableInterface
         return $this->redis;
     }
 
-    /**
-     * @param string $identifier
-     *
-     * @return string
-     */
-    protected function generateKey(string $identifier)
+    protected function generateKey(string $identifier) : string
     {
         return sprintf('%s:%s', $this->prefix, $identifier);
     }

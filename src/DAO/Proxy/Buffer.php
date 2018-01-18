@@ -78,14 +78,16 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function save(string $id, $data)
+    public function save(string $id, $data) : void
     {
         if ($this->enabled) {
-            return $this->bufferDAO->save($id, $data);
+            $this->bufferDAO->save($id, $data);
+
+            return;
         }
 
         // stream to real DAO
-        return $this->targetedDAO->save($id, $data);
+        $this->targetedDAO->save($id, $data);
     }
 
     /**
@@ -104,7 +106,7 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function remove(string $id)
+    public function remove(string $id) : void
     {
         if ($this->enabled) {
             $this->bufferDAO->remove($id);
@@ -119,7 +121,7 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function flush()
+    public function flush() : void
     {
         if ($this->enabled) {
             $this->bufferDAO->flush();

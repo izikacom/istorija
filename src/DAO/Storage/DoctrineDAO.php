@@ -58,7 +58,7 @@ MYSQL;
         return json_decode($record['value'], true);
     }
 
-    public function remove(string $identifier)
+    public function remove(string $identifier) : void
     {
         $key = $this->generateKey($identifier);
 
@@ -73,7 +73,7 @@ MYSQL;
         );
     }
 
-    public function save(string $identifier, $data)
+    public function save(string $identifier, $data) : void
     {
         Ensure::isArray($data, 'DoctrineDAO was tested only with value as array');
 
@@ -81,9 +81,9 @@ MYSQL;
 
 
         if (null === $this->find($identifier)) {
-            $query = sprintf("INSERT INTO `%s` (`key`, `value`) VALUES (:key, :value)", $this->tableName);
+            $query = sprintf('INSERT INTO `%s` (`key`, `value`) VALUES (:key, :value)', $this->tableName);
         } else {
-            $query = sprintf("UPDATE `%s` SET `value` = :value WHERE `key` = :key", $this->tableName);
+            $query = sprintf('UPDATE `%s` SET `value` = :value WHERE `key` = :key', $this->tableName);
         }
 
         $this->connection->executeQuery(
@@ -95,7 +95,7 @@ MYSQL;
         );
     }
 
-    public function saveBulk(array $models)
+    public function saveBulk(array $models) : void
     {
         Ensure::allIsInstanceOf($models, IdentifiableValue::class);
 
@@ -105,7 +105,7 @@ MYSQL;
         }
     }
 
-    public function flush()
+    public function flush() : void
     {
         $query = <<<MYSQL
 TRUNCATE FROM `%s`

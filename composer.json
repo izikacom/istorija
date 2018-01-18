@@ -22,6 +22,7 @@
   },
   "minimum-stability": "stable",
   "require": {
+    "php": ">=7.1.0",
     "beberlei/assert": "^2.7",
     "mathiasverraes/classfunctions": "^1.1",
     "ramsey/uuid": "^3.5",

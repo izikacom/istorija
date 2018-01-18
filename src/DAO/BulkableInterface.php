@@ -13,5 +13,5 @@ interface BulkableInterface
     /**
      * @param IdentifiableValue[] $models
      */
-    public function saveBulk(array $models);
+    public function saveBulk(array $models) : void;
 }

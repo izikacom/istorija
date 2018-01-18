@@ -29,7 +29,7 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function save(string $id, $data)
+    public function save(string $id, $data) : void
     {
         $this->data[$id] = $data;
     }
@@ -45,25 +45,25 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function findAll(int $page = 0, int $maxPerPage = 50)
+    public function findAll(int $page = 0, int $maxPerPage = 50): array
     {
-        return array_slice($this->data, $page, $maxPerPage, false);
+        return \array_slice($this->data, $page, $maxPerPage, false);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function countAll()
+    public function countAll(): int
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function transferTo(DAOInterface $otherDAO)
+    public function transferTo(DAOInterface $otherDAO) : void
     {
-        if (0 === count($this->data)) {
+        if (0 === \count($this->data)) {
             // nothing to save
             return;
         }
@@ -86,7 +86,7 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function remove(string $id)
+    public function remove(string $id) : void
     {
         unset($this->data[$id]);
     }
@@ -94,7 +94,7 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function flush()
+    public function flush() : void
     {
         $this->data = [];
     }

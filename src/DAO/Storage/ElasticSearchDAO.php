@@ -36,17 +36,8 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      */
     private $type;
 
-    /**
-     * ElasticSearchDAO constructor.
-     *
-     * @param Client $client
-     * @param string $index
-     * @param string $type
-     */
-    public function __construct(Client $client, $index, $type)
+    public function __construct(Client $client, string $index, string $type)
     {
-        Ensure::string($type);
-
         $this->client = $client;
         $this->index  = $index;
         $this->type   = $type;
@@ -55,7 +46,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * {@inheritDoc}
      */
-    public function save(string $id, $data)
+    public function save(string $id, $data) : void
     {
         Ensure::isArray($data, 'ElasticSearch was tested only with value as array');
 
@@ -73,11 +64,11 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * @inheritDoc
      */
-    public function saveBulk(array $models)
+    public function saveBulk(array $models) : void
     {
         Ensure::allIsInstanceOf($models, IdentifiableValue::class);
         Ensure::allSatisfy($models, function (IdentifiableValue $identifiableValue) {
-            return is_array($identifiableValue->getValue());
+            return \is_array($identifiableValue->getValue());
         }, 'ElasticSearch was tested only with value as array');
 
         $params = [
@@ -95,7 +86,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
             ];
             $params['body'][] = $model->getValue();
 
-            if (($i + 1) % 1000 == 0) {
+            if (($i + 1) % 1000 === 0) {
                 $this->client->bulk($params);
 
                 // erase the old bulk request
@@ -131,7 +122,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * {@inheritDoc}
      */
-    public function findAll($page = 0, $maxPerPage = 50)
+    public function findAll(int $page = 0, int $maxPerPage = 50) : array
     {
         return $this->query($this->buildSearchQuery(), $page, $maxPerPage);
     }
@@ -141,7 +132,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * {@inheritDoc}
      */
-    public function search($text = null, array $criteria = [], $page = 0, $maxPerPage = 50)
+    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : array
     {
         $query = $this->buildSearchQuery($text, $criteria);
 
@@ -151,7 +142,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * @inheritDoc
      */
-    public function countAll()
+    public function countAll() : int
     {
         return $this->doCount($this->buildSearchQuery());
     }
@@ -159,7 +150,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * {@inheritDoc}
      */
-    public function remove(string $id)
+    public function remove(string $id) : void
     {
         try {
             $this->client->delete([
@@ -179,7 +170,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * {@inheritDoc}
      */
-    protected function findBy(array $criteria = [], $page = 0, $maxPerPage = 50)
+    protected function findBy(array $criteria = [], $page = 0, $maxPerPage = 50) : array
     {
         if (empty($criteria)) {
             return [];
@@ -196,7 +187,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     {
         $results = $this->findBy($criteria);
 
-        if (count($results) === 0) {
+        if (\count($results) === 0) {
             return null;
         }
 
@@ -290,46 +281,46 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     protected function buildMatching($input)
     {
         if ($input) {
-            if (is_string($input)) {
+            if (\is_string($input)) {
                 return [
-                    "must" => [
-                        "match" => [
-                            "_all" => [
-                                "query"    => $input,
-                                "operator" => "and",
-                            ],
-                        ],
-                    ],
-                ];
-            } else {
-                Ensure::allString(array_values($input));
-                Ensure::allString(array_keys($input));
-
-                $mustFactory = function ($field, $text) {
-                    return [
+                    'must' => [
                         'match' => [
-                            $field => [
-                                "query"    => $text,
-                                "operator" => "and",
+                            '_all' => [
+                                'query'    => $input,
+                                'operator' => 'and',
                             ],
                         ],
-                    ];
-                };
-
-                return [
-                    "minimum_should_match" => 1,
-                    "should"               => [
-                        array_map($mustFactory, array_keys($input), array_values($input)),
                     ],
                 ];
             }
-        } else {
+
+            Ensure::allString(array_values($input));
+            Ensure::allString(array_keys($input));
+
+            $mustFactory = function ($field, $text) {
+                return [
+                    'match' => [
+                        $field => [
+                            'query'    => $text,
+                            'operator' => 'and',
+                        ],
+                    ],
+                ];
+            };
+
             return [
-                "must" => [
-                    "match_all" => [],
+                'minimum_should_match' => 1,
+                'should'               => [
+                    array_map($mustFactory, array_keys($input), array_values($input)),
                 ],
             ];
         }
+
+        return [
+            'must' => [
+                'match_all' => [],
+            ],
+        ];
     }
 
     /**
@@ -345,7 +336,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return array
      */
-    protected function buildFilters(array $criterias = [])
+    protected function buildFilters(array $criterias = []) : array
     {
         return array_values(array_filter(array_map(function ($field, $conditions) {
             if (empty($conditions)) {
@@ -362,7 +353,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         }, array_keys($criterias), $criterias)));
     }
 
-    protected function buildFilter($field, array $conditions)
+    protected function buildFilter($field, array $conditions) : array
     {
         $rangeFactory = function ($field, array $conditions) {
             $operators = [
@@ -389,7 +380,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         };
 
         $operators = array_keys($conditions);
-        if (in_array('=', $operators, true)) {
+        if (\in_array('=', $operators, true)) {
             return [
                 'term' => [
                     $field => $conditions['='],
@@ -403,7 +394,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * @inheritDoc
      */
-    protected function countBy(array $criteria = [])
+    protected function countBy(array $criteria = []) : int
     {
         if (empty($criteria)) {
             return 0;
@@ -419,16 +410,16 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/plugins/2.0/plugins-delete-by-query.html
      */
-    public function flush()
+    public function flush() : void
     {
         $params = [
-            "search_type" => "scan",    // use search_type=scan
-            "scroll"      => "2s",     // how long between scroll requests. should be small!
-            "size"        => 50,        // how many results *per shard* you want back
-            "index"       => $this->index,
-            "type"        => $this->type,
-            "body"        => [
-                "query" => ['match_all' => []],
+            'search_type' => 'scan',    // use search_type=scan
+            'scroll'      => '2s',     // how long between scroll requests. should be small!
+            'size'        => 50,        // how many results *per shard* you want back
+            'index'       => $this->index,
+            'type'        => $this->type,
+            'body'        => [
+                'query' => ['match_all' => []],
             ],
         ];
 
@@ -446,13 +437,13 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
             // Execute a Scroll request
             $response = $this->client->scroll(
                 [
-                    "scroll_id" => $scroll_id,  //...using our previously obtained _scroll_id
-                    "scroll"    => "2s"           // and the same timeout window
+                    'scroll_id' => $scroll_id,  //...using our previously obtained _scroll_id
+                    'scroll'    => '2s'           // and the same timeout window
                 ]
             );
 
             // Check to see if we got any search hits from the scroll
-            if (count($response['hits']['hits']) > 0) {
+            if (\count($response['hits']['hits']) > 0) {
                 // If yes, Do Work Here
                 array_walk($response['hits']['hits'], function ($hit) {
                     $this->remove($hit['_id']);
@@ -468,7 +459,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         }
     }
 
-    private function searchAndDeserializeHits(array $query)
+    private function searchAndDeserializeHits(array $query) : array
     {
         try {
             $result = $this->client->search($query);
@@ -483,7 +474,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         return $this->deserializeHits($result['hits']['hits']);
     }
 
-    private function doCount($query = [])
+    private function doCount(array $query = []): int
     {
         try {
             $result = $this->client->count(
@@ -506,7 +497,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         return $result['count'];
     }
 
-    protected function query(array $query, $page, $maxPerPage = 50)
+    protected function query(array $query, $page, $maxPerPage = 50) : array
     {
         return $this->searchAndDeserializeHits(
             [
@@ -522,12 +513,12 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         );
     }
 
-    private function deserializeHit(array $hit)
+    private function deserializeHit(array $hit) : array
     {
         return $hit['_source'];
     }
 
-    private function deserializeHits(array $hits)
+    private function deserializeHits(array $hits) : array
     {
         return array_map([$this, 'deserializeHit'], $hits);
     }
@@ -542,7 +533,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return boolean True, if the index was successfully created
      */
-    public function defineMapping()
+    public function defineMapping(): bool
     {
         $indexParams = [
             'index' => $this->index,
@@ -581,7 +572,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return array
      */
-    protected function mappingRules()
+    protected function mappingRules(): array
     {
         return [
             '_source' => [
@@ -601,7 +592,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return array
      */
-    protected function defaultSorting()
+    protected function defaultSorting(): array
     {
         return [];
     }

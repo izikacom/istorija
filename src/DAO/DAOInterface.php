@@ -15,13 +15,13 @@ interface DAOInterface
      * @param callable $updateMethod
      * @param bool     $allowCreation
      */
-    public function update(string $id, callable $updateMethod, bool $allowCreation = true);
+    public function update(string $id, callable $updateMethod, bool $allowCreation = true) : void;
 
     /**
      * @param string $id
      * @param mixed  $data
      */
-    public function save(string $id, $data);
+    public function save(string $id, $data) : void;
 
     /**
      * @param string $id
@@ -33,7 +33,7 @@ interface DAOInterface
     /**
      * @param string $id
      */
-    public function remove(string $id);
+    public function remove(string $id) : void;
 
-    public function flush();
+    public function flush() : void;
 }

@@ -12,12 +12,7 @@ use Dayuse\Istorija\Utils\Ensure;
 
 trait FunctionalTrait
 {
-    /**
-     * @param string   $id
-     * @param callable $updateMethod
-     * @param bool     $allowCreation
-     */
-    public function update(string $id, callable $updateMethod, bool $allowCreation = true)
+    public function update(string $id, callable $updateMethod, bool $allowCreation = true) : void
     {
         /** @var DAOInterface $that */
         $that = $this;
