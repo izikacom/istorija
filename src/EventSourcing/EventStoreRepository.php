@@ -48,8 +48,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
     public function save(AbstractAggregateRoot $aggregateRoot): void
     {
         if (!$aggregateRoot->hasRecordedEvents()) {
-
-            throw new NoRecordedEvents();
+            throw new NoRecordedEvents('Command result must be a domain exception or events to record.');
         }
 
         $streamName     = $this->streamNameFromIdentifier($aggregateRoot->getId());
