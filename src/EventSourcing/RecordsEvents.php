@@ -7,6 +7,7 @@ namespace Dayuse\Istorija\EventSourcing;
 
 interface RecordsEvents
 {
-    public function getUncommitedEvents();
-    public function clearUncommitedEvents(): void;
+    public function getRecordedEvents();
+    public function clearRecordedEvents(): void;
+    public function hasRecordedEvents(): bool;
 }
