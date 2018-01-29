@@ -48,6 +48,11 @@ class State
         ));
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->data);
+    }
+
     public function toArray(): array
     {
         return $this->data;

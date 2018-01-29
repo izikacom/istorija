@@ -72,6 +72,11 @@ class State
         return $that;
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->data);
+    }
+
     public function isClosed(): bool
     {
         return null !== $this->closedAt;
