@@ -23,8 +23,6 @@ class State
 
     public function __construct(array $data = [])
     {
-        Ensure::allScalar($data);
-
         $this->data = $data;
     }
 
@@ -36,7 +34,6 @@ class State
     public function set(string $key, $value): State
     {
         Ensure::null($this->closedAt, 'This state have been already marked as done. Could not change data');
-        Ensure::scalar($value);
 
         return new self(array_merge(
             $this->data,
@@ -49,7 +46,6 @@ class State
     public function merge(array $data): State
     {
         Ensure::null($this->closedAt, 'This state have been already marked as done. Could not change data');
-        Ensure::allScalar($data);
 
         return new self(array_merge(
             $this->data,
@@ -92,8 +88,6 @@ class State
 
     public static function fromArray(array $data): State
     {
-        Ensure::allScalar($data['data']);
-
         $that           = new self();
         $that->data     = $data['data'];
         $that->closedAt = $data['closedAt'] ? \DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $data['closedAt']) : null;

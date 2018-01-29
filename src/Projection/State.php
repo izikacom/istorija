@@ -16,8 +16,6 @@ class State
 
     public function __construct(array $data = [])
     {
-        Ensure::allScalar($data);
-
         $this->data = $data;
     }
 
@@ -28,8 +26,6 @@ class State
 
     public function set(string $key, $value): State
     {
-        Ensure::scalar($value);
-
         return new self(array_merge(
             $this->data,
             [
@@ -40,8 +36,6 @@ class State
 
     public function merge(array $data): State
     {
-        Ensure::allScalar($data);
-
         return new self(array_merge(
             $this->data,
             $data
@@ -60,8 +54,6 @@ class State
 
     public static function fromArray(array $data): State
     {
-        Ensure::allScalar($data);
-
         return new self($data);
     }
 }
