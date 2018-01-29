@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\DAO\Storage;
+namespace Dayuse\Istorija\DAO\Storage;
 
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;
