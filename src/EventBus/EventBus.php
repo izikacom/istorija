@@ -31,6 +31,11 @@ class EventBus
         $this->bus = $bus;
     }
 
+    public function publish(Event $event): void
+    {
+        $this->bus->send($event, (new SendOptions())->sendLocal());
+    }
+
     /**
      * @param Event[] $events
      */
