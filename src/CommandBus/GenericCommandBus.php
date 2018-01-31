@@ -35,6 +35,9 @@ class GenericCommandBus implements CommandBus
         $this->bus->subscribe(new Subscription($commandType, new MessageHandlerCallable($callable)));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function handle(Command $command) : void
     {
         $this->bus->send($command, (new SendOptions())->sendLocal());

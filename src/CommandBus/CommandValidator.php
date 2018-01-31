@@ -17,7 +17,7 @@ interface CommandValidator
      *
      * @throws CommandNotValidException
      */
-    public function validate(Command $command);
+    public function validate(Command $command): void;
 
     public function support(Command $command) : bool;
 }

@@ -28,6 +28,9 @@ class TraceableCommandBus implements CommandBus
         $this->commandBus->register($commandType, $callable);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function handle(Command $command): void
     {
         $this->recordedCommands[] = $command;

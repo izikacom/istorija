@@ -16,5 +16,11 @@ use Dayuse\Istorija\Messaging\Transport\MessageHandlerCallable;
 interface CommandBus
 {
     public function register(string $commandType, callable $callable) : void;
+
+    /**
+     * @param Command $command
+     *
+     * @throws \Throwable
+     */
     public function handle(Command $command) : void;
 }

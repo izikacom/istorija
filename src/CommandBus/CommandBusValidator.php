@@ -8,13 +8,12 @@
 
 namespace Dayuse\Istorija\CommandBus;
 
-use Dayuse\Istorija\SimpleMessaging\Bus;
 use Dayuse\Istorija\Utils\Ensure;
 
-class CommandBusValidator
+class CommandBusValidator implements CommandBus
 {
     /**
-     * @var Bus
+     * @var CommandBus
      */
     private $commandBus;
 
@@ -26,10 +25,10 @@ class CommandBusValidator
     /**
      * CommandBusValidator constructor.
      *
-     * @param Bus                $commandBus
+     * @param CommandBus         $commandBus
      * @param CommandValidator[] $validators
      */
-    public function __construct(Bus $commandBus, array $validators)
+    public function __construct(CommandBus $commandBus, array $validators)
     {
         Ensure::allIsInstanceOf($validators, CommandValidator::class);
 
@@ -37,12 +36,15 @@ class CommandBusValidator
         $this->validators = $validators;
     }
 
-    public function subscribe(string $commandType, callable $callable)
+    public function register(string $commandType, callable $callable): void
     {
-        $this->commandBus->subscribe($commandType, $callable);
+        $this->commandBus->register($commandType, $callable);
     }
 
-    public function handle(Command $command)
+    /**
+     * @inheritdoc
+     */
+    public function handle(Command $command): void
     {
         /** @var CommandValidator $validator */
         foreach ($this->validators as $validator) {
@@ -53,6 +55,6 @@ class CommandBusValidator
             $validator->validate($command);
         }
 
-        $this->commandBus->publish($command);
+        $this->commandBus->handle($command);
     }
 }
