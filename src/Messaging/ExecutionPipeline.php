@@ -12,16 +12,6 @@ use Bgy\TransientFaultHandling\RetryStrategies\FixedInterval;
 class ExecutionPipeline
 {
     private $handlers = [];
-    private $retryPolicy;
-
-    public function __construct()
-    {
-        $this->retryPolicy = new RetryPolicy(new TransientErrorCatchAllStrategy(), new FixedInterval(
-            3,
-            1000000,
-            false
-        ));
-    }
 
     public function addHandler(MessageHandler $messageHandler): void
     {
@@ -31,9 +21,7 @@ class ExecutionPipeline
     public function execute(Message $message, MessageHandlerContext $messageHandlerContext): void
     {
         foreach ($this->handlers as $handler) {
-            $this->retryPolicy->execute(function () use ($handler, $message, $messageHandlerContext) {
-                call_user_func_array([$handler, 'handle'], [$message, $messageHandlerContext]);
-            });
+            $handler->handle($message, $messageHandlerContext);
         }
     }
 }
