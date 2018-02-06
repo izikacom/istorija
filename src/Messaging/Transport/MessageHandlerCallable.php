@@ -31,6 +31,6 @@ class MessageHandlerCallable implements MessageHandler
 
     public function handle(Message $message, MessageHandlerContext $context): void
     {
-        call_user_func($this->callable, $message, $context);
+        \call_user_func($this->callable, $message, $context);
     }
 }

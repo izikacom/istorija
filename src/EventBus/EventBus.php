@@ -16,10 +16,14 @@ use Dayuse\Istorija\Utils\Ensure;
 
 class EventBus
 {
-    /**
-     * @var Bus
-     */
+    /** @var Bus */
     private $bus;
+
+    /** @var Event[]  */
+    private $queue = [];
+
+    /** @var bool */
+    private $isPublishing = false;
 
     /**
      * EventBus constructor.
@@ -33,7 +37,19 @@ class EventBus
 
     public function publish(Event $event): void
     {
-        $this->bus->send($event, (new SendOptions())->sendLocal());
+        $this->queue[] = $event;
+
+        if (!$this->isPublishing) {
+            $this->isPublishing = true;
+
+            try {
+                while ($event = array_shift($this->queue)) {
+                    $this->bus->send($event, (new SendOptions())->sendLocal());
+                }
+            } finally {
+                $this->isPublishing = false;
+            }
+        }
     }
 
     /**
@@ -44,7 +60,7 @@ class EventBus
         Ensure::allIsInstanceOf($events, Event::class);
 
         foreach ($events as $event) {
-            $this->bus->send($event, (new SendOptions())->sendLocal());
+            $this->publish($event);
         }
     }
 

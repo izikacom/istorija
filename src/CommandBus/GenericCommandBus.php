@@ -15,10 +15,14 @@ use Dayuse\Istorija\Messaging\Transport\MessageHandlerCallable;
 
 class GenericCommandBus implements CommandBus
 {
-    /**
-     * @var Bus
-     */
+    /** @var Bus */
     private $bus;
+
+    /** @var Command[]  */
+    private $queue = [];
+
+    /** @var bool */
+    private $isHandling = false;
 
     /**
      * CommandBus constructor.
@@ -40,6 +44,19 @@ class GenericCommandBus implements CommandBus
      */
     public function handle(Command $command) : void
     {
-        $this->bus->send($command, (new SendOptions())->sendLocal());
+        $this->queue[] = $command;
+
+
+        if (!$this->isHandling) {
+            $this->isHandling = true;
+
+            try {
+                while ($command = array_shift($this->queue)) {
+                    $this->bus->send($command, (new SendOptions())->sendLocal());
+                }
+            } finally {
+                $this->isHandling = false;
+            }
+        }
     }
 }
