@@ -20,7 +20,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
     public function __construct(
         EventStore $eventStore,
         EventEnvelopeFactory $eventEnvelopeFactory,
-                                DomainEventFactory $domainEventFactory,
+        DomainEventFactory $domainEventFactory,
         EventBus $eventBus
     ) {
         $this->eventStore           = $eventStore;
