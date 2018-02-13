@@ -13,7 +13,6 @@ use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventCollection;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEventRecorder;
 use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
 use Dayuse\Istorija\Identifiers\Identifier;
-use ReflectionClass;
 
 trait EventSourcedObject
 {
@@ -41,7 +40,7 @@ trait EventSourcedObject
 
     public static function reconstituteFromSingleEvent(DomainEvent $event)
     {
-        $refClass = new ReflectionClass(static::class);
+        $refClass = new \ReflectionClass(static::class);
         /** @var AbstractAggregateRoot $instance */
         $instance = $refClass->newInstanceWithoutConstructor();
         $instance->configureEventRecorder();
@@ -59,7 +58,7 @@ trait EventSourcedObject
      */
     public static function reconstituteFromHistory(DomainEventCollection $history)
     {
-        $refClass = new ReflectionClass(static::class);
+        $refClass = new \ReflectionClass(static::class);
         /** @var AbstractAggregateRoot $instance */
         $instance = $refClass->newInstanceWithoutConstructor();
         $instance->configureEventRecorder();
