@@ -40,9 +40,7 @@ trait EventSourcedObject
 
     public static function reconstituteFromSingleEvent(DomainEvent $event)
     {
-        $refClass = new \ReflectionClass(static::class);
-        /** @var AbstractAggregateRoot $instance */
-        $instance = $refClass->newInstanceWithoutConstructor();
+        $instance = (new \ReflectionClass(static::class))->newInstanceWithoutConstructor();
         $instance->configureEventRecorder();
         $instance->apply($event);
 
@@ -58,9 +56,8 @@ trait EventSourcedObject
      */
     public static function reconstituteFromHistory(DomainEventCollection $history)
     {
-        $refClass = new \ReflectionClass(static::class);
         /** @var AbstractAggregateRoot $instance */
-        $instance = $refClass->newInstanceWithoutConstructor();
+        $instance = (new \ReflectionClass(static::class))->newInstanceWithoutConstructor();
         $instance->configureEventRecorder();
 
         foreach ($history as $event) {
