@@ -9,6 +9,7 @@ use Dayuse\Istorija\EventStore\EventId;
 use Dayuse\Istorija\EventStore\EventMetadata;
 use Dayuse\Istorija\EventStore\EventRecord;
 use Dayuse\Istorija\EventStore\EventRecordNotFound;
+use Dayuse\Istorija\EventStore\Exception\StreamDeletionOperationFailed;
 use Dayuse\Istorija\EventStore\ExpectedVersion;
 use Dayuse\Istorija\EventStore\SlicedReadResult;
 use Dayuse\Istorija\EventStore\Storage;
@@ -61,8 +62,15 @@ class InMemory implements Storage
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function delete(StreamName $stream, int $expectedVersion): void
     {
+        if (false === array_key_exists($stream->getCanonicalStreamName(), $this->streamedEvents)) {
+            throw StreamDeletionOperationFailed::streamNotFound($stream);
+        }
+
         unset($this->streamedEvents[$stream->getCanonicalStreamName()]);
     }
 

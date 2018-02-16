@@ -8,6 +8,7 @@ use Dayuse\Istorija\EventStore\AllEventsReadResult;
 use Dayuse\Istorija\EventStore\AllEventsReadResultUsingGenerator;
 use Dayuse\Istorija\EventStore\EventRecord;
 use Dayuse\Istorija\EventStore\EventRecordNotFound;
+use Dayuse\Istorija\EventStore\Exception\EventPersistingOperationFailed;
 use Dayuse\Istorija\EventStore\ExpectedVersion;
 use Dayuse\Istorija\EventStore\SlicedReadResult;
 use Dayuse\Istorija\EventStore\SlicedReadResultUsingGenerator;
@@ -22,6 +23,7 @@ use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\ReadStreamEven
 use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySql\Queries\SelectAndSetCurrentStreamVersion;
 use Dayuse\Istorija\EventStore\CommitId;
 use Dayuse\Istorija\EventStore\StreamName;
+use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Istorija\Utils\NotImplemented;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DriverException;
@@ -47,21 +49,34 @@ class MySqlDbalStorage implements Storage, AdvancedStorage, RequiresInitializati
         $this->dbal->executeQuery($query->getSql());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function persist(StreamName $toStream, array $uncommittedEvents, ?int $expectedVersion): void
     {
         $this->dbal->beginTransaction();
 
-        $this->checkExpectedVersionInCurrentTransaction($toStream, $expectedVersion);
+        try {
+            $this->checkExpectedVersionInCurrentTransaction($toStream, $expectedVersion);
 
-        $commitId = CommitId::generate();
+            $commitId = CommitId::generate();
 
-        foreach ($uncommittedEvents as $uncommittedEvent) {
-            $persistQuery = new PersistUncommitedEvent($uncommittedEvent, $toStream, $commitId);
-            $stmt = $this->dbal->prepare($persistQuery->getSql());
-            $stmt->execute($persistQuery->getParameters());
+            foreach ($uncommittedEvents as $uncommittedEvent) {
+                $persistQuery = new PersistUncommitedEvent($uncommittedEvent, $toStream, $commitId);
+                $stmt = $this->dbal->prepare($persistQuery->getSql());
+                $stmt->execute($persistQuery->getParameters());
+
+                /** @see http://php.net/manual/fr/pdostatement.rowcount.php */
+                Ensure::eq(1, $stmt->rowCount());
+            }
+
+            $this->dbal->commit();
         }
+        catch(\Throwable $e) {
+            $this->dbal->rollBack();
 
-        $this->dbal->commit();
+            throw EventPersistingOperationFailed::forUncommittedEvents($toStream, $uncommittedEvents, $e);
+        }
     }
 
     public function delete(StreamName $stream, int $expectedVersion): void
