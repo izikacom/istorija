@@ -42,6 +42,27 @@ class State
         ));
     }
 
+    public function append(string $key, $value): State
+    {
+        Ensure::keyExists($this->data, $key, sprintf('Could not append value to %s, key does not exists', $key));
+        Ensure::isArray($this->data[$key], sprintf('Could not append value to %s, key does not refer an array value', $key));
+
+        $appendTo = function(array $data, $value): array{
+            $data[] = $value;
+
+            return $data;
+        };
+
+        $updatedKey = $appendTo($this->data[$key], $value);
+
+        return new self(array_merge(
+            $this->data,
+            [
+                $key => $updatedKey,
+            ]
+        ));
+    }
+
     public function isEmpty(): bool
     {
         return empty($this->data);

@@ -38,6 +38,23 @@ class StateTest extends TestCase
     /**
      * @test
      */
+    public function could_append_value_to_key()
+    {
+        $state = new State([
+            'names' => ['John']
+        ]);
+
+        $this->assertCount(1, $state->get('names'));
+
+        $updatedState = $state->append('names', 'Jane');
+
+        $this->assertCount(1, $state->get('names'));
+        $this->assertCount(2, $updatedState->get('names'));
+    }
+
+    /**
+     * @test
+     */
     public function could_set_then_merge_value()
     {
         $state = new State([
