@@ -35,8 +35,9 @@ class State
             return $default;
         }
 
-        if (isset($this->data[$key])) {
-            return $this->data[$key];
+        if(0 === strpos($key, 'strict//')) {
+            $strictKey = str_replace('strict//', '', $key);
+            return $this->data[$strictKey] ?? $default;
         }
 
         $data = $this->data;
@@ -55,6 +56,15 @@ class State
     {
         if (null === $key) {
             return new self($this->data); // no modification occurred
+        }
+
+        if(0 === strpos($key, 'strict//')) {
+            $strictKey = str_replace('strict//', '', $key);
+            return new self(array_merge(
+                $this->data, [
+                    $strictKey => $value,
+                ]
+            ));
         }
 
         // used to avoid array reference

@@ -13,6 +13,32 @@ class StateTest extends TestCase
     /**
      * @test
      */
+    public function could_set_then_get_value_using_strict_key()
+    {
+        $state = new State([
+            'owner.name' => 'Jane Doe',
+            'owner'       => [
+                'name' => 'John Doe',
+            ],
+        ]);
+
+        $this->assertEquals('John Doe', $state->get('owner.name'));
+        $this->assertEquals('Jane Doe', $state->get('strict//owner.name'));
+
+        $updatedState = $state
+            ->set('strict//owner.name', 'Jean Michel')
+            ->set('owner.name', 'Philippe Lu');
+
+        $this->assertEquals('John Doe', $state->get('owner.name'));
+        $this->assertEquals('Jane Doe', $state->get('strict//owner.name'));
+
+        $this->assertEquals('Philippe Lu', $updatedState->get('owner.name'));
+        $this->assertEquals('Jean Michel', $updatedState->get('strict//owner.name'));
+    }
+
+    /**
+     * @test
+     */
     public function could_be_initialized()
     {
         $state = new State([
@@ -25,6 +51,8 @@ class StateTest extends TestCase
         $this->assertEquals('Le petit chat', $state->get('title'));
         $this->assertEquals('John Doe', $state->get('owner.name'));
     }
+
+
 
     /**
      * @test
