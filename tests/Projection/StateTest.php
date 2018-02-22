@@ -33,46 +33,25 @@ class StateTest extends TestCase
     {
         $state = new State([
             'vehicle' => [
-                'id'      => 'vehicle-123',
-                'drivers' => [
-                    'Jean',
-                    'Paul',
-                    'Michel',
-                ],
-                'owner'   => [
+                'id'    => 'vehicle-123',
+                'owner' => [
                     'name' => 'John Doe',
                 ],
             ],
         ]);
 
         $this->assertEquals('vehicle-123', $state->get('vehicle.id'));
-        $this->assertEquals([
-            'Jean',
-            'Paul',
-            'Michel',
-        ], $state->get('vehicle.drivers'));
         $updatedState = $state
             ->set('vehicle.owner.phoneNumber', '0626525698')
             ->set('vehicle.owner.name', 'Jane Doe')
-            ->set('vehicle.title', 'La rapide')
-            ->set('vehicle.drivers.1', 'Louise');
+            ->set('vehicle.title', 'La rapide');
 
         $this->assertEquals('John Doe', $state->get('vehicle.owner.name'));
         $this->assertEquals(null, $state->get('vehicle.owner.phoneNumber'));
         $this->assertEquals(null, $state->get('vehicle.title'));
-        $this->assertEquals([
-            'Jean',
-            'Paul',
-            'Michel',
-        ], $state->get('vehicle.drivers'));
         $this->assertEquals('La rapide', $updatedState->get('vehicle.title'));
         $this->assertEquals('0626525698', $updatedState->get('vehicle.owner.phoneNumber'));
         $this->assertEquals('Jane Doe', $updatedState->get('vehicle.owner.name'));
-        $this->assertEquals([
-            'Jean',
-            'Louise',
-            'Michel',
-        ], $updatedState->get('vehicle.drivers'));
     }
 
     /**
