@@ -6,8 +6,9 @@
 namespace Dayuse\Istorija\Process;
 
 use Dayuse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\StateInterface;
 
-class State
+class State implements StateInterface
 {
     private const DATE_FORMAT = 'Y-m-d\TH:i:s.uP';
 
@@ -26,12 +27,17 @@ class State
         $this->data = $data;
     }
 
+    public function all(): array
+    {
+        return $this->data;
+    }
+
     public function get(string $key, $default = null)
     {
         return $this->data[$key] ?? $default;
     }
 
-    public function set(string $key, $value): State
+    public function set(string $key, $value): StateInterface
     {
         Ensure::null($this->closedAt, 'This state have been already marked as done. Could not change data');
 
@@ -43,7 +49,7 @@ class State
         ));
     }
 
-    public function merge(array $data): State
+    public function merge(array $data): StateInterface
     {
         Ensure::null($this->closedAt, 'This state have been already marked as done. Could not change data');
 
@@ -78,6 +84,24 @@ class State
         return null !== $this->closedAt;
     }
 
+    public function copy(): StateInterface
+    {
+        return new self($this->data);
+    }
+
+    public static function createEmpty(): StateInterface
+    {
+        return new self([]);
+    }
+
+    public static function createFromArray(array $data): StateInterface
+    {
+        return new self($data);
+    }
+
+    //
+    // serialization functions
+    //
     public function toArray(): array
     {
         return [
@@ -86,7 +110,7 @@ class State
         ];
     }
 
-    public static function fromArray(array $data): State
+    public static function fromArray(array $data): StateInterface
     {
         $that           = new self();
         $that->data     = $data['data'];

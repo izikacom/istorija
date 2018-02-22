@@ -38,6 +38,23 @@ class StateTest extends TestCase
     /**
      * @test
      */
+    public function could_copy()
+    {
+        $state = new State([
+            'title' => 'Le petit chat',
+        ]);
+
+        $copiedState  = $state->copy();
+        $updatedState = $state->set('title', 'Le petit chien');
+
+        $this->assertEquals('Le petit chat', $state->get('title'));
+        $this->assertEquals('Le petit chat', $copiedState->get('title'));
+        $this->assertEquals('Le petit chien', $updatedState->get('title'));
+    }
+
+    /**
+     * @test
+     */
     public function could_set_then_merge_value()
     {
         $state = new State([
