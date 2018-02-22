@@ -31,17 +31,14 @@ class State implements StateInterface
 
     public function set(string $key, $value): StateInterface
     {
-        return new self(array_merge(
-            $this->data,
-            [
-                $key => $value,
-            ]
-        ));
+        return $this->merge([
+            $key => $value,
+        ]);
     }
 
     public function merge(array $data): StateInterface
     {
-        return new self(array_merge(
+        return new static(array_merge(
             $this->data,
             $data
         ));
@@ -49,7 +46,7 @@ class State implements StateInterface
 
     public function copy(): StateInterface
     {
-        return new self($this->data);
+        return new static($this->data);
     }
 
     public function isEmpty(): bool
@@ -59,17 +56,17 @@ class State implements StateInterface
 
     public static function createEmpty(): StateInterface
     {
-        return new self([]);
+        return new static([]);
     }
 
     public static function createFromState(StateInterface $state): StateInterface
     {
-        return new self($state->all());
+        return new static($state->all());
     }
 
     public static function createFromArray(array $data): StateInterface
     {
-        return new self($data);
+        return new static($data);
     }
 
 
@@ -84,6 +81,6 @@ class State implements StateInterface
 
     public static function fromArray(array $data): StateInterface
     {
-        return new self($data);
+        return new static($data);
     }
 }
