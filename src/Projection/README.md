@@ -13,12 +13,12 @@ use \Dayuse\Istorija\Serializer\JsonObjectSerializer;
 $query = (new QueryBuilder())
     ->init(function() {
         return new State([
-            'userCount' => 0,
+            'numUsers' => 0,
         ]);
     })
     ->when([
-        'UserCreated' => function(DomainEvent $event, State $previous) {
-            return $previous->inc('userCount');
+        'UserCreated' => function(DomainEvent $event) {
+            return $state->set('numUsers', $state->get('numUsers') + 1);
         },
     ]);
 
@@ -29,7 +29,7 @@ $player = new SimplePlayer(
 );
 $player->playFromBeginning();
 
-$numUserCreation = $query->getState()->get('userCount');
+$numUserCreation = $query->getState()->get('numUsers');
 ?>
 ```
 
