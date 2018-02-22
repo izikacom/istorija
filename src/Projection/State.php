@@ -62,6 +62,11 @@ class State implements StateInterface
         return new self([]);
     }
 
+    public static function createFromState(StateInterface $state): StateInterface
+    {
+        return new self($state->all());
+    }
+
     public static function createFromArray(array $data): StateInterface
     {
         return new self($data);

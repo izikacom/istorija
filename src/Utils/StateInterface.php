@@ -15,6 +15,7 @@ interface StateInterface
     public function copy(): StateInterface;
     public function isEmpty(): bool;
 
+    public static function createFromState(StateInterface $state): StateInterface;
     public static function createEmpty(): StateInterface;
     public static function createFromArray(array $data): StateInterface;
 }
