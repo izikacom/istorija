@@ -8,7 +8,7 @@ use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
 use Dayuse\Istorija\Utils\Ensure;
 use Predis\Client;
-
+use Predis\Collection\Iterator;
 
 /**
  * @author : Thomas Tourlourat <thomas@tourlourat.com>
@@ -75,9 +75,8 @@ class PredisDAO implements DAOInterface, BulkableInterface
      */
     public function flush() : void
     {
-        $iterator = null;
-        while (false !== ($keys = $this->redis->scan($iterator, $this->generateKey('*')))) {
-            $this->redis->del($keys);
+        foreach (new Iterator\Keyspace($this->redis, $this->generateKey('*')) as $key) {
+            $this->redis->del([$key]);
         }
     }
 
