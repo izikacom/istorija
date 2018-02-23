@@ -12,22 +12,11 @@ use Dayuse\Istorija\Utils\Ensure;
 
 class BufferManager
 {
-    /**
-     * @var Buffer[]
-     */
+    /** @var Buffer[]  */
     private $bufferList;
-
-    /**
-     * @var boolean
-     */
     private $enabled;
 
-    /**
-     * BufferedDAOManager constructor.
-     *
-     * @param Buffer[] $bufferList
-     */
-    public function __construct(array $bufferList = [])
+    public function __construct(iterable $bufferList = [])
     {
         Ensure::allIsInstanceOf($bufferList, Buffer::class);
 
