@@ -12,6 +12,7 @@ use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\Storage\InMemoryDAO;
 use Dayuse\Istorija\DAO\TransferableInterface;
+use Dayuse\Istorija\Utils\Ensure;
 
 /**
  * Class Buffer
@@ -45,13 +46,11 @@ class Buffer implements DAOInterface
      */
     public function __construct(DAOInterface $targetedDAO, DAOInterface $bufferDAO = null)
     {
+        Ensure::nullOrIsInstanceOf($bufferDAO, TransferableInterface::class, 'The buffered DAO have to be transferable.');
+
         $this->targetedDAO = $targetedDAO;
         $this->bufferDAO   = $bufferDAO ?? new InMemoryDAO();
         $this->enabled     = false;
-
-        if (!$bufferDAO instanceof TransferableInterface) {
-            throw new \InvalidArgumentException('The buffered DAO have to be transferable.');
-        }
     }
 
     public static function create(DAOInterface $targetedDAO, DAOInterface $bufferDAO)
