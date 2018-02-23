@@ -10,6 +10,7 @@ namespace Dayuse\Istorija\DAO\Proxy;
 
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
+use Dayuse\Istorija\DAO\Storage\InMemoryDAO;
 use Dayuse\Istorija\DAO\TransferableInterface;
 
 /**
@@ -42,15 +43,15 @@ class Buffer implements DAOInterface
      * @param DAOInterface                       $targetedDAO
      * @param DAOInterface|TransferableInterface $bufferDAO
      */
-    public function __construct(DAOInterface $targetedDAO, DAOInterface $bufferDAO)
+    public function __construct(DAOInterface $targetedDAO, DAOInterface $bufferDAO = null)
     {
+        $this->targetedDAO = $targetedDAO;
+        $this->bufferDAO   = $bufferDAO ?? new InMemoryDAO();
+        $this->enabled     = false;
+
         if (!$bufferDAO instanceof TransferableInterface) {
             throw new \InvalidArgumentException('The buffered DAO have to be transferable.');
         }
-
-        $this->targetedDAO = $targetedDAO;
-        $this->bufferDAO   = $bufferDAO;
-        $this->enabled     = false;
     }
 
     public static function create(DAOInterface $targetedDAO, DAOInterface $bufferDAO)
@@ -58,19 +59,19 @@ class Buffer implements DAOInterface
         return new Buffer($targetedDAO, $bufferDAO);
     }
 
-    public function enable()
+    public function enable(): void
     {
         $this->bufferDAO->flush();
         $this->enabled = true;
     }
 
-    public function flushAndCommit()
+    public function flushAndCommit(): void
     {
         $this->targetedDAO->flush();
         $this->bufferDAO->transferTo($this->targetedDAO);
     }
 
-    public function commit()
+    public function commit(): void
     {
         $this->bufferDAO->transferTo($this->targetedDAO);
     }
@@ -78,7 +79,7 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function save(string $id, $data) : void
+    public function save(string $id, $data): void
     {
         if ($this->enabled) {
             $this->bufferDAO->save($id, $data);
@@ -106,7 +107,7 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function remove(string $id) : void
+    public function remove(string $id): void
     {
         if ($this->enabled) {
             $this->bufferDAO->remove($id);
@@ -121,7 +122,7 @@ class Buffer implements DAOInterface
     /**
      * @inheritDoc
      */
-    public function flush() : void
+    public function flush(): void
     {
         if ($this->enabled) {
             $this->bufferDAO->flush();
