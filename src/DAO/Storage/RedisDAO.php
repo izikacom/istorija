@@ -11,7 +11,6 @@ namespace Dayuse\Istorija\DAO\Storage;
 use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Istorija\DAO\BulkableInterface;
-use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
 
@@ -23,7 +22,7 @@ use Dayuse\Istorija\DAO\IdentifiableValue;
  *
  * @package Dayuse\Istorija\DAO\Storage
  */
-class RedisDAO implements DAOInterface, BulkableInterface, AdvancedDAOInterface
+class RedisDAO implements AdvancedDAOInterface, BulkableInterface
 {
     use FunctionalTrait;
 

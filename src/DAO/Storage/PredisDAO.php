@@ -4,7 +4,6 @@ namespace Dayuse\Istorija\DAO\Storage;
 
 use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\DAO\BulkableInterface;
-use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
 use Dayuse\Istorija\Utils\Ensure;
@@ -14,7 +13,7 @@ use Predis\Collection\Iterator;
 /**
  * @author : Thomas Tourlourat <thomas@tourlourat.com>
  */
-class PredisDAO implements DAOInterface, BulkableInterface, AdvancedDAOInterface
+class PredisDAO implements AdvancedDAOInterface, BulkableInterface
 {
     use FunctionalTrait;
 
