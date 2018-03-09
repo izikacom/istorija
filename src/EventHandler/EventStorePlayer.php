@@ -1,6 +1,6 @@
 <?php
 
-namespace DayUse\Istorija\EventHandler;
+namespace Dayuse\Istorija\EventHandler;
 
 use Dayuse\Istorija\EventSourcing\EventHandler;
 use Dayuse\Istorija\EventSourcing\EventStoreMessageTranslator;
