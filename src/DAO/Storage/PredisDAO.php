@@ -2,6 +2,7 @@
 
 namespace Dayuse\Istorija\DAO\Storage;
 
+use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
@@ -13,7 +14,7 @@ use Predis\Collection\Iterator;
 /**
  * @author : Thomas Tourlourat <thomas@tourlourat.com>
  */
-class PredisDAO implements DAOInterface, BulkableInterface
+class PredisDAO implements DAOInterface, BulkableInterface, AdvancedDAOInterface
 {
     use FunctionalTrait;
 
@@ -78,6 +79,22 @@ class PredisDAO implements DAOInterface, BulkableInterface
         foreach (new Iterator\Keyspace($this->redis, $this->generateKey('*')) as $key) {
             $this->redis->del([$key]);
         }
+    }
+
+    public function findAll(int $page = 0, int $maxPerPage = 50): array
+    {
+        $iterator = new \LimitIterator(
+            new Iterator\Keyspace($this->redis, $this->generateKey('*')),
+            $page,
+            $maxPerPage
+        );
+
+        return iterator_to_array($iterator);
+    }
+
+    public function countAll(): int
+    {
+        return iterator_count(new Iterator\Keyspace($this->redis, $this->generateKey('*')));
     }
 
     /**

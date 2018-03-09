@@ -8,6 +8,7 @@
 
 namespace Dayuse\Istorija\DAO\Storage;
 
+use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;
@@ -22,7 +23,7 @@ use Dayuse\Istorija\DAO\IdentifiableValue;
  *
  * @package Dayuse\Istorija\DAO\Storage
  */
-class RedisDAO implements DAOInterface, BulkableInterface
+class RedisDAO implements DAOInterface, BulkableInterface, AdvancedDAOInterface
 {
     use FunctionalTrait;
 
@@ -88,6 +89,34 @@ class RedisDAO implements DAOInterface, BulkableInterface
             $this->redis->del($keys);
         }
     }
+
+    public function findAll(int $page = 0, int $maxPerPage = 50): array
+    {
+        $keys = $this->keys();
+
+        return $this->redis->getMultiple(array_slice($keys, $page, $maxPerPage));
+    }
+
+    public function countAll(): int
+    {
+        return \count($this->keys());
+    }
+
+    protected function keys(): array
+    {
+        $iterator = null;
+        $keys = [];
+
+        while (false !== ($scanedKeys = $this->redis->scan($iterator, $this->generateKey('*')))) {
+            $keys = array_merge(
+                $keys,
+                $scanedKeys
+            );
+        }
+
+        return array_unique($keys);
+    }
+
 
     /**
      * @inheritDoc
