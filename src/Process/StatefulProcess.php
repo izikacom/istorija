@@ -8,17 +8,11 @@ namespace Dayuse\Istorija\Process;
 use Dayuse\Istorija\CommandBus\Command;
 use Dayuse\Istorija\CommandBus\CommandBus;
 use Dayuse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\Utils\State;
 
 abstract class StatefulProcess extends AbstractProcess
 {
-    /**
-     * @var CommandBus
-     */
     private $commandBus;
-
-    /**
-     * @var StateRepository
-     */
     private $repository;
 
     public function __construct(CommandBus $commandBus, StateRepository $repository)
@@ -29,9 +23,7 @@ abstract class StatefulProcess extends AbstractProcess
 
     protected function initState(Identifier $identifier, State $state): void
     {
-        $processId = $this->getProcessId($identifier);
-
-        $this->repository->save($processId, $state);
+        $this->repository->save($this->getProcessId($identifier), $state);
     }
 
     public function setState(Identifier $identifier, callable $updateMethod): void
@@ -45,17 +37,12 @@ abstract class StatefulProcess extends AbstractProcess
 
     public function getState(Identifier $identifier): State
     {
-        $processId = $this->getProcessId($identifier);
-
-        return $this->repository->find($processId);
+        return $this->repository->find($this->getProcessId($identifier));
     }
 
     public function closeState(Identifier $identifier): void
     {
-        $processId = $this->getProcessId($identifier);
-        $state     = $this->repository->find($processId);
-
-        $this->repository->save($processId, $state->close());
+        $this->repository->close($this->getProcessId($identifier));
     }
 
     public function handleCommand(Command $command): void
