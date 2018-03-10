@@ -8,7 +8,7 @@
 
 namespace Dayuse\Istorija\DAO;
 
-interface SearchableInterface
+interface SearchableInterface extends DAOInterface
 {
     /**
      * search without parameters should be equal to findAll.
