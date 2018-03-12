@@ -49,7 +49,7 @@ class StateRepositoryDAO implements StateRepository
         $data = $this->dao->find($processId);
 
         Ensure::notNull($data, sprintf('State process not found; %s', $processId));
-        Ensure::null($data['closedAt'], sprintf('State have been already processed by %s', $processId));
+        Ensure::null($data['closedAt'], sprintf('State has already been processed by %s', $processId));
 
         return State::fromArray($data['state']);
     }
