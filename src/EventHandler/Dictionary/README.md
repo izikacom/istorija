@@ -1,6 +1,6 @@
 # Why a Dictionary ?
 
-Used to store a simple projection within a persisted storage.
+Used to store a simple projection within a persistent storage.
 
 # How to use a Dictionary
 
