@@ -7,12 +7,13 @@ namespace Dayuse\Istorija\Process;
 
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\State;
 
 class StateRepositoryDAO implements StateRepository
 {
-    /**
-     * @var DAOInterface
-     */
+    private const DATE_FORMAT = 'Y-m-d\TH:i:s.uP';
+
+    /** @var DAOInterface */
     private $dao;
 
     public function __construct(DAOInterface $dao)
@@ -22,7 +23,25 @@ class StateRepositoryDAO implements StateRepository
 
     public function save(ProcessId $processId, State $state): void
     {
-        $this->dao->save($processId, $state->toArray());
+        $this->dao->save($processId, [
+            'closedAt' => null,
+            'state'    => $state->toArray(),
+        ]);
+    }
+
+    public function close(ProcessId $processId): void
+    {
+        $previousState = $this->find($processId);
+        $closingDate   = \DateTimeImmutable::createFromFormat(
+            'U.u',
+            sprintf('%.6F', microtime(true)),
+            new \DateTimeZone('UTC')
+        );
+
+        $this->dao->save($processId, [
+            'closedAt' => $closingDate->format(self::DATE_FORMAT),
+            'state'    => $previousState->toArray(),
+        ]);
     }
 
     public function find(ProcessId $processId): State
@@ -30,11 +49,8 @@ class StateRepositoryDAO implements StateRepository
         $data = $this->dao->find($processId);
 
         Ensure::notNull($data, sprintf('State process not found; %s', $processId));
+        Ensure::null($data['closedAt'], sprintf('State have been already processed by %s', $processId));
 
-        $state = State::fromArray($data);
-
-        Ensure::false($state->isClosed(), sprintf('State have been already processed by %s', $processId));
-
-        return $state;
+        return State::fromArray($data['state']);
     }
 }

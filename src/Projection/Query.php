@@ -11,6 +11,7 @@ namespace Dayuse\Istorija\Projection;
 use Dayuse\Istorija\EventSourcing\AbstractEventHandler;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\Utils\Ensure;
+use Dayuse\Istorija\Utils\State;
 
 /**
  * Class Query
@@ -27,14 +28,10 @@ final class Query extends AbstractEventHandler implements Projection
      */
     private $initializationCallback;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $handlers;
 
-    /**
-     * @var State
-     */
+    /** @var State */
     private $state;
 
     public function __construct()

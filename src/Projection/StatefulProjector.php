@@ -4,6 +4,7 @@ namespace Dayuse\Istorija\Projection;
 
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\Identifiers\Identifier;
+use Dayuse\Istorija\Utils\State;
 
 /**
  * @author : Thomas Tourlourat <thomas@tourlourat.com>
