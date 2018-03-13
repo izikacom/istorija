@@ -12,12 +12,13 @@ use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
+use Dayuse\Istorija\DAO\RequiresInitialization;
 use Dayuse\Istorija\DAO\SearchableInterface;
 use Dayuse\Istorija\Utils\Ensure;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 
-class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, BulkableInterface
+class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, BulkableInterface, RequiresInitialization
 {
     use FunctionalTrait;
 
@@ -523,6 +524,11 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         foreach($hits as $hit) {
             yield $this->deserializeHits($hit);
         }
+    }
+
+    public function initialize(): void
+    {
+        $this->defineMapping();
     }
 
     /**

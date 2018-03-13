@@ -9,10 +9,11 @@ use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
+use Dayuse\Istorija\DAO\RequiresInitialization;
 use Dayuse\Istorija\Utils\Ensure;
 use Doctrine\DBAL\Connection;
 
-class DoctrineDAO implements DAOInterface, BulkableInterface
+class DoctrineDAO implements DAOInterface, BulkableInterface, RequiresInitialization
 {
     use FunctionalTrait;
 
@@ -119,7 +120,7 @@ MYSQL;
     public function getCreateSql(): string
     {
         $query = <<<MYSQL
-CREATE TABLE `%s` (
+CREATE TABLE IF NOT EXISTS `%s` (
     `key` varchar(512) NOT NULL,
     `value` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -135,6 +136,11 @@ DROP TABLE `%s`;
 MYSQL;
 
         return sprintf($query, $this->tableName);
+    }
+
+    public function initialize(): void
+    {
+        $this->connection->executeQuery($this->getCreateSql());
     }
 
     protected function generateKey(string $identifier): string
