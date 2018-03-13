@@ -10,16 +10,6 @@ namespace Dayuse\Istorija\DAO;
 
 interface AdvancedDAOInterface extends DAOInterface
 {
-    /**
-     * @param integer $page
-     * @param integer $maxPerPage
-     *
-     * @return array[]
-     */
-    public function findAll(int $page = 0, int $maxPerPage = 50): array;
-
-    /**
-     * @return integer
-     */
+    public function findAll(int $page = 0, int $maxPerPage = 50): iterable;
     public function countAll(): int;
 }

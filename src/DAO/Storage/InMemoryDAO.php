@@ -45,7 +45,7 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function findAll(int $page = 0, int $maxPerPage = 50): array
+    public function findAll(int $page = 0, int $maxPerPage = 50): iterable
     {
         return \array_slice($this->data, $page, $maxPerPage, false);
     }

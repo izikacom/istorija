@@ -122,7 +122,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * {@inheritDoc}
      */
-    public function findAll(int $page = 0, int $maxPerPage = 50) : array
+    public function findAll(int $page = 0, int $maxPerPage = 50) : iterable
     {
         return $this->query($this->buildSearchQuery(), $page, $maxPerPage);
     }
@@ -132,7 +132,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * {@inheritDoc}
      */
-    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : array
+    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : iterable
     {
         $query = $this->buildSearchQuery($text, $criteria);
 
@@ -459,7 +459,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         }
     }
 
-    private function searchAndDeserializeHits(array $query) : array
+    private function searchAndDeserializeHits(array $query) : iterable
     {
         try {
             $result = $this->client->search($query);
@@ -497,7 +497,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         return $result['count'];
     }
 
-    protected function query(array $query, $page, $maxPerPage = 50) : array
+    protected function query(array $query, $page, $maxPerPage = 50) : iterable
     {
         return $this->searchAndDeserializeHits(
             [
@@ -518,9 +518,11 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         return $hit['_source'];
     }
 
-    private function deserializeHits(array $hits) : array
+    private function deserializeHits(array $hits) : iterable
     {
-        return array_map([$this, 'deserializeHit'], $hits);
+        foreach($hits as $hit) {
+            yield $this->deserializeHits($hit);
+        }
     }
 
     /**

@@ -10,15 +10,5 @@ namespace Dayuse\Istorija\DAO;
 
 interface SearchableInterface extends DAOInterface
 {
-    /**
-     * search without parameters should be equal to findAll.
-     *
-     * @param string  $text
-     * @param array   $criteria
-     * @param integer $page
-     * @param integer $maxPerPage
-     *
-     * @return array[]
-     */
-    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : array;
+    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : iterable;
 }

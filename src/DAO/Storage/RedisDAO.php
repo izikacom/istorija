@@ -56,7 +56,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
             return null;
         }
 
-        return $this->denormalize($this->redis->get($key));
+        return $this->deserialize($this->redis->get($key));
     }
 
     /**
@@ -74,7 +74,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     {
         $this->redis->set(
             $this->generateKey($identifier),
-            $this->normalize($data)
+            $this->serialize($data)
         );
     }
 
@@ -89,12 +89,12 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
         }
     }
 
-    public function findAll(int $page = 0, int $maxPerPage = 50): array
+    public function findAll(int $page = 0, int $maxPerPage = 50): iterable
     {
         $keys = $this->keys();
 
         return array_map(
-            [$this, 'unserialize'],
+            [$this, 'deserialize'],
             $this->redis->getMultiple(\array_slice($keys, $page, $maxPerPage))
         );
     }
@@ -143,12 +143,12 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
         return sprintf('%s:%s', $this->prefix, $identifier);
     }
 
-    protected function normalize(array $data): string
+    protected function serialize(array $data): string
     {
         return json_encode($data);
     }
 
-    protected function denormalize(string $value): array
+    protected function deserialize(string $value): array
     {
         return json_decode($value, true);
     }
