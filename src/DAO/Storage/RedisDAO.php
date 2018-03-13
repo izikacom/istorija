@@ -93,7 +93,10 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     {
         $keys = $this->keys();
 
-        return $this->redis->getMultiple(array_slice($keys, $page, $maxPerPage));
+        return array_map(
+            [$this, 'unserialize'],
+            $this->redis->getMultiple(\array_slice($keys, $page, $maxPerPage))
+        );
     }
 
     public function countAll(): int

@@ -46,7 +46,7 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
             return null;
         }
 
-        return $this->denormalize($this->redis->get($key));
+        return $this->unserialize($this->redis->get($key));
     }
 
     /**
@@ -66,7 +66,7 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
     {
         $this->redis->set(
             $this->generateKey($identifier),
-            $this->normalize($data)
+            $this->serialize($data)
         );
     }
 
@@ -88,7 +88,10 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
             $maxPerPage
         );
 
-        return iterator_to_array($iterator);
+        return array_map(
+            [$this, 'unserialize'],
+            iterator_to_array($iterator)
+        );
     }
 
     public function countAll(): int
@@ -119,12 +122,12 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
         return sprintf('%s:%s', $this->prefix, $identifier);
     }
 
-    protected function normalize(array $data): string
+    protected function serialize(array $data): string
     {
         return json_encode($data);
     }
 
-    protected function denormalize(string $value): array
+    protected function unserialize(string $value): array
     {
         return json_decode($value, true);
     }

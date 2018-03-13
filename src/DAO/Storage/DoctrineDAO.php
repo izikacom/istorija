@@ -55,7 +55,7 @@ MYSQL;
             return null;
         }
 
-        return json_decode($record['value'], true);
+        return $this->unserialize($record['value']);
     }
 
     public function remove(string $identifier) : void
@@ -90,7 +90,7 @@ MYSQL;
             $query,
             [
                 ':key'   => $key,
-                ':value' => json_encode($data),
+                ':value' => $this->serialize($data),
             ]
         );
     }
@@ -140,6 +140,16 @@ MYSQL;
     protected function generateKey(string $identifier): string
     {
         return $identifier;
+    }
+
+    protected function serialize($data): string
+    {
+        return json_encode($data);
+    }
+
+    protected function unserialize(string $value)
+    {
+        return json_decode($value, true);
     }
 
     final protected function getConnection(): Connection
