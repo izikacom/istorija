@@ -55,7 +55,7 @@ MYSQL;
             return null;
         }
 
-        return $this->unserialize($record['value']);
+        return $this->deserialize($record['value']);
     }
 
     public function remove(string $identifier) : void
@@ -147,7 +147,7 @@ MYSQL;
         return json_encode($data);
     }
 
-    protected function unserialize(string $value)
+    protected function deserialize(string $value)
     {
         return json_decode($value, true);
     }
