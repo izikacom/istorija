@@ -8,6 +8,7 @@
 
 namespace Dayuse\Test\Istorija\DAO\Storage;
 
+use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\Storage\ElasticSearchDAO;
 use Dayuse\Test\Istorija\DAO\DAOTestCase;
 use Elasticsearch\Client;
@@ -30,7 +31,7 @@ class ElasticSearchDAOTest extends DAOTestCase
         }
     }
 
-    protected function createDAO()
+    protected function createDAO(): DAOInterface
     {
         $this->client = $this->createClient();
 

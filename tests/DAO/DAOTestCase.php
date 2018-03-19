@@ -13,19 +13,17 @@ use Dayuse\Istorija\dao\Pagination;
 use Dayuse\Istorija\dao\SearchableInterface;
 use PHPUnit\Framework\TestCase;
 
-abstract class daoTestCase extends TestCase
+abstract class DAOTestCase extends TestCase
 {
-    /**
-     * @var daoInterface
-     */
+    /** @var DAOInterface */
     protected $dao;
 
     protected function setUp()
     {
-        $this->dao = $this->createdao();
+        $this->dao = $this->createDAO();
     }
 
-    abstract protected function createdao();
+    abstract protected function createDAO(): DAOInterface;
 
     /**
      * @test

@@ -8,13 +8,14 @@
 
 namespace Dayuse\Test\Istorija\DAO\Storage;
 
+use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\Pagination;
 use Dayuse\Istorija\DAO\Storage\InMemoryDAO;
 use Dayuse\Test\Istorija\DAO\DAOTestCase;
 
 class InMemoryDAOTest extends DAOTestCase
 {
-    protected function createDAO()
+    protected function createDAO(): DAOInterface
     {
         return new InMemoryDAO();
     }
