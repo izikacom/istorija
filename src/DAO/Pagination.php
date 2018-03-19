@@ -3,6 +3,8 @@
 namespace Dayuse\Istorija\DAO;
 
 
+use Dayuse\Istorija\Utils\Ensure;
+
 class Pagination
 {
     private $page;
@@ -10,6 +12,9 @@ class Pagination
 
     public function __construct(int $page, int $maxPerPage)
     {
+        Ensure::min($page, 0);
+        Ensure::min($maxPerPage, 1);
+
         $this->page       = $page;
         $this->maxPerPage = $maxPerPage;
     }
