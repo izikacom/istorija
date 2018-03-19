@@ -1,14 +1,8 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- *
- * Date: 08/11/2016
- * Time: 13:37
- */
-
 namespace Dayuse\Istorija\DAO\Storage;
 
 use Dayuse\Istorija\DAO\AdvancedDAOInterface;
+use Dayuse\Istorija\DAO\Pagination;
 use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
@@ -89,13 +83,13 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
         }
     }
 
-    public function findAll(int $page = 0, int $maxPerPage = 50): iterable
+    public function findAll(Pagination $pagination): array
     {
         $keys = $this->keys();
 
         return array_map(
             [$this, 'deserialize'],
-            $this->redis->getMultiple(\array_slice($keys, $page, $maxPerPage))
+            $this->redis->getMultiple(\array_slice($keys, $pagination->getPage(), $pagination->getMaxPerPage()))
         );
     }
 
@@ -132,6 +126,17 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
             $this->save($model->getId(), $model->getValue());
         }
     }
+
+    public function findBulk(array $identifiers): array
+    {
+        Ensure::allString($identifiers);
+
+        $keys = array_map([$this, 'generateKey'], $identifiers);
+        $data = $this->redis->getMultiple($keys);
+
+        return array_map([$this, 'deserialize'], $data);
+    }
+
 
     final protected function getConnection(): \Redis
     {

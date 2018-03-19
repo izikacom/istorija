@@ -59,14 +59,13 @@ class ElasticSearchDAOTest extends DAOTestCase
         $type             = 'class';
         $nonAnalyzedTerm  = 'name';
         $index            = 'test_non_analyzed_index';
-        $this->DAO = new ElasticSearchDAO(
+        $this->dao = new ElasticSearchDAO(
             $this->client,
             $index,
             $type,
             [$nonAnalyzedTerm]
         );
 
-//        $this->DAO->createIndex();
         $this->client->cluster()->health(['index' => $index, 'wait_for_status' => 'yellow', 'timeout' => '10s']);
         $mapping = $this->client->indices()->getMapping(['index' => $index]);
 

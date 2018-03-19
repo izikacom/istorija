@@ -1,11 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- *
- * Date: 29/03/2017
- * Time: 11:03
- */
-
 namespace Dayuse\Istorija\DAO\Proxy;
 
 use Dayuse\Istorija\DAO\DAOInterface;

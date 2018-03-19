@@ -6,13 +6,11 @@ use Dayuse\Istorija\DAO\AdvancedDAOInterface;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
+use Dayuse\Istorija\DAO\Pagination;
 use Dayuse\Istorija\Utils\Ensure;
 use Predis\Client;
 use Predis\Collection\Iterator;
 
-/**
- * @author : Thomas Tourlourat <thomas@tourlourat.com>
- */
 class PredisDAO implements AdvancedDAOInterface, BulkableInterface
 {
     use FunctionalTrait;
@@ -80,17 +78,15 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
         }
     }
 
-    public function findAll(int $page = 0, int $maxPerPage = 50): iterable
+    public function findAll(Pagination $pagination): array
     {
         $iterator = new \LimitIterator(
             new Iterator\Keyspace($this->redis, $this->generateKey('*')),
-            $page,
-            $maxPerPage
+            $pagination->getPage(),
+            $pagination->getMaxPerPage()
         );
 
-        foreach($iterator as $data) {
-            yield $this->deserialize($data);
-        }
+        return iterator_to_array($iterator);
     }
 
     public function countAll(): int
@@ -110,6 +106,17 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
             $this->save($model->getId(), $model->getValue());
         }
     }
+
+    public function findBulk(array $identifiers): array
+    {
+        Ensure::allString($identifiers);
+
+        $keys = array_map([$this, 'generateKey'], $identifiers);
+        $data = $this->redis->mget($keys);
+
+        return array_map([$this, 'deserialize'], $data);
+    }
+
 
     final protected function getConnection(): client
     {
