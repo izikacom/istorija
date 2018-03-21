@@ -12,6 +12,14 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install PHP libzip-dev
+          command: sudo apt-get install -y libzip-dev
+
+      - run:
+          name: Install PHP zip
+          command: sudo docker-php-ext-install zip
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -27,4 +35,4 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-      - run: ./bin/phpunit ./tests/
+      - run: ./bin/simple-phpunit
