@@ -8,7 +8,8 @@
 
 namespace Dayuse\Istorija\DAO;
 
-interface SearchableInterface extends DAOInterface
+interface SearchableInterface extends AdvancedDAOInterface
 {
-    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : iterable;
+    public function search(Pagination $pagination, array $criteria = [], string $text = null) : array;
+    public function filter(Pagination $pagination, array $criteria = []) : array;
 }

@@ -1,8 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- */
-
 namespace Dayuse\Istorija\DAO\Storage;
 
 use Dayuse\Istorija\DAO\BulkableInterface;
@@ -57,6 +53,33 @@ MYSQL;
         }
 
         return $this->deserialize($record['value']);
+    }
+
+    public function findBulk(array $identifiers): array
+    {
+        Ensure::allString($identifiers);
+
+        $keys = array_map([$this, 'generateKey'], $identifiers);
+
+        $query = <<<MYSQL
+SELECT * FROM `%s`
+WHERE `key` IN (:keys);
+MYSQL;
+
+
+        $records = $this->connection->fetchAll(
+            sprintf($query, $this->tableName),
+            ['keys' => $keys],
+            ['keys' => Connection::PARAM_STR_ARRAY]
+        );
+
+        if(empty($records)) {
+            return [];
+        }
+
+        return array_map(function($record) {
+            return $this->deserialize($record['value']);
+        }, $records);
     }
 
     public function remove(string $identifier) : void

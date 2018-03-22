@@ -1,11 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- *
- * Date: 20/04/2017
- * Time: 14:25
- */
-
 namespace Dayuse\Istorija\DAO;
 
 /**

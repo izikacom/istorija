@@ -1,11 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- *
- * Date: 08/07/2017
- * Time: 13:54
- */
-
 namespace Dayuse\Istorija\DAO;
 
 use Dayuse\Istorija\Utils\Ensure;

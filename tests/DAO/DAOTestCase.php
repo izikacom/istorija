@@ -6,170 +6,191 @@
  * Time: 14:08
  */
 
-namespace Dayuse\Test\Istorija\DAO;
+namespace Dayuse\Test\Istorija\dao;
 
-use Dayuse\Istorija\DAO\DAOInterface;
-use Dayuse\Istorija\DAO\SearchableInterface;
+use Dayuse\Istorija\dao\daoInterface;
+use Dayuse\Istorija\dao\Pagination;
+use Dayuse\Istorija\dao\SearchableInterface;
 use PHPUnit\Framework\TestCase;
 
 abstract class DAOTestCase extends TestCase
 {
-    /**
-     * @var DAOInterface
-     */
-    protected $DAO;
+    /** @var DAOInterface */
+    protected $dao;
 
     protected function setUp()
     {
-        $this->DAO = $this->createDAO();
+        $this->dao = $this->createDAO();
     }
 
-    abstract protected function createDAO();
+    abstract protected function createDAO(): DAOInterface;
 
     /**
      * @test
      */
-    public function it_saves_and_finds_read_models_by_id()
+    public function it_saves_and_finds_read_models_by_id(): void
     {
         $model = $this->createReadModel('1', 'othillo', 'bar');
 
-        $this->DAO->save('1', $model);
+        $this->dao->save('1', $model);
 
-        $this->assertEquals($model, $this->DAO->find(1));
+        $this->assertEquals($model, $this->dao->find(1));
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_not_found_on_empty_repo()
+    public function it_returns_null_if_not_found_on_empty_repo(): void
     {
-        $this->assertEquals(null, $this->DAO->find(2));
+        $this->assertEquals(null, $this->dao->find(2));
     }
 
     /**
      * @test
      */
-    public function it_returns_null_if_not_found()
+    public function it_returns_null_if_not_found(): void
     {
         $model = $this->createReadModel('1', 'othillo', 'bar');
 
-        $this->DAO->save('1', $model);
+        $this->dao->save('1', $model);
 
-        $this->assertNull($this->DAO->find(2));
+        $this->assertNull($this->dao->find(2));
     }
 
     /**
      * @test
      */
-    public function it_finds_by_name()
+    public function it_finds_by_name(): void
     {
-        $this->checkSearchableDAO();
+        $this->checkSearchabledao();
+
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
         $model1 = $this->createReadModel('1', 'othillo', 'bar');
         $model2 = $this->createReadModel('2', 'asm89', 'baz');
 
-        $this->DAO->save('1', $model1);
-        $this->DAO->save('2', $model2);
+        $dao->save('1', $model1);
+        $dao->save('2', $model2);
 
-        $this->assertEquals([$model1], $this->DAO->search(null, ['name' => 'othillo']));
-        $this->assertEquals([$model2], $this->DAO->search(null, ['name' => 'asm89']));
+        $this->assertEquals([$model1], $dao->search(Pagination::firstPage(), ['name' => 'othillo']));
+        $this->assertEquals([$model2], $dao->search(Pagination::firstPage(), ['name' => 'asm89']));
     }
 
     /**
      * @test
      */
-    public function it_finds_by_one_element_in_array()
+    public function it_finds_by_one_element_in_array(): void
     {
-        $this->checkSearchableDAO();
+        $this->checkSearchabledao();
 
         $model1 = $this->createReadModel('1', 'othillo', 'bar', ['elem1', 'elem2']);
         $model2 = $this->createReadModel('2', 'asm89', 'baz', ['elem3', 'elem4']);
 
-        $this->DAO->save('1', $model1);
-        $this->DAO->save('2', $model2);
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
-        $this->assertEquals([$model1], $this->DAO->search(null, ['array' => 'elem1']));
-        $this->assertEquals([$model2], $this->DAO->search(null, ['array' => 'elem4']));
+
+        $dao->save('1', $model1);
+        $dao->save('2', $model2);
+
+        $this->assertEquals([$model1], $dao->search(Pagination::firstPage(), ['array' => 'elem1']));
+        $this->assertEquals([$model2], $dao->search(Pagination::firstPage(), ['array' => 'elem4']));
     }
 
     /**
      * @test
      */
-    public function it_finds_if_all_clauses_match()
+    public function it_finds_if_all_clauses_match(): void
     {
-        $this->checkSearchableDAO();
+        $this->checkSearchabledao();
 
         $model1 = $this->createReadModel('1', 'othillo', 'bar');
         $model2 = $this->createReadModel('2', 'asm89', 'baz');
 
-        $this->DAO->save('1', $model1);
-        $this->DAO->save('2', $model2);
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
-        $this->assertEquals([$model1], $this->DAO->search(null, ['name' => 'othillo', 'foo' => 'bar']));
-        $this->assertEquals([$model2], $this->DAO->search(null, ['name' => 'asm89', 'foo' => 'baz']));
+        $dao->save('1', $model1);
+        $dao->save('2', $model2);
+
+        $this->assertEquals([$model1], $dao->search(Pagination::firstPage(), ['name' => 'othillo', 'foo' => 'bar']));
+        $this->assertEquals([$model2], $dao->search(Pagination::firstPage(), ['name' => 'asm89', 'foo' => 'baz']));
     }
 
     /**
      * @test
      */
-    public function it_does_not_find_when_one_of_the_clauses_doesnt_match()
+    public function it_does_not_find_when_one_of_the_clauses_doesnt_match(): void
     {
-        $this->checkSearchableDAO();
+        $this->checkSearchabledao();
 
         $model1 = $this->createReadModel('1', 'othillo', 'bar');
         $model2 = $this->createReadModel('2', 'asm89', 'baz');
 
-        $this->DAO->save('1', $model1);
-        $this->DAO->save('2', $model2);
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
-        $this->assertEquals([], $this->DAO->search(null, ['name' => 'othillo', 'foo' => 'baz']));
-        $this->assertEquals([], $this->DAO->search(null, ['name' => 'asm89', 'foo' => 'bar']));
+        $dao->save('1', $model1);
+        $dao->save('2', $model2);
+
+        $this->assertEquals([], $dao->search(Pagination::firstPage(), ['name' => 'othillo', 'foo' => 'baz']));
+        $this->assertEquals([], $dao->search(Pagination::firstPage(), ['name' => 'asm89', 'foo' => 'bar']));
     }
 
     /**
      * @test
      */
-    public function it_returns_empty_array_when_found_nothing()
+    public function it_returns_empty_array_when_found_nothing(): void
     {
-        $this->checkSearchableDAO();
+        $this->checkSearchabledao();
 
         $model1 = $this->createReadModel('1', 'othillo', 'bar');
         $model2 = $this->createReadModel('2', 'asm89', 'baz');
 
-        $this->DAO->save('1', $model1);
-        $this->DAO->save('2', $model2);
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
-        $this->assertEquals([], $this->DAO->search(null, ['name' => 'Jan']));
+        $dao->save('1', $model1);
+        $dao->save('2', $model2);
+
+        $this->assertEquals([], $dao->search(Pagination::firstPage(), ['name' => 'Jan']));
     }
 
     /**
      * @test
      */
-    public function it_returns_empty_array_when_searching_for_empty_array()
+    public function it_returns_empty_array_when_searching_for_empty_array(): void
     {
-        $this->checkSearchableDAO();
+        $this->checkSearchabledao();
 
         $model = $this->createReadModel('1', 'othillo', 'bar');
 
-        $this->DAO->save('1', $model);
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
-        $this->assertEquals([], $this->DAO->search(null, []));
+        $dao->save('1', $model);
+
+        $this->assertEquals([], $dao->search(Pagination::firstPage()));
     }
 
     /**
      * @test
      */
-    public function it_removes_a_readmodel()
+    public function it_removes_a_readmodel(): void
     {
         $model = $this->createReadModel('1', 'John', 'Foo', ['foo' => 'bar']);
-        $this->DAO->save('1', $model);
 
-        $this->DAO->remove('1');
+        /** @var SearchableInterface $dao */
+        $dao = $this->dao;
 
-        $this->assertEquals([], $this->DAO->findAll());
+        $dao->save('1', $model);
+        $dao->remove('1');
+
+        $this->assertEquals([], $dao->findAll(Pagination::firstPage()));
     }
 
-    protected function createReadModel($id, $name, $foo, array $array = [])
+    protected function createReadModel($id, $name, $foo, array $array = []): array
     {
         return [
             'id'    => $id,
@@ -179,10 +200,10 @@ abstract class DAOTestCase extends TestCase
         ];
     }
 
-    protected function checkSearchableDAO(): void
+    protected function checkSearchabledao(): void
     {
-        if (!$this->DAO instanceof SearchableInterface) {
-            $this->markTestSkipped('Tested DAO is not searchable');
+        if (!$this->dao instanceof SearchableInterface) {
+            $this->markTestSkipped('Tested dao is not searchable');
         }
     }
 }

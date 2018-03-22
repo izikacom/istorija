@@ -1,53 +1,61 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomastourlourat
- * Date: 30/08/2016
- * Time: 14:04
- */
 
 namespace Dayuse\Istorija\DAO\Storage;
 
-use Dayuse\Istorija\DAO\AdvancedDAOInterface;
-use Dayuse\Istorija\DAO\BulkableInterface;
-use Dayuse\Istorija\DAO\FunctionalTrait;
-use Dayuse\Istorija\DAO\IdentifiableValue;
-use Dayuse\Istorija\DAO\RequiresInitialization;
-use Dayuse\Istorija\DAO\SearchableInterface;
 use Dayuse\Istorija\Utils\Ensure;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Dayuse\Istorija\DAO\FunctionalTrait;
+use Dayuse\Istorija\DAO\Pagination;
+use Dayuse\Istorija\DAO\RequiresInitialization;
+use Dayuse\Istorija\DAO\SearchableInterface;
 
-class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, BulkableInterface, RequiresInitialization
+class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
 {
     use FunctionalTrait;
 
-    /**
-     * @var Client
-     */
+    /** @var Client */
     private $client;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $index;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $type;
 
-    public function __construct(Client $client, string $index, string $type)
-    {
-        $this->client = $client;
-        $this->index  = $index;
-        $this->type   = $type;
+    /** @var array */
+    private $mapping;
+
+    /** @var array */
+    private $settings;
+
+    /** @var array */
+    private $sorting;
+
+    /**
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html
+     */
+    public function __construct(
+        Client $client,
+        string $index,
+        string $type,
+        array $mapping = null,
+        array $settings = null,
+        array $sorting = null
+    ) {
+        $this->client   = $client;
+        $this->index    = $index;
+        $this->type     = $type;
+        $this->mapping  = $mapping;
+        $this->settings = $settings;
+        $this->sorting  = $sorting;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function save(string $id, $data) : void
+    public function save(string $id, $data): void
     {
         Ensure::isArray($data, 'ElasticSearch was tested only with value as array');
 
@@ -63,44 +71,6 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     }
 
     /**
-     * @inheritDoc
-     */
-    public function saveBulk(array $models) : void
-    {
-        Ensure::allIsInstanceOf($models, IdentifiableValue::class);
-        Ensure::allSatisfy($models, function (IdentifiableValue $identifiableValue) {
-            return \is_array($identifiableValue->getValue());
-        }, 'ElasticSearch was tested only with value as array');
-
-        $params = [
-            'refresh' => true,
-        ];
-
-        /** @var IdentifiableValue $model */
-        foreach ($models as $i => $model) {
-            $params['body'][] = [
-                'index' => [
-                    '_index' => $this->index,
-                    '_type'  => $this->type,
-                    '_id'    => $model->getId(),
-                ],
-            ];
-            $params['body'][] = $model->getValue();
-
-            if (($i + 1) % 1000 === 0) {
-                $this->client->bulk($params);
-
-                // erase the old bulk request
-                $params = ['body' => []];
-            }
-        }
-
-        if (!empty($params['body'])) {
-            $this->client->bulk($params);
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     public function find(string $id)
@@ -113,19 +83,22 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
 
         try {
             $result = $this->client->get($params);
+
+            return $this->deserializeHit($result);
         } catch (Missing404Exception $e) {
             return null;
         }
-
-        return $this->deserializeHit($result);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findAll(int $page = 0, int $maxPerPage = 50) : iterable
+    public function findAll(Pagination $pagination): array
     {
-        return $this->query($this->buildSearchQuery(), $page, $maxPerPage);
+        return $this->query(
+            $this->buildSearchQuery(),
+            $pagination
+        );
     }
 
     /**
@@ -133,17 +106,30 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * {@inheritDoc}
      */
-    public function search(string $text = null, array $criteria = [], int $page = 0, int $maxPerPage = 50) : iterable
+    public function search(Pagination $pagination, array $criteria = [], string $text = null): array
     {
-        $query = $this->buildSearchQuery($text, $criteria);
+        $query = $this->buildSearchQuery(
+            $text,
+            $criteria
+        );
 
-        return $this->query($query, $page, $maxPerPage);
+        return $this->query($query, $pagination);
+    }
+
+    public function filter(Pagination $pagination, array $criteria = []): array
+    {
+        $query = $this->buildSearchQuery(
+            null,
+            $criteria
+        );
+
+        return $this->query($query, $pagination);
     }
 
     /**
      * @inheritDoc
      */
-    public function countAll() : int
+    public function countAll(): int
     {
         return $this->doCount($this->buildSearchQuery());
     }
@@ -151,7 +137,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     /**
      * {@inheritDoc}
      */
-    public function remove(string $id) : void
+    public function remove(string $id): void
     {
         try {
             $this->client->delete([
@@ -162,37 +148,6 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
             ]);
         } catch (Missing404Exception $e) { // It was already deleted or never existed, fine by us!
         }
-    }
-
-    /**
-     * * If you want to use the findBy method; note that you have to define custom mapping and set the field as not analyzed.
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/_finding_exact_values.html
-     *
-     * {@inheritDoc}
-     */
-    protected function findBy(array $criteria = [], $page = 0, $maxPerPage = 50) : array
-    {
-        if (empty($criteria)) {
-            return [];
-        }
-
-        return $this->query(
-            $this->buildSearchQuery(null, $criteria),
-            $page,
-            $maxPerPage
-        );
-    }
-
-    protected function findOneBy(array $criteria = [])
-    {
-        $results = $this->findBy($criteria);
-
-        if (\count($results) === 0) {
-            return null;
-        }
-
-        return reset($results);
     }
 
     /**
@@ -228,7 +183,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *   "query": {
      *         "bool": {
      *             "filter": {
-     *                 "match": { "_all": "super"}
+     *                 "multi_match": { "fields": ["*"], "query": "Ikea", "operator": "and"}
      *             },
      *             "must": [
      *                 {
@@ -257,7 +212,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      *
      */
-    protected function buildSearchQuery($input = null, array $criteria = [])
+    protected function buildSearchQuery($input = null, array $criteria = []): array
     {
         $query = [
             'bool' => $this->buildMatching($input),
@@ -279,22 +234,30 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return array
      */
-    protected function buildMatching($input)
+    protected function buildMatching($input): array
     {
-        if ($input) {
-            if (\is_string($input)) {
-                return [
-                    'must' => [
-                        'match' => [
-                            '_all' => [
-                                'query'    => $input,
-                                'operator' => 'and',
-                            ],
-                        ],
-                    ],
-                ];
-            }
+        if (!$input) {
+            return [
+                'must' => [
+                    'match_all' => (object)[],
+                    // @see https://github.com/elastic/elasticsearch-php/issues/495#issuecomment-258533457
+                ],
+            ];
+        }
 
+        if (\is_string($input)) {
+            return [
+                'must' => [
+                    'multi_match' => [
+                        'fields'   => ['*'], // search on all analyzed fields
+                        'operator' => 'and',
+                        'query'    => $input,
+                    ],
+                ],
+            ];
+        }
+
+        if (\is_array($input)) {
             Ensure::allString(array_values($input));
             Ensure::allString(array_keys($input));
 
@@ -317,11 +280,8 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
             ];
         }
 
-        return [
-            'must' => [
-                'match_all' => [],
-            ],
-        ];
+        throw new \InvalidArgumentException(sprintf('Not supported input type, given: %s', \gettype($input)));
+
     }
 
     /**
@@ -337,12 +297,10 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return array
      */
-    protected function buildFilters(array $criterias = []) : array
+    protected function buildFilters(array $criterias = []): array
     {
         return array_values(array_filter(array_map(function ($field, $conditions) {
-            if (empty($conditions)) {
-                return null;
-            }
+            Ensure::notNull($conditions, sprintf('Could not build filters with a null value. Field: %s', $field));
 
             if (is_scalar($conditions)) {
                 $conditions = [
@@ -354,7 +312,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         }, array_keys($criterias), $criterias)));
     }
 
-    protected function buildFilter($field, array $conditions) : array
+    protected function buildFilter($field, array $conditions): array
     {
         $rangeFactory = function ($field, array $conditions) {
             $operators = [
@@ -393,25 +351,13 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
     }
 
     /**
-     * @inheritDoc
-     */
-    protected function countBy(array $criteria = []) : int
-    {
-        if (empty($criteria)) {
-            return 0;
-        }
-
-        return $this->doCount($this->buildSearchQuery(null, $criteria));
-    }
-
-    /**
      * This method require the DeleteByQuery plugin
      *
      * If the operation is time consuming. Consider using bulk deletion or using the Delete-By-Query plugin.
      *
      * @see https://www.elastic.co/guide/en/elasticsearch/plugins/2.0/plugins-delete-by-query.html
      */
-    public function flush() : void
+    public function flush(): void
     {
         $params = [
             'search_type' => 'scan',    // use search_type=scan
@@ -433,7 +379,7 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         $scroll_id = $docs['_scroll_id'];   // The response will contain no results, just a _scroll_id
 
         // Now we loop until the scroll "cursors" are exhausted
-        while (\true) {
+        while (true) {
 
             // Execute a Scroll request
             $response = $this->client->scroll(
@@ -460,21 +406,6 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         }
     }
 
-    private function searchAndDeserializeHits(array $query) : iterable
-    {
-        try {
-            $result = $this->client->search($query);
-        } catch (Missing404Exception $e) {
-            return [];
-        }
-
-        if (!array_key_exists('hits', $result)) {
-            return [];
-        }
-
-        return $this->deserializeHits($result['hits']['hits']);
-    }
-
     private function doCount(array $query = []): int
     {
         try {
@@ -498,37 +429,71 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
         return $result['count'];
     }
 
-    protected function query(array $query, $page, $maxPerPage = 50) : iterable
+    protected function query(array $query, Pagination $pagination): array
     {
-        return $this->searchAndDeserializeHits(
-            [
-                'index' => $this->index,
-                'type'  => $this->type,
-                'body'  => [
-                    'query' => $query,
-                    'sort'  => $this->defaultSorting(),
-                ],
-                'size'  => $maxPerPage,
-                'from'  => $maxPerPage * $page,
-            ]
-        );
+        try {
+            return $this->searchAndDeserializeHits(
+                [
+                    'index' => $this->index,
+                    'type'  => $this->type,
+                    'body'  => [
+                        'query' => $query,
+                        'sort'  => $this->sorting ?? [],
+                    ],
+                    'size'  => $pagination->getMaxPerPage(),
+                    'from'  => $pagination->getMaxPerPage() * $pagination->getPage(),
+                ]
+            );
+        } catch (Missing404Exception $e) {
+            return [];
+        }
     }
 
-    private function deserializeHit(array $hit) : array
+    private function searchAndDeserializeHits(array $query): array
+    {
+        $result = $this->client->search($query);
+
+        if (!array_key_exists('hits', $result)) {
+            return [];
+        }
+
+        return $this->deserializeHits($result['hits']['hits']);
+    }
+
+    private function deserializeHits(array $hits): array
+    {
+        return array_map([$this, 'deserializeHit'], $hits);
+    }
+
+    private function deserializeHit(array $hit): array
     {
         return $hit['_source'];
     }
 
-    private function deserializeHits(array $hits) : iterable
+    public function initialize(): void
     {
-        foreach($hits as $hit) {
-            yield $this->deserializeHits($hit);
+        $this->createIndex();
+        $this->defineMapping();
+    }
+
+    public function deleteIndex(): void
+    {
+        try {
+            $this->client->indices()->delete([
+                'index' => $this->index,
+            ]);
+        } catch (Missing404Exception $e) {
         }
     }
 
-    public function initialize(): void
+    public function createIndex(): void
     {
-        $this->defineMapping();
+        $this->client->indices()->create([
+            'index' => $this->index,
+            'body'  => [
+                'settings' => $this->settings ?? $this->defaultSettings(),
+            ],
+        ]);
     }
 
     /**
@@ -541,71 +506,54 @@ class ElasticSearchDAO implements AdvancedDAOInterface, SearchableInterface, Bul
      *
      * @return boolean True, if the index was successfully created
      */
-    public function defineMapping(): bool
+    public function defineMapping(): void
     {
         $indexParams = [
             'index' => $this->index,
             'type'  => $this->type,
         ];
 
-        $indexParams['body'] = $this->mappingRules();
+        $indexParams['body'] = $this->mapping ?? $this->defaultMapping();
 
         $this->client->indices()->putMapping($indexParams);
-
-        $response = $this->client->cluster()->health([
-            'index'           => $this->index,
-            'wait_for_status' => 'yellow',
-            'timeout'         => '5s',
-        ]);
-
-        return isset($response['status']) && $response['status'] !== 'red';
     }
 
-    /**
-     * Override this method if you want to define custom fine mapping rules.
-     *
-     * Note that you should not_index fileds that are used for filtering.
-     * 'email'     => [
-     *     'type'   => 'string',
-     *     "fields" => [
-     *         "raw" => [
-     *             'type'  => 'string',
-     *             'index' => 'not_analyzed',
-     *         ],
-     *
-     *     ],
-     * ],
-     *
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
-     *
-     * @return array
-     */
-    protected function mappingRules(): array
-    {
-        return [
-            '_source' => [
-                'enabled' => true,
-            ],
-        ];
-    }
-
-    /**
-     * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html
-     *
-     * [
-     *    'score' => [
-     *       'order' => 'desc',
-     *    ],
-     * ]
-     *
-     * @return array
-     */
-    protected function defaultSorting(): array
+    protected function defaultMapping(): array
     {
         return [];
     }
 
-    final protected function getConnection(): Client
+    /**
+     * @see    http://docs.searchkit.co/stable/docs/server/indexing.html
+     * @see    https://qbox.io/blog/an-introduction-to-ngrams-in-elasticsearch
+     * @see    https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html
+     */
+    protected function defaultSettings(): array
+    {
+        return [];
+    }
+
+    final public function getIndex(): string
+    {
+        return $this->index;
+    }
+
+    final public function getType(): string
+    {
+        return $this->type;
+    }
+
+    final public function getMapping(): array
+    {
+        return $this->mapping;
+    }
+
+    final public function getSettings(): array
+    {
+        return $this->settings;
+    }
+
+    final public function getConnection(): Client
     {
         return $this->client;
     }

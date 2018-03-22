@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: thomastourlourat
- * Date: 30/08/2016
- * Time: 13:59
- */
-
 namespace Dayuse\Istorija\DAO\Storage;
 
 use Dayuse\Istorija\DAO\AdvancedDAOInterface;
@@ -13,6 +6,7 @@ use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\DAOInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
+use Dayuse\Istorija\DAO\Pagination;
 use Dayuse\Istorija\DAO\TransferableInterface;
 
 /**
@@ -45,9 +39,14 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     /**
      * {@inheritDoc}
      */
-    public function findAll(int $page = 0, int $maxPerPage = 50): iterable
+    public function findAll(Pagination $pagination): array
     {
-        return \array_slice($this->data, $page, $maxPerPage, false);
+        return \array_slice(
+            $this->data,
+            $pagination->getPage(),
+            $pagination->getMaxPerPage(),
+            false
+        );
     }
 
     /**

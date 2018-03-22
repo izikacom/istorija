@@ -8,12 +8,14 @@
 
 namespace Dayuse\Test\Istorija\DAO\Storage;
 
+use Dayuse\Istorija\DAO\DAOInterface;
+use Dayuse\Istorija\DAO\Pagination;
 use Dayuse\Istorija\DAO\Storage\InMemoryDAO;
 use Dayuse\Test\Istorija\DAO\DAOTestCase;
 
 class InMemoryDAOTest extends DAOTestCase
 {
-    protected function createDAO()
+    protected function createDAO(): DAOInterface
     {
         return new InMemoryDAO();
     }
@@ -28,13 +30,13 @@ class InMemoryDAOTest extends DAOTestCase
         $model1 = $this->createReadModel('1', 'othillo', 'bar');
         $model2 = $this->createReadModel('2', 'asm89', 'baz');
 
-        $this->DAO->save('1', $model1);
-        $this->DAO->save('2', $model2);
+        $this->dao->save('1', $model1);
+        $this->dao->save('2', $model2);
 
         $targetDAO = new InMemoryDAO();
 
         $DAO->transferTo($targetDAO);
 
-        $this->assertEquals($targetDAO->findAll(), $DAO->findAll());
+        $this->assertEquals($targetDAO->findAll(Pagination::firstPage()), $DAO->findAll(Pagination::firstPage()));
     }
 }
