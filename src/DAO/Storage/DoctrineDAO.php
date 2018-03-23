@@ -133,7 +133,7 @@ MYSQL;
     public function flush() : void
     {
         $query = <<<MYSQL
-TRUNCATE FROM `%s`
+TRUNCATE `%s`
 MYSQL;
 
         $this->connection->executeQuery(
