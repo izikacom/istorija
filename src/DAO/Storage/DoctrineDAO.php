@@ -63,7 +63,8 @@ MYSQL;
 
         $query = <<<MYSQL
 SELECT * FROM `%s`
-WHERE `key` IN (:keys);
+WHERE `key` IN (:keys)
+ORDER BY FIELD(`key`, :keys);
 MYSQL;
 
 
