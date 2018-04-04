@@ -5,7 +5,7 @@
 
 namespace Dayuse\Istorija\Utils;
 
-class UtcDateTimeImmutable extends \DateTimeImmutable
+final class UtcDateTimeImmutable extends \DateTimeImmutable
 {
     public function __construct(string $time = 'now', \DateTimeZone $timezone = null)
     {
@@ -25,6 +25,16 @@ class UtcDateTimeImmutable extends \DateTimeImmutable
         $dateTimeImmutable->setTimezone(new \DateTimeZone('UTC'));
 
         return new self($dateTimeImmutable->format(\DateTime::ATOM));
+    }
+
+    private static function now(): self
+    {
+        return new self();
+    }
+
+    public function isElapsed(): bool
+    {
+        return $this->getTimestamp() <= (self::now())->getTimestamp();
     }
 
     public function __toString()
