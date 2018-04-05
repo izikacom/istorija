@@ -26,6 +26,7 @@ class Bus
 
     public function send(Message $message, ?SendOptions $options = null): void
     {
+        $messageClassName = ClassFunctions::fqcn($message);
         $options = $options ?? new SendOptions();
         $headers = new Headers();
         $headers['MessageId'] = $options->getMessageId() ?? (string) GenericUuidIdentifier::generate();
@@ -42,7 +43,7 @@ class Bus
             // TODO Verifier messageContract === $message::class
             foreach ($this->subscriptions as $messageContract => $subscriptions) {
                 foreach ($subscriptions as $subscription) {
-                    if (ClassFunctions::fqcn($message) === ClassFunctions::fqcn($subscription->getMessageContract())) {
+                    if ($messageClassName === ClassFunctions::fqcn($subscription->getMessageContract())) {
                         $executionPipeline->addHandler($subscription->getHandler());
                     }
                 }
