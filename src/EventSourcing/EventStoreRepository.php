@@ -2,7 +2,7 @@
 
 namespace Dayuse\Istorija\EventSourcing;
 
-use Dayuse\Istorija\EventBus\GenericEventBus;
+use Dayuse\Istorija\EventBus\EventBus;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\EventSourcing\NoRecordedEvents;
 use Dayuse\Istorija\EventStore\EventStore;
@@ -21,7 +21,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
         EventStore $eventStore,
         EventEnvelopeFactory $eventEnvelopeFactory,
         DomainEventFactory $domainEventFactory,
-        GenericEventBus $eventBus
+        EventBus $eventBus
     ) {
         $this->eventStore           = $eventStore;
         $this->eventEnvelopeFactory = $eventEnvelopeFactory;
@@ -83,7 +83,7 @@ abstract class EventStoreRepository implements AggregateRootRepository
         return $this->domainEventFactory;
     }
 
-    protected function getEventBus(): GenericEventBus
+    protected function getEventBus(): EventBus
     {
         return $this->eventBus;
     }
