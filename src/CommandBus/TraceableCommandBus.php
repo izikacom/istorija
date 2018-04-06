@@ -1,8 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- */
-
 namespace Dayuse\Istorija\CommandBus;
 
 class TraceableCommandBus implements CommandBus
