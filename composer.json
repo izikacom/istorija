@@ -5,6 +5,14 @@
     {
       "name": "Boris Guéry",
       "email": "guery.b@gmail.com"
+    },
+    {
+      "name": "Thomas Tourlourat",
+      "email": "thomas@tourlourat.com"
+    },
+    {
+      "name": "Benjamin Dulau",
+      "email": "benjamin.dulau@anonymation.com"
     }
   ],
   "autoload": {
