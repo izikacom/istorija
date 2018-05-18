@@ -1,8 +1,4 @@
 <?php
-/**
- * @author Boris Guéry <guery.b@gmail.com>
- */
-
 namespace Dayuse\Istorija\Identifiers;
 
 use Dayuse\Istorija\Utils\Ensure;
@@ -10,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 
 abstract class UuidIdentifier implements Identifier, GeneratesIdentifier
 {
+    /** @var string */
     private $uuid;
 
     public static function generate()
@@ -29,7 +26,7 @@ abstract class UuidIdentifier implements Identifier, GeneratesIdentifier
 
     public function __toString(): string
     {
-        return (string) $this->uuid;
+        return $this->uuid;
     }
 
     public function equals(Identifier $identifier): bool

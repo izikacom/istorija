@@ -14,7 +14,7 @@ final class EventId extends UuidIdentifier
 
     public static function generate()
     {
-        return new static(self::getUuidFactory()->uuid4());
+        return static::fromString(self::getUuidFactory()->uuid4());
     }
 
     private static function getUuidFactory(): UuidFactoryInterface
