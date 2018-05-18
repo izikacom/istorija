@@ -42,6 +42,7 @@
     "symfony/stopwatch": "^3.2",
     "elasticsearch/elasticsearch": "~2.0",
     "predis/predis": "^1.1",
+    "moontoast/math": "^1.1",
     "symfony/phpunit-bridge": "^4.0"
   },
   "suggest": {
