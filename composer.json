@@ -47,7 +47,8 @@
   "suggest": {
     "doctrine/dbal": "You know, for persisting...",
     "elasticsearch/elasticsearch": "You know, for persisting...",
-    "predis/predis": "You know, for persisting..."
+    "predis/predis": "You know, for persisting...",
+    "moontoast/math": "You know, when your system does not support 128-bit integer..."
   },
   "config": {
     "bin-dir": "bin"
