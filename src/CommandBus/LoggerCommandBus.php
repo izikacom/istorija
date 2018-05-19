@@ -45,7 +45,7 @@ class LoggerCommandBus implements CommandBus
         $identifier = (string)Uuid::uuid4();
         $type       = ClassFunctions::fqcn($command);
 
-        $this->logger->info('Command will be handled', [
+        $this->logger->debug('Command will be handled', [
             'uuid'    => $identifier,
             'type'    => $type,
             'command' => $command,
