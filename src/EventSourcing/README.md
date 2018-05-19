@@ -5,7 +5,53 @@ Take a look at our tests.
 * AggregateRoot : `tests/Eventsourcing/Fixtures/Member.php`
 * Entity : `tests/Eventsourcing/Fixtures/Task.php`
 
+
+## Basic usage
+
+```php
+<?php 
+
+use DateTimeImmutable;
+use Dayuse\Istorija\EventSourcing\AbstractAggregateRoot;
+
+class Member extends AbstractAggregateRoot
+{
+    /** @var MemberId */
+    private $memberId;
+
+    private function __construct(MemberId $memberId)
+    {
+        $this->memberId = $memberId;
+    }
+
+    public static function register(MemberId $memberId, Username $username, Email $email): self
+    {
+        $member = new self($memberId);
+
+        $member->recordThat(MemberRegistered::fromArray([
+            'memberId' => (string) $memberId,
+            'username' => (string) $username,
+            'email'    => (string) $email,
+            'date'     => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
+        ]));
+
+        return $member;
+    }
+
+    public function applyMemberRegistered(MemberRegistered $event): void
+    {
+        $this->memberId = MemberId::fromString($event->memberId);
+    }
+    
+    public function getId()
+    {
+        return $this->memberId;
+    }
+}
+```
+
 ## Entity management
+
 Let's say :
 * **Parent** contains one or more **Entity**
 * **Entity** events are managed the same way as any other **EventSourcedObject**

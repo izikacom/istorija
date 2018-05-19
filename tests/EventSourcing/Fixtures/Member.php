@@ -10,19 +10,28 @@ class Member extends AbstractAggregateRoot
 {
     /** @var MemberId */
     private $memberId;
+
     /** @var Username */
     private $username;
+
     /** @var Email */
     private $email;
+
     /** @var \DateTime */
     private $registeredAt;
 
     /** @var Task[] */
     private $tasks = [];
 
-    public static function register(MemberId $memberId, Username $username, Email $email)
+    private function __construct(MemberId $memberId)
     {
-        $member = new Member();
+        $this->memberId = $memberId;
+    }
+
+    public static function register(MemberId $memberId, Username $username, Email $email): self
+    {
+        $member = new self($memberId);
+
         $member->recordThat(MemberRegistered::fromArray([
             'memberId' => (string) $memberId,
             'username' => (string) $username,
@@ -33,7 +42,7 @@ class Member extends AbstractAggregateRoot
         return $member;
     }
 
-    public function applyMemberRegistered(MemberRegistered $event)
+    public function applyMemberRegistered(MemberRegistered $event): void
     {
         $this->memberId = MemberId::fromString($event->memberId);
         $this->username = new Username($event->username);
@@ -42,19 +51,19 @@ class Member extends AbstractAggregateRoot
         $this->registeredAt = new DateTimeImmutable($event->date);
     }
 
-    public function confirmEmail()
+    public function confirmEmail(): void
     {
         $this->recordThat(MemberConfirmedEmail::fromArray([
             'memberId' => $this->memberId
         ]));
     }
 
-    public function applyMemberConfirmedEmail(MemberConfirmedEmail $event)
+    public function applyMemberConfirmedEmail(MemberConfirmedEmail $event): void
     {
         // Nothing to do
     }
 
-    public function createTask(TaskId $taskId)
+    public function createTask(TaskId $taskId): void
     {
         if (array_key_exists((string) $taskId, $this->tasks)) {
             throw new \DomainException('Task already created');
@@ -63,13 +72,13 @@ class Member extends AbstractAggregateRoot
         $this->captureEntity(Task::create($this->memberId, $taskId));
     }
 
-    public function applyTaskCreated(TaskCreated $event)
+    public function applyTaskCreated(TaskCreated $event): void
     {
         $task = $this->registerEntity(Task::class, $event);
         $this->tasks[(string)$event->taskId] = $task;
     }
 
-    public function completeTask(TaskId $taskId)
+    public function completeTask(TaskId $taskId): void
     {
         if (!array_key_exists((string) $taskId, $this->tasks)) {
             throw new \DomainException('Task never created');
@@ -78,7 +87,7 @@ class Member extends AbstractAggregateRoot
         $this->tasks[(string)$taskId]->complete();
     }
 
-    public function deleteTask(TaskId $taskId)
+    public function deleteTask(TaskId $taskId): void
     {
         if (!array_key_exists((string) $taskId, $this->tasks)) {
             throw new \DomainException('Task never created');
@@ -87,7 +96,7 @@ class Member extends AbstractAggregateRoot
         $this->tasks[(string)$taskId]->delete();
     }
 
-    public function applyTaskDeleted(TaskDeleted $event)
+    public function applyTaskDeleted(TaskDeleted $event): void
     {
         unset($this->tasks[(string)$event->taskId]);
 
