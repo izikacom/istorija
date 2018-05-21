@@ -1,7 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- */
 
 namespace Dayuse\Istorija\EventHandler\Process;
 
@@ -20,7 +17,7 @@ class ProcessId extends PrefixedIdentifier
         throw new \InvalidArgumentException('This method could not be called. Use static::generateFromAggregate factory instead');
     }
 
-    protected static function prefix()
+    protected static function prefix(): string
     {
         return 'process';
     }

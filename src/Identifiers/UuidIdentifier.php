@@ -1,24 +1,37 @@
 <?php
+
 namespace Dayuse\Istorija\Identifiers;
 
-use Dayuse\Istorija\Utils\Ensure;
 use Ramsey\Uuid\Uuid;
 
 abstract class UuidIdentifier implements Identifier, GeneratesIdentifier
 {
-    /** @var string */
     private $uuid;
 
+    private function __construct(string $uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return static
+     */
     public static function generate()
     {
         return new static(Uuid::uuid4()->toString());
     }
 
+    /**
+     * @return static
+     */
     public static function generateFrom(string $name)
     {
         return new static(Uuid::uuid5(Uuid::NAMESPACE_OID, $name)->toString());
     }
 
+    /**
+     * @return static
+     */
     public static function fromString(string $uuid)
     {
         return new static($uuid);
@@ -32,10 +45,5 @@ abstract class UuidIdentifier implements Identifier, GeneratesIdentifier
     public function equals(Identifier $identifier): bool
     {
         return ($identifier instanceof static) && ($identifier->uuid === $this->uuid);
-    }
-
-    private function __construct(string $uuid)
-    {
-        $this->uuid = $uuid;
     }
 }

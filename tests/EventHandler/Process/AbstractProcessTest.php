@@ -1,7 +1,4 @@
 <?php
-/**
- * @author Thomas Tourlourat <thomas@tourlourat.com>
- */
 
 namespace Dayuse\Test\Istorija\EventHandler\Process;
 
@@ -14,18 +11,18 @@ class AbstractProcessTest extends TestCase
     /**
      * @test
      */
-    public function ensure_get_process_id()
+    public function ensure_get_process_id(): void
     {
-        $process   = new RegisterReservationProcess();
+        $process = new RegisterReservationProcess();
         $processId = $process->getProcessId(BookingAttemptId::generate());
 
-        $this->assertEquals('process-register-reservation-booking-attempt-id', (string)$processId);
+        $this->assertEquals('process-register-reservation-booking-attempt-id', (string) $processId);
     }
 
     /**
      * @test
      */
-    public function ensure_name_is_correct()
+    public function ensure_name_is_correct(): void
     {
         $process = new RegisterReservationProcess();
 
@@ -35,7 +32,7 @@ class AbstractProcessTest extends TestCase
     /**
      * @test
      */
-    public function ensure_class_name_end_with_process()
+    public function ensure_class_name_end_with_process(): void
     {
         $process = new WrongName();
 
@@ -47,7 +44,7 @@ class AbstractProcessTest extends TestCase
 
 class BookingAttemptId extends PrefixedIdentifier
 {
-    protected static function prefix()
+    protected static function prefix(): string
     {
         return 'booking-attempt';
     }
