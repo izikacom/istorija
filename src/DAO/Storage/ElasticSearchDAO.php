@@ -2,13 +2,13 @@
 
 namespace Dayuse\Istorija\DAO\Storage;
 
-use Dayuse\Istorija\Utils\Ensure;
-use Elasticsearch\Client;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\Pagination;
 use Dayuse\Istorija\DAO\RequiresInitialization;
 use Dayuse\Istorija\DAO\SearchableInterface;
+use Dayuse\Istorija\Utils\Ensure;
+use Elasticsearch\Client;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 
 class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
 {
@@ -32,6 +32,9 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
     /** @var array */
     private $sorting;
 
+    /** @var string[] */
+    private $multiMatchFields;
+
     /**
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html
@@ -42,14 +45,16 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
         string $type,
         array $mapping = null,
         array $settings = null,
-        array $sorting = null
+        array $sorting = null,
+        array $multiMatchFields = null
     ) {
-        $this->client   = $client;
-        $this->index    = $index;
-        $this->type     = $type;
-        $this->mapping  = $mapping;
-        $this->settings = $settings;
-        $this->sorting  = $sorting;
+        $this->client           = $client;
+        $this->index            = $index;
+        $this->type             = $type;
+        $this->mapping          = $mapping;
+        $this->settings         = $settings;
+        $this->sorting          = $sorting;
+        $this->multiMatchFields = $multiMatchFields;
     }
 
     /**
@@ -249,7 +254,7 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
             return [
                 'must' => [
                     'multi_match' => [
-                        'fields'   => ['*'], // search on all analyzed fields
+                        'fields'   => $this->multiMatchFields ?? ['*'], // search on all analyzed fields
                         'operator' => 'and',
                         'query'    => $input,
                     ],
@@ -281,7 +286,6 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
         }
 
         throw new \InvalidArgumentException(sprintf('Not supported input type, given: %s', \gettype($input)));
-
     }
 
     /**
@@ -360,49 +364,35 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
     public function flush(): void
     {
         $params = [
-            'search_type' => 'scan',    // use search_type=scan
-            'scroll'      => '2s',     // how long between scroll requests. should be small!
-            'size'        => 50,        // how many results *per shard* you want back
-            'index'       => $this->index,
-            'type'        => $this->type,
-            'body'        => [
-                'query' => ['match_all' => []],
+            'scroll' => '2s',          // how long between scroll requests. should be small!
+            'size'   => 50,               // how many results *per shard* you want back
+            'index'  => $this->index,
+            'body'   => [
+                'query' => ['match_all' => new \stdClass()],
             ],
         ];
 
-        try {
-            $docs = $this->client->search($params);   // Execute the search
-        } catch (Missing404Exception $e) {
-            return;
-        }
-
-        $scroll_id = $docs['_scroll_id'];   // The response will contain no results, just a _scroll_id
+        // Execute the search
+        // The response will contain the first batch of documents
+        // and a scroll_id
+        $response = $this->client->search($params);
 
         // Now we loop until the scroll "cursors" are exhausted
-        while (true) {
+        while (isset($response['hits']['hits']) && \count($response['hits']['hits']) > 0) {
+            array_walk($response['hits']['hits'], function ($hit) {
+                $this->remove($hit['_id']);
+            });
 
-            // Execute a Scroll request
-            $response = $this->client->scroll(
-                [
+            // Get new scroll_id
+            // You must always refresh your _scroll_id!  It can change sometimes
+            $scroll_id = $response['_scroll_id'];
+
+            // Execute a Scroll request and repeat
+            $response = $this->client->scroll([
                     'scroll_id' => $scroll_id,  //...using our previously obtained _scroll_id
-                    'scroll'    => '2s'           // and the same timeout window
+                    'scroll'    => '30s'           // and the same timeout window
                 ]
             );
-
-            // Check to see if we got any search hits from the scroll
-            if (\count($response['hits']['hits']) > 0) {
-                // If yes, Do Work Here
-                array_walk($response['hits']['hits'], function ($hit) {
-                    $this->remove($hit['_id']);
-                });
-
-                // Get new scroll_id
-                // Must always refresh your _scroll_id!  It can change sometimes
-                $scroll_id = $response['_scroll_id'];
-            } else {
-                // No results, scroll cursor is empty.  You've exported all the data
-                break;
-            }
         }
     }
 
