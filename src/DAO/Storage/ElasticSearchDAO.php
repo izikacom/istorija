@@ -48,12 +48,12 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
         array $sorting = null,
         array $multiMatchFields = null
     ) {
-        $this->client           = $client;
-        $this->index            = $index;
-        $this->type             = $type;
-        $this->mapping          = $mapping;
-        $this->settings         = $settings;
-        $this->sorting          = $sorting;
+        $this->client = $client;
+        $this->index = $index;
+        $this->type = $type;
+        $this->mapping = $mapping;
+        $this->settings = $settings;
+        $this->sorting = $sorting;
         $this->multiMatchFields = $multiMatchFields;
     }
 
