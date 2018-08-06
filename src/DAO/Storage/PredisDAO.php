@@ -86,7 +86,7 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
             $pagination->getMaxPerPage()
         );
 
-        return iterator_to_array($iterator);
+        return array_map([$this, 'deserialize'], iterator_to_array($iterator));
     }
 
     public function countAll(): int
