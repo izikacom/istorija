@@ -113,6 +113,30 @@ class State
         return new self($internalSet($data, $key, $value));
     }
 
+    public function filter(string $key, callable $filter): State
+    {
+        /** @var array $currentValue */
+        $currentValue = $this->get($key);
+        Ensure::isArray($currentValue);
+
+        // if indexed array, do not preserved keys.
+        $preservedKeys = array_values($currentValue) !== $currentValue;
+        $filteredValue = array_filter($currentValue, $filter);
+
+        return $this->set($key, $preservedKeys ? $filteredValue : array_values($filteredValue));
+    }
+
+    public function map(string $key, callable $callable): State
+    {
+        /** @var array $currentValue */
+        $currentValue = $this->get($key);
+        Ensure::isArray($currentValue);
+
+        $updatedValue = array_map($callable, $currentValue);
+
+        return $this->set($key, $updatedValue);
+    }
+
     public function merge(array $data): State
     {
         return new static(array_merge(
