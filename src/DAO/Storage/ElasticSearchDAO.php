@@ -139,6 +139,14 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
         return $this->doCount($this->buildSearchQuery());
     }
 
+    public function countResults(array $criteria = [], string $text = null): int
+    {
+        return $this->doCount($this->buildSearchQuery(
+            $text,
+            $criteria
+        ));
+    }
+
     /**
      * {@inheritDoc}
      */

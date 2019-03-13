@@ -12,4 +12,5 @@ interface SearchableInterface extends AdvancedDAOInterface
 {
     public function search(Pagination $pagination, array $criteria = [], string $text = null) : array;
     public function filter(Pagination $pagination, array $criteria = []) : array;
+    public function countResults(array $criteria = [], string $text = null) : int;
 }
