@@ -5,14 +5,11 @@ namespace Dayuse\Istorija\EventSourcing;
 use Dayuse\Istorija\EventSourcing\DomainEvent\DomainEvent;
 use Dayuse\Istorija\EventSourcing\DomainEvent\EventNameGuesser;
 use InvalidArgumentException;
-use ReflectionClass;
 use ReflectionMethod;
+use ReflectionObject;
 use ReflectionParameter;
 use function is_callable;
 
-/**
- * @author : Thomas Tourlourat <thomas@tourlourat.com>
- */
 class AbstractEventHandler implements EventHandler
 {
     private const HANDLER_PREFIX = 'when';
@@ -37,10 +34,10 @@ class AbstractEventHandler implements EventHandler
 
     public function supportedEventClasses(): array
     {
-        $eventHandlerReflection = new ReflectionClass(get_class($this));
+        $eventHandlerReflection = new ReflectionObject($this);
         $eventHandlerMethods = $eventHandlerReflection->getMethods(ReflectionMethod::IS_PUBLIC);
         $eventHandlerMethods = array_filter($eventHandlerMethods, static function (ReflectionMethod $reflectionMethod) {
-            return 0 === strpos($reflectionMethod->getName(), "when");
+            return 0 === strpos($reflectionMethod->getName(), self::HANDLER_PREFIX);
         });
 
         $eventClasses = [];
