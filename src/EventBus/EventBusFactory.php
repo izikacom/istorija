@@ -14,13 +14,18 @@ class EventBusFactory
 {
     private $applicationExecutionContext;
     private $eventHandlers;
+    private $eventHandlerSorter;
 
-    public function __construct(ExecutionContext $applicationExecutionContext, iterable $eventHandlers)
-    {
+    public function __construct(
+        ExecutionContext $applicationExecutionContext,
+        iterable $eventHandlers,
+        EventHandlerSorter $eventHandlerSorter
+    ) {
         Ensure::allIsInstanceOf($eventHandlers, EventHandler::class);
 
         $this->applicationExecutionContext = $applicationExecutionContext;
         $this->eventHandlers = $eventHandlers;
+        $this->eventHandlerSorter = $eventHandlerSorter;
     }
 
     public function createForApplication(): EventBus
@@ -53,6 +58,9 @@ class EventBusFactory
 
     private function configureForEventHandlers(EventBus $eventBus, iterable $eventHandlers): EventBus
     {
+        // Certains handlers sont prioritaires.
+        $eventHandlers = $this->eventHandlerSorter->sort($eventHandlers);
+
         foreach ($eventHandlers as $eventHandler) {
             foreach ($eventHandler->supportedEventClasses() as $eventClass) {
                 $eventBus->subscribe($eventClass, [$eventHandler, 'apply']);
