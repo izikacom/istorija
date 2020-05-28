@@ -5,13 +5,22 @@
 
 namespace Dayuse\Istorija\Messaging;
 
-use Bgy\TransientFaultHandling\ErrorDetectionStrategies\TransientErrorCatchAllStrategy;
-use Bgy\TransientFaultHandling\RetryPolicy;
-use Bgy\TransientFaultHandling\RetryStrategies\FixedInterval;
+use Dayuse\Istorija\Utils\Ensure;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 class ExecutionPipeline
 {
-    private $handlers = [];
+    private $logger;
+    private $handlers;
+
+    public function __construct(LoggerInterface $logger, array $handlers)
+    {
+        Ensure::allIsInstanceOf($handlers, MessageHandler::class);
+
+        $this->logger = $logger;
+        $this->handlers = $handlers;
+    }
 
     public function addHandler(MessageHandler $messageHandler): void
     {
@@ -21,7 +30,15 @@ class ExecutionPipeline
     public function execute(Message $message, MessageHandlerContext $messageHandlerContext): void
     {
         foreach ($this->handlers as $handler) {
-            $handler->handle($message, $messageHandlerContext);
+            try {
+                $handler->handle($message, $messageHandlerContext);
+            } catch (Throwable $exception) {
+                $this->logger->error('An exception occurred when handling message into bus', [
+                    'exception' => $exception,
+                    'handler' => get_class($handler),
+                    'message' => get_class($message),
+                ]);
+            }
         }
     }
 }

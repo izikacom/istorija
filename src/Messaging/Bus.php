@@ -15,13 +15,16 @@ class Bus
 {
     private $configuration;
     private $globalExecutionContext;
+    private $executionPipelineFactory;
+
     /** @var Subscription[][] */
     private $subscriptions = [];
 
-    public function __construct(Configuration $configuration, GlobalExecutionContext $executionContext)
+    public function __construct(Configuration $configuration, GlobalExecutionContext $executionContext, ExecutionPipelineFactory $executionPipelineFactory)
     {
         $this->configuration = $configuration;
         $this->globalExecutionContext = $executionContext;
+        $this->executionPipelineFactory = $executionPipelineFactory;
     }
 
     public function send(Message $message, ?SendOptions $options = null): void
@@ -38,7 +41,7 @@ class Bus
                 $headers[$context] = (string) $value;
             }
 
-            $executionPipeline = new ExecutionPipeline();
+            $executionPipeline = $this->executionPipelineFactory->createExecutionPipeline();
 
             // TODO Verifier messageContract === $message::class
             foreach ($this->subscriptions as $messageContract => $subscriptions) {
