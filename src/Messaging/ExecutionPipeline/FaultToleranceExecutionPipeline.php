@@ -43,7 +43,7 @@ class FaultToleranceExecutionPipeline implements ExecutionPipeline
 
     public static function creator(LoggerInterface $logger): callable
     {
-        return static function(LoggerInterface $logger) {
+        return static function () use ($logger) {
             return new self($logger);
         };
     }
