@@ -40,4 +40,11 @@ class FaultToleranceExecutionPipeline implements ExecutionPipeline
             }
         }
     }
+
+    public static function creator(LoggerInterface $logger): callable
+    {
+        return static function(LoggerInterface $logger) {
+            return new self($logger);
+        };
+    }
 }

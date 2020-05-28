@@ -41,9 +41,7 @@ class EventBusFactory
                 new Bus(
                     new Configuration(new Settings()),
                     $this->applicationExecutionContext,
-                    function () {
-                        return new FaultToleranceExecutionPipeline($this->logger);
-                    }
+                    FaultToleranceExecutionPipeline::creator($this->logger)
                 )
             )),
             $this->eventHandlers
@@ -59,9 +57,7 @@ class EventBusFactory
                 new Bus(
                     new Configuration(new Settings()),
                     new ExecutionContext(),
-                    static function () {
-                        return new SimpleExecutionPipeline();
-                    }
+                    SimpleExecutionPipeline::creator()
                 )
             ),
             $eventHandlers

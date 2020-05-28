@@ -23,4 +23,11 @@ class SimpleExecutionPipeline implements ExecutionPipeline
             $handler->handle($message, $messageHandlerContext);
         }
     }
+
+    public static function creator(): callable
+    {
+        return static function() {
+            return new self();
+        };
+    }
 }
