@@ -15,16 +15,19 @@ class Bus
 {
     private $configuration;
     private $globalExecutionContext;
-    private $executionPipelineFactory;
+    private $executionPipelineCreator;
 
     /** @var Subscription[][] */
     private $subscriptions = [];
 
-    public function __construct(Configuration $configuration, GlobalExecutionContext $executionContext, ExecutionPipelineFactory $executionPipelineFactory)
-    {
+    public function __construct(
+        Configuration $configuration,
+        GlobalExecutionContext $executionContext,
+        callable $executionPipelineCreator
+    ) {
         $this->configuration = $configuration;
         $this->globalExecutionContext = $executionContext;
-        $this->executionPipelineFactory = $executionPipelineFactory;
+        $this->executionPipelineCreator = $executionPipelineCreator;
     }
 
     public function send(Message $message, ?SendOptions $options = null): void
@@ -32,16 +35,17 @@ class Bus
         $messageClassName = ClassFunctions::fqcn($message);
         $options = $options ?? new SendOptions();
         $headers = new Headers();
-        $headers['MessageId'] = $options->getMessageId() ?? (string) GenericUuidIdentifier::generate();
+        $headers['MessageId'] = $options->getMessageId() ?? (string)GenericUuidIdentifier::generate();
 
         if ($options->useEndpointLoopback()) {
             $headers['Destination'] = SendOptions::ENDPOINT_LOOPBACK;
 
             foreach ($this->globalExecutionContext->all() as $context => $value) {
-                $headers[$context] = (string) $value;
+                $headers[$context] = (string)$value;
             }
 
-            $executionPipeline = $this->executionPipelineFactory->createExecutionPipeline();
+            /** @var ExecutionPipeline $executionPipeline */
+            $executionPipeline = call_user_func($this->executionPipelineCreator);
 
             // TODO Verifier messageContract === $message::class
             foreach ($this->subscriptions as $messageContract => $subscriptions) {
@@ -52,7 +56,10 @@ class Bus
                 }
             }
 
-            $executionPipeline->execute($message, new MessageHandlerContext($this, $headers, $this->globalExecutionContext));
+            $executionPipeline->execute(
+                $message,
+                new MessageHandlerContext($this, $headers, $this->globalExecutionContext)
+            );
 
             return;
         }
