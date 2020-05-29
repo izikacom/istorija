@@ -4,11 +4,7 @@ namespace Dayuse\Istorija\EventSourcing\DomainEvent;
 
 class EventNameGuesser
 {
-    /**
-     * @param DomainEvent $event
-     * @return string
-     */
-    public static function guess(DomainEvent $event)
+    public static function guess(DomainEvent $event): string
     {
         $class = trim(get_class($event), "\\");
 

@@ -70,6 +70,8 @@ class EventBusFactory
         $eventHandlers = $this->eventHandlerSorter->sort($eventHandlers);
 
         foreach ($eventHandlers as $eventHandler) {
+            // TODO - Utiliser un service externe pour savoir quelles sont les évènements supportés par un EventHandler, ainsi que les méthodes de réception.
+            // Voir le commande dans EventHandlerNameResolverUsingReflection.
             foreach ($eventHandler->supportedEventClasses() as $eventClass) {
                 $eventBus->subscribe($eventClass, [$eventHandler, 'apply']);
             }
