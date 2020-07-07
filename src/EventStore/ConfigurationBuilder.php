@@ -7,6 +7,7 @@ namespace Dayuse\Istorija\EventStore;
 
 use Dayuse\Istorija\EventStore\Storage\DoctrineDbal\MySqlDbalStorage;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
 class ConfigurationBuilder
@@ -41,11 +42,12 @@ class ConfigurationBuilder
         } elseif (is_array($data)) {
             $params = $data;
             $dbal   = DriverManager::getConnection($params, new DbalConfiguration());
+        } elseif($data instanceof Connection) {
+            $dbal = $data;
         } else {
             // @see http://docs.doctrine-project.org/projects/doctrine-dbal/en/latest/reference/configuration.html
             throw new \InvalidArgumentException('First parameter should be either a string to represent a DSN or an array to describe connection parameters');
         }
-
 
         $this->storage = new MySqlDbalStorage($dbal);
 
