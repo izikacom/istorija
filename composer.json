@@ -33,7 +33,7 @@
     "php": ">=7.1",
     "beberlei/assert": "^2.7",
     "mathiasverraes/classfunctions": "^1.1",
-    "ramsey/uuid": "^3.5",
+    "ramsey/uuid": "^4.0",
     "doctrine/dbal": "^2.5",
     "borisguery/transient-error-handling": "^0.1.0",
     "moontoast/math": "^1.1"
