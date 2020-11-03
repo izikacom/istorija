@@ -439,7 +439,7 @@ class ElasticSearchDAO implements SearchableInterface, RequiresInitialization
                         'sort'  => $this->sorting ?? [],
                     ],
                     'size'  => $pagination->getMaxPerPage(),
-                    'from'  => $pagination->getMaxPerPage() * $pagination->getPage(),
+                    'from'  => $pagination->getMaxPerPage() * $pagination->getOffset(),
                 ]
             );
         } catch (Missing404Exception $e) {

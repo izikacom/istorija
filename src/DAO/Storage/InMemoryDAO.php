@@ -43,7 +43,7 @@ class InMemoryDAO implements AdvancedDAOInterface, TransferableInterface
     {
         return \array_slice(
             $this->data,
-            $pagination->getPage(),
+            $pagination->getOffset(),
             $pagination->getMaxPerPage(),
             false
         );

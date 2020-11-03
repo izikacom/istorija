@@ -82,7 +82,7 @@ class PredisDAO implements AdvancedDAOInterface, BulkableInterface
     {
         $iterator = new \LimitIterator(
             new Iterator\Keyspace($this->redis, $this->generateKey('*')),
-            $pagination->getPage(),
+            $pagination->getOffset(),
             $pagination->getMaxPerPage()
         );
 

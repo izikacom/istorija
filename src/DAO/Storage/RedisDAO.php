@@ -1,12 +1,13 @@
 <?php
+
 namespace Dayuse\Istorija\DAO\Storage;
 
 use Dayuse\Istorija\DAO\AdvancedDAOInterface;
-use Dayuse\Istorija\DAO\Pagination;
-use Dayuse\Istorija\Utils\Ensure;
 use Dayuse\Istorija\DAO\BulkableInterface;
 use Dayuse\Istorija\DAO\FunctionalTrait;
 use Dayuse\Istorija\DAO\IdentifiableValue;
+use Dayuse\Istorija\DAO\Pagination;
+use Dayuse\Istorija\Utils\Ensure;
 
 /**
  * Class RedisDAO
@@ -33,9 +34,10 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     public function __construct(\Redis $redis, string $prefix)
     {
         Ensure::notBlank($prefix);
-        Ensure::eq(\Redis::SERIALIZER_NONE, $redis->getOption(\Redis::OPT_SERIALIZER), 'Are you sure that your redis serializer is well configured?');
+        Ensure::eq(\Redis::SERIALIZER_NONE, $redis->getOption(\Redis::OPT_SERIALIZER),
+            'Are you sure that your redis serializer is well configured?');
 
-        $this->redis  = $redis;
+        $this->redis = $redis;
         $this->prefix = $prefix;
     }
 
@@ -44,7 +46,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
      */
     public function find(string $identifier)
     {
-        $key  = $this->generateKey($identifier);
+        $key = $this->generateKey($identifier);
 
         if (false === $this->redis->exists($key)) {
             return null;
@@ -56,7 +58,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function remove(string $identifier) : void
+    public function remove(string $identifier): void
     {
         $this->redis->del($this->generateKey($identifier));
     }
@@ -64,7 +66,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function save(string $identifier, $data) : void
+    public function save(string $identifier, $data): void
     {
         $this->redis->set(
             $this->generateKey($identifier),
@@ -75,7 +77,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function flush() : void
+    public function flush(): void
     {
         $iterator = null;
         while (false !== ($keys = $this->redis->scan($iterator, $this->generateKey('*')))) {
@@ -89,7 +91,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
 
         return array_map(
             [$this, 'deserialize'],
-            $this->redis->getMultiple(\array_slice($keys, $pagination->getPage(), $pagination->getMaxPerPage()))
+            $this->redis->getMultiple(\array_slice($keys, $pagination->getOffset(), $pagination->getMaxPerPage()))
         );
     }
 
@@ -117,7 +119,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
     /**
      * @inheritDoc
      */
-    public function saveBulk(array $models) : void
+    public function saveBulk(array $models): void
     {
         Ensure::allIsInstanceOf($models, IdentifiableValue::class);
 
@@ -143,7 +145,7 @@ class RedisDAO implements AdvancedDAOInterface, BulkableInterface
         return $this->redis;
     }
 
-    protected function generateKey(string $identifier) : string
+    protected function generateKey(string $identifier): string
     {
         return sprintf('%s:%s', $this->prefix, $identifier);
     }
