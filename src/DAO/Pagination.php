@@ -38,7 +38,7 @@ class Pagination
 
     public function getOffset(): int
     {
-        return $this->page - 1;
+        return $this->maxPerPage * ($this->page - 1);
     }
 
     public function getPage(): int
