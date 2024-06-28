@@ -31,7 +31,7 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=7.1",
-    "beberlei/assert": "^2.7",
+    "beberlei/assert": "^3.2",
     "mathiasverraes/classfunctions": "^1.1",
     "ramsey/uuid": "^4.0",
     "doctrine/dbal": "^2.5",
