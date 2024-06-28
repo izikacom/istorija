@@ -35,7 +35,7 @@
     "mathiasverraes/classfunctions": "^1.1",
     "ramsey/uuid": "^4.0",
     "doctrine/dbal": "^2.5",
-    "borisguery/transient-error-handling": "^0.1.0",
+    "borisguery/transient-error-handling": "^0.5.0",
     "moontoast/math": "^1.1"
   },
   "require-dev": {
